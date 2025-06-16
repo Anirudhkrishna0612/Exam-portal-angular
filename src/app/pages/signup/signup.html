@@ -1,0 +1,47 @@
+<div class="bootstrap-wrapper">
+    <div class="container">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-md-6 offset-md-3 text-center">
+
+                <div class="container">
+                    <img src="/assets/signupp.png" alt="Register img" class="img-fluid signup-img">
+                </div>
+
+                <h3 class="text-center">Register Here !</h3>
+                <form (ngSubmit)="formSubmit()">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>User Name</mat-label>
+                        <input matInput placeholder="Enter Here">
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input type="password" matInput placeholder="Enter Here">
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Enter Here">
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Second Name</mat-label>
+                        <input matInput placeholder="Enter Here">
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Email Address</mat-label>
+                        <input type="email" matInput placeholder="Enter Here">
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Phone Number</mat-label>
+                        <input type="number" matInput placeholder="Enter Here">
+                    </mat-form-field>
+                    <div class="container">
+                        <div class="example-button-row">
+                            <button type="submit" mat-raised-button color="primary">Submit</button>
+                            <button type="reset" style="margin-left: 5px;" mat-raised-button color="warn">Reset</button>
+                        </div>
+                    </div>
+
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.text-center{
+    text-align: center;
+}
+.bootstrap-wrapper img.signup-img { /* Added .bootstrap-wrapper to increase specificity */
+    max-width: 100px; /* Or whatever smaller value you desire */
+    height: auto;
+}
