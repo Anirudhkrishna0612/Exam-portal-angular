@@ -1,21 +1,30 @@
+// src/app/app.ts
+
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterModule } from '@angular/router'; // Keep RouterModule import for routerLink etc.
 import { MatButtonModule } from '@angular/material/button';
-import { Navbar } from "./components/navbar/navbar";
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { Navbar } from "./components/navbar/navbar"; // Assuming 'navbar' component exists and is standalone
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
+// import { routes } from './app.routes'; // No longer directly imported here, but used in main.ts
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [
     RouterOutlet,
+    // RouterModule.forRoot(routes), // <--- THIS LINE IS REMOVED
     MatButtonModule,
     Navbar,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule
-],
+    FormsModule,
+    HttpClientModule,
+    RouterModule // Keep RouterModule if you use routerLink in app.html
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

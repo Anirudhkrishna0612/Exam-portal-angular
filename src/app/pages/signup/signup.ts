@@ -1,45 +1,98 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common'; // Needed for *ngIf if you were to use it elsewhere
-import { FormsModule } from '@angular/forms'; // Crucial for form handling
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // SnackBar imports
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { UserService } from '../../user.service'; // Path now correct
+import { User } from '../../user.model';     // Path now correct
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
   imports: [
-    CommonModule, // Required for Angular directives like *ngIf, *ngFor
-    FormsModule,  // Required for template-driven forms and (ngSubmit) to fully work
+    CommonModule,
+    FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSnackBarModule // Add MatSnackBarModule here
+    MatSnackBarModule
   ],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
 })
-export class Signup {
+export class Signup implements OnInit {
 
-  // Inject MatSnackBar service into the constructor
-  constructor(private snackBar: MatSnackBar) {
-    console.log('Signup Component Initialized'); // This should appear in your browser console on page load
+  public user: User = {
+    username: '',
+    password: '', // Initialize password as empty string to avoid undefined error during initialization
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: ''
+  };
+
+  constructor(private snackBar: MatSnackBar, private userService: UserService) {
+    console.log('Signup Component Initialized');
+  }
+
+  ngOnInit(): void {
+    // Initialization logic
   }
 
   formSubmit(): void {
-    // This is the first line that should execute when the form submits
-    console.log('--- formSubmit() function called! ---');
+    console.log(this.user); // Log the user data for debugging
 
-    // Open a SnackBar to confirm submission
-    this.snackBar.open('Form submitted successfully!', 'Dismiss', {
-      duration: 3000, // Show for 3 seconds
-      horizontalPosition: 'center', // Position the snackbar
-      verticalPosition: 'bottom',
-    });
+    // Basic validation for username
+    if (this.user.username.trim() === '' || this.user.username === null) {
+      this.snackBar.open('Username is required !!', 'OK', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+      });
+      return;
+    }
 
-    // Add your actual form data handling or API call here later
-    // For example:
-    // console.log('Form data:', this.user); // If you had ngModel bindings
+    // Basic validation for password
+    // ADDED CHECK: this.user.password && before .trim() to handle possible undefined/null
+    if (!this.user.password || this.user.password.trim() === '') {
+        this.snackBar.open('Password is required !!', 'OK', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+        });
+        return;
+    }
+
+    this.userService.addUser(this.user).subscribe(
+      (data: any) => {
+        console.log(data);
+        this.snackBar.open('Success !! User is registered', 'Dismiss', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        });
+        // Clear the form fields after successful registration
+        this.user = {
+          username: '',
+          password: '',
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: ''
+        };
+      },
+      (error: HttpErrorResponse) => {
+        console.error(error);
+        // You can add more specific error handling here based on error.status or error.error
+        this.snackBar.open('Something went wrong !!', 'Dismiss', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        });
+      }
+    );
   }
 }
