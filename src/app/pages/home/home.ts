@@ -14,6 +14,6 @@ import { RouterModule } from '@angular/router'; // Needed for routerLink
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
-export class HomeComponent {
+export class Home {
   // You can add properties or methods here for your home component
 }

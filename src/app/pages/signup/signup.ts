@@ -9,6 +9,7 @@ import { UserService } from '../../user.service'; // Path now correct
 import { User } from '../../user.model';     // Path now correct
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-signup',
@@ -19,7 +20,8 @@ import Swal from 'sweetalert2';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCardModule
   ],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
