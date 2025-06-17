@@ -8,6 +8,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserService } from '../../user.service'; // Path now correct
 import { User } from '../../user.model';     // Path now correct
 import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-signup',
@@ -65,14 +66,34 @@ export class Signup implements OnInit {
         });
         return;
     }
+    if (!this.user.firstName || this.user.firstName.trim() === '') {
+        this.snackBar.open('Name is required !!', 'OK', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+        });
+        return;
+    }
+    if (!this.user.email || this.user.email.trim() === '') {
+        this.snackBar.open('email is required !!', 'OK', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+        });
+        return;
+    }
+    
 
     this.userService.addUser(this.user).subscribe(
       (data: any) => {
         console.log(data);
-        this.snackBar.open('Success !! User is registered', 'Dismiss', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
+        // --- CHANGE START ---
+        // Replace MatSnackBar success message with SweetAlert
+        Swal.fire('Success', 'Registered successfully! User ID :'+ data.id, 'success').then((result) => {
+          // Optional: You can add actions after the SweetAlert closes, e.g., navigate
+          // if (result.isConfirmed) {
+          //   // Do something after user clicks OK
+          // }
         });
         // Clear the form fields after successful registration
         this.user = {
