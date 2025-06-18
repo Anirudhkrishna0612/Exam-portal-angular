@@ -1,0 +1,14 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+.navbar-logo-text {
+  font-family: 'Pacifico', cursive; /* Apply the font */
+  font-size: 28px; /* Adjust size to your preference */
+  /* Add other styles like color, font-weight, etc., if desired */
+  /* For instance, if your toolbar is dark, you might want white text: */
+  color: white;
+  margin-right: 20px; /* Example: add some space after the logo */
+}
+.whiteicon{
+    color: white;
+}

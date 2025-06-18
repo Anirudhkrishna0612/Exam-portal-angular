@@ -1,9 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Croissant+One&display=swap');
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
 
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { 
+    margin: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #ffcdd2;
+}
 
 .text-center{
     text-align: center;
@@ -35,4 +42,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .mb10{
     margin-bottom: 10px !important;
+}
+
+.crostext h3 { /* Target the h3 element specifically within .crostext */
+  font-family: 'Croissant One', cursive;
+  font-size: 20px;
+  color: rgb(0,0,0); /* Or 'black' for simplicity */
+  /* Remove any extra characters if present from previous attempts */
 }

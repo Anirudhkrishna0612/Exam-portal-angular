@@ -1,1 +1,13 @@
-<h1>This is navbar</h1>
+<mat-toolbar color="warn">
+  <a matIconButton class="whiteicon" [routerLink]="'/'" aria-label="Example icon-button with menu icon">
+    <mat-icon>view_agenda</mat-icon>
+  </a>
+  <span class="navbar-logo-text">Zenith Prove</span>
+  <span class="example-spacer"></span>
+  <a matIconButton class="whiteicon" aria-label="Login" [routerLink]="'/login'">
+    <mat-icon>login</mat-icon>
+  </a>
+   <a matIconButton class="whiteicon" aria-label="Signup"  [routerLink]="'/signup'">
+    <mat-icon>assignment</mat-icon>
+   </a>
+</mat-toolbar>
