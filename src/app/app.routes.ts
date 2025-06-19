@@ -9,6 +9,8 @@ import { Signup } from './pages/signup/signup'; // Correct path to signup.ts, im
 // You may also have a Navbar and Home component
 import { NavbarComponent } from './components/navbar/navbar'; // Assuming navbar.ts, importing NavbarComponent
 import { Home } from './pages/home/home'; // Assuming home.ts, importing HomeComponent
+import { Dashboard } from './pages/admin/dashboard/dashboard';
+import { UserDashboard } from './pages/user/user-dashboard/user-dashboard';
 
 export const routes: Routes = [
     {
@@ -28,9 +30,15 @@ export const routes: Routes = [
         path: 'signup',
         component: Signup // Use SignupComponent here
     },
-    // Adding a route for navbar if it needs to be routed to (unlikely for a navbar component)
-    // {
-    //   path: 'navbar',
-    //   component: NavbarComponent
-    // }
+    {
+        path: 'admin',
+        component:Dashboard,
+        pathMatch:'full',
+    },
+    {
+        path:'user-dashboard',
+        component:UserDashboard,
+        pathMatch:'full',
+    }
+    
 ];
