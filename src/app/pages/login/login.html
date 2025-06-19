@@ -16,15 +16,21 @@
                 <div class="crostext">
                 <h3 class="text-center ">Welcome Back </h3>
                 </div>
-                <form action="">
+
+                
+                <form (ngSubmit)="formSubmit()">
 
                     <!--Username field-->
 
                     <mat-form-field class="full-width" appearance="outline">
                         <mat-label>User Name</mat-label>
                         <input
+                        [(ngModel)]="loginData.username"
+                        name="username"
                         required
-                        matInput placeholder="Enter Here">
+                        matInput 
+                        placeholder="Enter Here"
+                        >
                     </mat-form-field>
 
                     <!--Password field-->
@@ -32,8 +38,13 @@
                     <mat-form-field class="full-width" appearance="outline">
                         <mat-label>Password</mat-label>
                         <input
+                        [(ngModel)]="loginData.password"
+                        name="password"
                         required
-                        type="password" matInput placeholder="Enter Here">
+                        type="password" 
+                        matInput 
+                        placeholder="Enter Here"
+                        >
                     </mat-form-field>
 
                     <div class="container">
