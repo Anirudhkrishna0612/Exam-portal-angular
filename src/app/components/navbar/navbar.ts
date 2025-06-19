@@ -1,33 +1,34 @@
-import { Component } from '@angular/core';
-import { RouterOutlet, RouterModule } from '@angular/router'; // Keep RouterModule import for routerLink etc.
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { MatCardModule } from '@angular/material/card';
+// src/app/components/navbar/navbar.ts
+
+import { Component, OnInit } from '@angular/core';
+
+// **CRITICAL FIX: Angular Material Modules for Navbar UI**
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button'; // If you use mat-button
+
+// **CRITICAL FIX: RouterLink and/or RouterModule for routerLink directive**
+import { RouterLink, RouterModule } from '@angular/router'; // Using RouterLink is more granular for standalone
 
 @Component({
   selector: 'app-navbar',
-  standalone: true, 
-  imports: [
-     RouterOutlet,
-    // RouterModule.forRoot(routes), // <--- THIS LINE IS REMOVED
-    MatButtonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    FormsModule,
-    HttpClientModule,
-    RouterModule, // Keep RouterModule if you use routerLink in app.html
-    MatCardModule,
-    MatToolbarModule,
-    MatIconModule
-  ],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css'
+  styleUrls: ['./navbar.css'],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    RouterLink, // Use RouterLink directly for standalone component, or RouterModule for all router directives
+    RouterModule, // Include RouterModule as well for comprehensive routing features
+    // CommonModule // Generally good practice for standalone components if using *ngIf, *ngFor etc.
+  ]
 })
-export class Navbar {
+export class NavbarComponent implements OnInit { // The class name is NavbarComponent
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
 
 }

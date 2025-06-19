@@ -1,29 +1,36 @@
 // src/app/app.routes.ts
 
 import { Routes } from '@angular/router';
-import { Signup } from './pages/signup/signup'; // Your signup component
-import { Home } from './pages/home/home'; // <--- CORRECTED: Removed .component from the import path
-import { Login } from './pages/login/login';
+
+// **CRITICAL FIX: Use LoginComponent and SignupComponent for imports and component references**
+// The files are login.ts and signup.ts, but the classes within them are typically named *Component.
+import { LoginComponent } from './pages/login/login'; // Correct path to login.ts, importing LoginComponent class
+import { Signup } from './pages/signup/signup'; // Correct path to signup.ts, importing SignupComponent class
+// You may also have a Navbar and Home component
+import { NavbarComponent } from './components/navbar/navbar'; // Assuming navbar.ts, importing NavbarComponent
+import { Home } from './pages/home/home'; // Assuming home.ts, importing HomeComponent
 
 export const routes: Routes = [
-    // Default route for the root URL '/'
     {
         path: '',
-        component: Home, // Home component for the default route
-        pathMatch: 'full'
-    },
-    // Your signup route
-    {
-        path: 'signup',
-        component: Signup,
+        component: Home, // Assuming home page after login/signup
+        // You might want to add children routes here for authenticated users
+        // children: [
+        //   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+        //   { path: 'dashboard', component: DashboardComponent },
+        // ]
     },
     {
         path: 'login',
-        component: Login,
+        component: LoginComponent // Use LoginComponent here
     },
-    // Wildcard route for any other undefined paths
     {
-        path: '**',
-        redirectTo: '' // Redirects to the home page
-    }
+        path: 'signup',
+        component: Signup // Use SignupComponent here
+    },
+    // Adding a route for navbar if it needs to be routed to (unlikely for a navbar component)
+    // {
+    //   path: 'navbar',
+    //   component: NavbarComponent
+    // }
 ];

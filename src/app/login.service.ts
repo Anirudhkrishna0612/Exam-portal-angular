@@ -1,80 +1,87 @@
+// src/app/login.service.ts
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import baseUrl from './helper';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+
+import { User } from './user';
+                                    
+                                    
+import { JwtRequest } from './pages/models/jwt-request.model'; 
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private http:HttpClient) { }
+  private baseUrl = 'http://localhost:8060';
+  private TOKEN_KEY = 'jwtToken';
+  private USER_KEY = 'currentUser';
 
-  //current user: which is loggedin
-  public getCurrentUser(){
-    return this.http.get(`${baseUrl}/current-user`);
-  }
+  private loggedInUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(this.getStoredUser());
+  public loggedInUser$: Observable<User | null> = this.loggedInUserSubject.asObservable();
 
-  //generate token
-
-  public generateToken(loginData:any){
-
-    return this.http.post(`${baseUrl}/generate-token`,loginData);
-  }
-
-
-  //Login user: Set the token in localstorage
-  public loginUser(token: any){
-    localStorage.setItem("token",token);
-    return true;
-  }
-
-  //isLogin: user is logged in or not 
-
-  public isLoggedIn(){
-    let tokenStr=localStorage.getItem("token")
-    if(tokenStr==undefined || tokenStr=='' || tokenStr==null){
-      return false;
-    }else{
-      return true;
+  constructor(private http: HttpClient) {
+    const storedToken = localStorage.getItem(this.TOKEN_KEY);
+    const storedUser = this.getStoredUser();
+    if (storedToken && storedUser) {
+      console.log("LoginService: Found stored token and user on init.");
+      this.loggedInUserSubject.next(storedUser);
+    } else {
+      console.log("LoginService: No stored token or user found on init.");
     }
   }
 
-  //Logout: remove the token from local storage
-
-  public logout(){
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    return true;
+  public generateToken(loginData: JwtRequest): Observable<any> {
+    console.log("LoginService: Sending login request to backend...");
+    return this.http.post(`${this.baseUrl}/generate-token`, loginData);
   }
 
-  //get token
-  public getToken(){
-    return localStorage.getItem('token');
+  public setToken(token: string) {
+    localStorage.setItem(this.TOKEN_KEY, token);
+    console.log("LoginService: Token saved to localStorage.");
   }
 
-  //set userDetail
-  public setUser(user: any){
-    localStorage.setItem('user',JSON.stringify(user));
-
-
+  public getToken(): string | null {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    console.log("LoginService: Retrieving token from localStorage. Value:", token ? "present" : "null/undefined");
+    return token;
   }
 
-  //getUser
-  public getUser(){
-    let userStr=localStorage.getItem("user");
-    if(userStr!=null){
-      return JSON.parse(userStr);
-    }else{
-      this.logout();
-      return null;
+  public setUser(user: User) {
+    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    this.loggedInUserSubject.next(user);
+    console.log("LoginService: User object saved to localStorage and BehaviorSubject updated.");
+  }
+
+  public getStoredUser(): User | null {
+    const userString = localStorage.getItem(this.USER_KEY);
+    if (userString) {
+      try {
+        return JSON.parse(userString) as User;
+      } catch (e) {
+        console.error("LoginService: Error parsing stored user from localStorage", e);
+        return null;
+      }
     }
+    return null;
   }
 
-  //get userRole
-  public getUserRole(){
-    let user=this.getUser();
-    return user.authorities[0].authority;
+  public logout() {
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.USER_KEY);
+    this.loggedInUserSubject.next(null);
+    console.log("LoginService: User logged out, token and user removed from localStorage.");
   }
 
+  public isLoggedIn(): boolean {
+    const token = this.getToken();
+    return !!token;
+  }
 
+  public getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/current-user`);
+  }
 }

@@ -1,43 +1,23 @@
-// src/app/app.ts
+// src/app/app.ts (Assuming this is your root AppComponent)
 
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterModule } from '@angular/router'; // Keep RouterModule import for routerLink etc.
-import { MatButtonModule } from '@angular/material/button';
-import { Navbar } from "./components/navbar/navbar"; // Assuming 'navbar' component exists and is standalone
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { MatCardModule } from '@angular/material/card';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { AuthInterceptorProviders } from './pages/auth.interceptor';
-
-
-// import { routes } from './app.routes'; // No longer directly imported here, but used in main.ts
+import { CommonModule } from '@angular/common'; // For Common Angular directives
+import { RouterOutlet } from '@angular/router'; // For routing
+// **CRITICAL FIX: Import NavbarComponent, not Navbar**
+import { NavbarComponent } from "./components/navbar/navbar"; // Correct path to navbar.ts, importing NavbarComponent
 
 @Component({
   selector: 'app-root',
-  standalone: true,
+  templateUrl: './app.html', // Assuming app.html
+  styleUrls: ['./app.css'],   // Assuming app.css
+  standalone: true, // Assuming AppComponent is also standalone
   imports: [
-    RouterOutlet,
-    // RouterModule.forRoot(routes), // <--- THIS LINE IS REMOVED
-    MatButtonModule,
-    Navbar,
-    MatInputModule,
-    MatFormFieldModule,
-    FormsModule,
-    HttpClientModule,
-    RouterModule, // Keep RouterModule if you use routerLink in app.html
-    MatCardModule,
-    MatToolbarModule,
-    MatIconModule
-  ],
-  providers:[AuthInterceptorProviders],
-  
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+    CommonModule,
+    RouterOutlet, // Ensure RouterOutlet is here if used in app.html
+    // **CRITICAL FIX: Add NavbarComponent to imports array**
+    NavbarComponent, // Add the correctly named NavbarComponent here
+  ]
 })
-export class App {
-  protected title = 'examfront';
+export class AppComponent {
+  title = 'examfront'; // Example property
 }

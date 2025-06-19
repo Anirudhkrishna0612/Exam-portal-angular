@@ -1,88 +1,92 @@
-import { Component } from '@angular/core';
+// src/app/pages/login/login.ts
+
+import { Component, OnInit } from '@angular/core';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { LoginService } from '../../login.service';
+import { Router } from '@angular/router';
+
+import { JwtRequest } from '../models/jwt-request.model';
+// **CRITICAL FIX: Correct User model path as per your clarification**
+import { User } from '../../user'; // Path from src/app/pages/login/login.ts to src/app/user.ts
+
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { UserService } from '../../user.service'; // Path now correct
-import { User } from '../../user.model';     // Path now correct
-import { HttpErrorResponse } from '@angular/common/http';
-import Swal from 'sweetalert2';
-import { MatCardModule } from '@angular/material/card';
-import { LoginService } from '../../login.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
+  templateUrl: './login.html',
+  styleUrls: ['./login.css'],
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
+    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatCardModule
-  ],
-  templateUrl: './login.html',
-  styleUrl: './login.css'
+  ]
 })
-export class Login {
+export class LoginComponent implements OnInit {
 
-  loginData={
-    username:'',
-    password:'',
-
+  public loginData: JwtRequest = {
+    username: '',
+    password: ''
   };
-  constructor(private snack:MatSnackBar, private login:LoginService){}
-   
 
-  ngOnInit(): void{}
+  constructor(
+    private snack: MatSnackBar,
+    private loginService: LoginService,
+    private router: Router
+  ) { }
 
-  formSubmit(){
-    console.log('login btn clicked');
+  ngOnInit(): void {
+  }
 
-    if(this.loginData.username.trim()=='' || this.loginData.username==null){
+  formSubmit() {
+    console.log("login btn clicked");
 
-      this.snack.open('Username is required !!','',{
-        duration:3000,
-      });
-      return;
-    }
-     if(this.loginData.password.trim()=='' || this.loginData.password==null){
-
-      this.snack.open('password is required !!','',{
-        duration:3000,
-      });
+    if (this.loginData.username.trim() === '') {
+      this.snack.open("Username is required !!", 'Ok', { duration: 3000 });
       return;
     }
 
-    //request server to generate token
-    this.login.generateToken(this.loginData).subscribe(
-      (data:any)=>{
+    if (this.loginData.password.trim() === '') {
+      this.snack.open("Password is required !!", 'Ok', { duration: 3000 });
+      return;
+    }
+
+    this.loginService.generateToken(this.loginData).subscribe({
+      next: (data: any) => {
         console.log("success");
         console.log(data);
 
-        //login...
+        this.loginService.setToken(data.jwtToken);
+        this.loginService.setUser(data.user);
 
-        this.login.loginUser(data.token);
-
-        this.login.getCurrentUser().subscribe(
-          (user:any)=>{
-            this.login.setUser(user);
-            console.log(user);
-            //redirect ADMIN..: admin-dashboard
-            //redirect USER..: user-dashboard
-            
+        this.snack.open("Login successful!", 'Ok', { duration: 3000 });
+        this.router.navigate(['/dashboard']);
+        
+        this.loginService.getCurrentUser().subscribe({
+          next: (user: User) => {
+            console.log("Current user details fetched (via /current-user endpoint):", user);
+          },
+          error: (error) => {
+            console.error("Error fetching current user details (via /current-user endpoint):", error);
+            this.snack.open("Error fetching user details!", 'Ok', { duration: 3000 });
           }
-        )
+        });
 
       },
-      (error)=>{
+      error: (error) => {
         console.log("Error!");
-        console.log(error);
-        
+        console.error(error);
+        this.snack.open("Invalid Credentials !! Try again", 'Ok', { duration: 3000 });
       }
-    )
-
+    });
   }
 }

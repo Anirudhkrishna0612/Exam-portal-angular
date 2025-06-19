@@ -1,121 +1,92 @@
+// src/app/pages/signup/signup.ts
+
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+// Angular Material Modules
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { UserService } from '../../user.service'; // Path now correct
-import { User } from '../../user.model';     // Path now correct
-import { HttpErrorResponse } from '@angular/common/http';
-import Swal from 'sweetalert2';
-import { MatCardModule } from '@angular/material/card';
+
+// **CRITICAL: Import User model from src/app/user.ts (as you confirmed)**
+import { User } from '../../user';
+
+// **CRITICAL: Import UserService from src/app/user.service.ts (as you confirmed)**
+import { UserService } from '../../user.service';
+
 
 @Component({
   selector: 'app-signup',
+  templateUrl: './signup.html',
+  styleUrls: ['./signup.css'],
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
+    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatCardModule
-  ],
-  templateUrl: './signup.html',
-  styleUrl: './signup.css'
+  ]
 })
 export class Signup implements OnInit {
 
+  // Initialize public user property with default empty string values.
+  // This aligns with the User interface defining username, password, etc., as 'string'.
   public user: User = {
     username: '',
-    password: '', // Initialize password as empty string to avoid undefined error during initialization
+    password: '',
     firstName: '',
     lastName: '',
     email: '',
-    phone: ''
+    phone: '',
+    profile: '' // profile is optional in User interface, but initializing as string for form binding.
   };
 
-  constructor(private snackBar: MatSnackBar, private userService: UserService) {
-    console.log('Signup Component Initialized');
-  }
+  constructor(
+    private snack: MatSnackBar,
+    private userService: UserService
+  ) { }
 
   ngOnInit(): void {
-    // Initialization logic
   }
 
-  formSubmit(): void {
-    console.log(this.user); // Log the user data for debugging
+  public formSubmit() {
+    console.log("Signup form submitted!");
+    console.log(this.user);
 
-    // Basic validation for username
-    if (this.user.username.trim() === '' || this.user.username === null) {
-      this.snackBar.open('Username is required !!', 'OK', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
+    // **CRITICAL FIX: Simplify validation checks.**
+    // Since 'username' and 'password' are now explicitly 'string' in the User interface,
+    // TypeScript knows they won't be 'null' or 'undefined' at this point.
+    // We only need to check for empty string after trimming.
+    if (this.user.username.trim() === '') {
+      this.snack.open("Username is required !!", 'Ok', { duration: 3000 });
       return;
     }
+    if (this.user.password.trim() === '') {
+      this.snack.open("Password is required !!", 'Ok', { duration: 3000 });
+      return;
+    }
+    // Add more validation for other fields as needed
 
-    // Basic validation for password
-    // ADDED CHECK: this.user.password && before .trim() to handle possible undefined/null
-    if (!this.user.password || this.user.password.trim() === '') {
-        this.snackBar.open('Password is required !!', 'OK', {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-        });
-        return;
-    }
-    if (!this.user.firstName || this.user.firstName.trim() === '') {
-        this.snackBar.open('Name is required !!', 'OK', {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-        });
-        return;
-    }
-    if (!this.user.email || this.user.email.trim() === '') {
-        this.snackBar.open('email is required !!', 'OK', {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-        });
-        return;
-    }
-    
-
-    this.userService.addUser(this.user).subscribe(
-      (data: any) => {
-        console.log(data);
-        // --- CHANGE START ---
-        // Replace MatSnackBar success message with SweetAlert
-        Swal.fire('Success', 'Registered successfully! User ID :'+ data.id, 'success').then((result) => {
-          // Optional: You can add actions after the SweetAlert closes, e.g., navigate
-          // if (result.isConfirmed) {
-          //   // Do something after user clicks OK
-          // }
-        });
-        // Clear the form fields after successful registration
+    this.userService.addUser(this.user).subscribe({
+      next: (data: User) => {
+        console.log("User signed up successfully:", data);
+        this.snack.open("Registration successful!", 'Ok', { duration: 3000 });
+        // Reset form after successful signup
         this.user = {
-          username: '',
-          password: '',
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: ''
+            username: '', password: '', firstName: '', lastName: '',
+            email: '', phone: '', profile: ''
         };
       },
-      (error: HttpErrorResponse) => {
-        console.error(error);
-        // You can add more specific error handling here based on error.status or error.error
-        this.snackBar.open('Something went wrong !!', 'Dismiss', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        });
+      error: (error) => {
+        console.error("Error during signup:", error);
+        this.snack.open("Something went wrong during registration !!", 'Ok', { duration: 3000 });
       }
-    );
+    });
   }
 }

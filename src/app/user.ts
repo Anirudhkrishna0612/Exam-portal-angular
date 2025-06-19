@@ -1,18 +1,14 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import baseUrl from './helper';
+// src/app/user.ts (This file defines your User data model interface)
 
-@Injectable({
-  providedIn: 'root'
-})
-export class User {
-
-  constructor(private http: HttpClient) { }
-
-  //add user
-
-  public addUser(user: any){
-    return this.http.post(`${baseUrl}/user/`,user);
-
-  }
+// Defines the structure of a User object in your application.
+// IMPORTANT: Ensure 'username' and 'password' are explicitly 'string' (not optional 'string?').
+export interface User {
+    id?: number;
+    username: string; // **CRITICAL: Defined as 'string', not 'string?'**
+    password: string; // **CRITICAL: Defined as 'string', not 'string?'**
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    profile?: string; // Optional, as it might genuinely be null/undefined initially or if not provided
 }

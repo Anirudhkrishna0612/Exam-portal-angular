@@ -1,11 +1,9 @@
-    // src/app/models/jwt-request.model.ts
+// src/app/pages/models/jwt-request.model.ts
 
-    /**
-     * Interface representing the structure of the JWT authentication request.
-     * This matches the JwtRequest DTO on your Spring Boot backend.
-     */
-    export interface JwtRequest {
-      username: string;
-      password?: string;
-    }
-    
+// This interface defines the structure of the data sent for JWT token generation.
+export interface JwtRequest {
+    // Declaring these as 'string' (not 'string?' or 'string | undefined')
+    // tells TypeScript that these properties will always exist and be of type string.
+    username: string; 
+    password: string;
+}
