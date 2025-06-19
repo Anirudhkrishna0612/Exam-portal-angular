@@ -62,6 +62,20 @@ export class Login {
         console.log("success");
         console.log(data);
 
+        //login...
+
+        this.login.loginUser(data.token);
+
+        this.login.getCurrentUser().subscribe(
+          (user:any)=>{
+            this.login.setUser(user);
+            console.log(user);
+            //redirect ADMIN..: admin-dashboard
+            //redirect USER..: user-dashboard
+            
+          }
+        )
+
       },
       (error)=>{
         console.log("Error!");

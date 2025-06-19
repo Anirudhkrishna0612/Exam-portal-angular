@@ -2,17 +2,22 @@
 
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-// CORRECTED PATH: Removed the extra 'app/'
-import { routes } from './app.routes'; // <--- THIS LINE IS CHANGED
+import { routes } from './app.routes';
+
+// **CRITICAL FIX: Corrected import path for auth.interceptor.ts**
+// It is now relative to app.config.ts, pointing into the 'pages' directory.
+import { AuthInterceptorProviders } from './pages/auth.interceptor'; // <--- THIS IS THE CHANGED LINE
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimations(),
-    importProvidersFrom(HttpClientModule, MatSnackBarModule)
+    provideHttpClient(withInterceptorsFromDi()), // Enable DI-based interceptors
+    AuthInterceptorProviders, // Provide your custom interceptor here
+    // importProvidersFrom(MatSnackBarModule), // Only if needed at root level as a provider
   ]
 };

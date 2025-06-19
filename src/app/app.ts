@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthInterceptorProviders } from './pages/auth.interceptor';
 
 
 // import { routes } from './app.routes'; // No longer directly imported here, but used in main.ts
@@ -32,6 +33,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatToolbarModule,
     MatIconModule
   ],
+  providers:[AuthInterceptorProviders],
+  
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
