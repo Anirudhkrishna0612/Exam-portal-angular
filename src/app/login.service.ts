@@ -4,12 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-
-import { User } from './user';
-                                    
-                                    
-import { JwtRequest } from './pages/models/jwt-request.model'; 
-
+import { User } from './user'; // Updated User model
+import { JwtRequest } from './pages/models/jwt-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +63,22 @@ export class LoginService {
       }
     }
     return null;
+  }
+
+  // **CRITICAL FIX: Update getUserRole() to correctly use 'authorities'**
+  public getUserRole(): string | null {
+    const user = this.getStoredUser();
+    // Check if user and authorities array exist and are not empty
+    if (user && user.authorities && user.authorities.length > 0) {
+      // Get the first authority object
+      const firstAuthority = user.authorities[0];
+      // Check if the 'authority' property exists and is a string
+      if (firstAuthority && typeof firstAuthority.authority === 'string') {
+        // Remove "ROLE_" prefix if it exists
+        return firstAuthority.authority.replace('ROLE_', '');
+      }
+    }
+    return null; // Return null if no user, no authorities, or authority string is missing/null
   }
 
   public logout() {

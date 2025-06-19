@@ -1,14 +1,23 @@
 // src/app/user.ts (This file defines your User data model interface)
 
-// Defines the structure of a User object in your application.
-// IMPORTANT: Ensure 'username' and 'password' are explicitly 'string' (not optional 'string?').
 export interface User {
     id?: number;
-    username: string; // **CRITICAL: Defined as 'string', not 'string?'**
-    password: string; // **CRITICAL: Defined as 'string', not 'string?'**
+    username: string;
+    password: string; // **CRITICAL FIX: Made password a mandatory 'string' for forms**
     firstName: string;
     lastName: string;
     email: string;
     phone: string;
-    profile?: string; // Optional, as it might genuinely be null/undefined initially or if not provided
+    profile?: string;
+    enabled?: boolean;
+
+    // **CRITICAL FIX: Ensure 'authorities' property is correctly defined**
+    // This now matches the "authorities": [ { "authority": "ROLE_ADMIN" } ] structure
+    // from your backend's JSON response (once backend is fixed for 'null').
+    authorities?: { authority: string | null }[];
+    
+    // Properties from Spring Security's UserDetails for convenience if needed on frontend
+    accountNonExpired?: boolean;
+    credentialsNonExpired?: boolean;
+    accountNonLocked?: boolean;
 }

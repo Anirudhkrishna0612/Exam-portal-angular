@@ -6,8 +6,7 @@ import { LoginService } from '../../login.service';
 import { Router } from '@angular/router';
 
 import { JwtRequest } from '../models/jwt-request.model';
-// **CRITICAL FIX: Correct User model path as per your clarification**
-import { User } from '../../user'; // Path from src/app/pages/login/login.ts to src/app/user.ts
+import { User } from '../../user'; // Confirmed path to User model
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -40,7 +39,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private snack: MatSnackBar,
-    private loginService: LoginService,
+    private loginService: LoginService, // The injected service instance
     private router: Router
   ) { }
 
@@ -48,6 +47,7 @@ export class LoginComponent implements OnInit {
   }
 
   formSubmit() {
+    console.log("DEBUG: formSubmit() method was triggered!");
     console.log("login btn clicked");
 
     if (this.loginData.username.trim() === '') {
@@ -66,20 +66,34 @@ export class LoginComponent implements OnInit {
         console.log(data);
 
         this.loginService.setToken(data.jwtToken);
+        // Ensure data.user contains the userRoles property from your backend response
         this.loginService.setUser(data.user);
 
         this.snack.open("Login successful!", 'Ok', { duration: 3000 });
-        this.router.navigate(['/dashboard']);
         
-        this.loginService.getCurrentUser().subscribe({
-          next: (user: User) => {
-            console.log("Current user details fetched (via /current-user endpoint):", user);
-          },
-          error: (error) => {
-            console.error("Error fetching current user details (via /current-user endpoint):", error);
-            this.snack.open("Error fetching user details!", 'Ok', { duration: 3000 });
-          }
-        });
+        // **CRITICAL FIX: Place role-based navigation here, after user data is set**
+        // Use the injected 'loginService' instance.
+        const userRole = this.loginService.getUserRole();
+        console.log("User Role for Navigation:", userRole); // Debug log for the role
+
+        if (userRole === "ADMIN") {
+            // Redirect to admin dashboard
+            this.router.navigate(['/admin']); // Use '/admin' as per your app.routes.ts
+            this.snack.open("Welcome Admin!", 'Ok', { duration: 2000 });
+        } else if (userRole === "NORMAL") {
+            // Redirect to normal user dashboard
+            this.router.navigate(['/user-dashboard']); // Use '/user-dashboard' as per your app.routes.ts
+            this.snack.open("Welcome User!", 'Ok', { duration: 2000 });
+        } else {
+            // Fallback if role is not recognized or missing
+            console.warn("Unknown user role or no role found. Logging out.");
+            this.loginService.logout(); // Use the logout method from loginService
+            this.router.navigate(['/login']); // Redirect back to login after logout
+            this.snack.open("Unknown user role, logged out.", 'Ok', { duration: 3000 });
+        }
+
+        // Removed the redundant this.loginService.getCurrentUser().subscribe(...)
+        // as user data (including roles) should ideally come from the initial login response.
 
       },
       error: (error) => {

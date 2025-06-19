@@ -11,10 +11,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-// **CRITICAL: Import User model from src/app/user.ts (as you confirmed)**
+// User model interface (src/app/user.ts)
 import { User } from '../../user';
 
-// **CRITICAL: Import UserService from src/app/user.service.ts (as you confirmed)**
+// UserService class (src/app/user.service.ts)
 import { UserService } from '../../user.service';
 
 
@@ -39,12 +39,14 @@ export class Signup implements OnInit {
   // This aligns with the User interface defining username, password, etc., as 'string'.
   public user: User = {
     username: '',
-    password: '',
+    password: '', // Now correctly initialized as string
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
-    profile: '' // profile is optional in User interface, but initializing as string for form binding.
+    profile: ''
+    // Authorities and other backend-specific properties are not initialized here
+    // as they are typically set by the backend after creation/login.
   };
 
   constructor(
@@ -59,15 +61,13 @@ export class Signup implements OnInit {
     console.log("Signup form submitted!");
     console.log(this.user);
 
-    // **CRITICAL FIX: Simplify validation checks.**
-    // Since 'username' and 'password' are now explicitly 'string' in the User interface,
-    // TypeScript knows they won't be 'null' or 'undefined' at this point.
-    // We only need to check for empty string after trimming.
+    // Now 'username' and 'password' are guaranteed to be strings by the User interface.
+    // The .trim() will not cause 'Object is possibly undefined' error.
     if (this.user.username.trim() === '') {
       this.snack.open("Username is required !!", 'Ok', { duration: 3000 });
       return;
     }
-    if (this.user.password.trim() === '') {
+    if (this.user.password.trim() === '') { // No longer possibly undefined
       this.snack.open("Password is required !!", 'Ok', { duration: 3000 });
       return;
     }
@@ -77,7 +77,6 @@ export class Signup implements OnInit {
       next: (data: User) => {
         console.log("User signed up successfully:", data);
         this.snack.open("Registration successful!", 'Ok', { duration: 3000 });
-        // Reset form after successful signup
         this.user = {
             username: '', password: '', firstName: '', lastName: '',
             email: '', phone: '', profile: ''
