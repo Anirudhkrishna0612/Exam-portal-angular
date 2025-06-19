@@ -8,8 +8,8 @@ import { Home } from './pages/home/home';
 import { NavbarComponent } from './components/navbar/navbar';
 import { UserDashboard } from './pages/user/user-dashboard/user-dashboard';
 
-// **CRITICAL FIX: Correct path for AdminGuard based on your screenshot**
-import { AdminGuard } from './pages/service/admin-guard'; // Path from src/app/ to src/app/pages/service/admin-guard.ts
+// **CRITICAL FIX: Import RoleGuard (from the file that was previously admin-guard.ts)**
+import { RoleGuard } from './pages/service/admin-guard'; // Import the renamed RoleGuard class
 
 // Assuming Dashboard component (for admin)
 import { Dashboard } from './pages/admin/dashboard/dashboard';
@@ -31,10 +31,13 @@ export const routes: Routes = [
     {
         path: 'admin',
         component: Dashboard,
-        canActivate: [AdminGuard], // Use the class name here
+        canActivate: [RoleGuard], // Use the generic RoleGuard
+        data: { requiredRole: 'ADMIN' } // **CRITICAL: Pass the required role for this route**
     },
     {
         path:'user-dashboard',
         component:UserDashboard,
+        canActivate: [RoleGuard], // Use the generic RoleGuard
+        data: { requiredRole: 'NORMAL' } // **CRITICAL: Pass the required role for this route**
     }
 ];
