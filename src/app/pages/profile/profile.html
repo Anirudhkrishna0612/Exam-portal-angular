@@ -1,18 +1,13 @@
 <!-- src/app/pages/profile/profile.html -->
 
 <mat-card class="profile-main-card">
-  <!-- Content now renders unconditionally, assuming guards protect it if user is null -->
   <h1>Your Profile</h1>
   <mat-card-content>
     <div class="bootstrap-wrapper">
       <div class="container">
         <!-- Profile picture and name section -->
         <div class="text-center profile-header-section">
-          <!-- Dynamically set profile image source -->
-          <img [src]=" 'https://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png'"
-               alt="Profile Picture"
-               class="pfpimg">
-          <!-- Use optional chaining (?.) for safety if user might be null initially -->
+          <img src="https://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png" alt="" class="pfpimg">
           <h2>{{ user?.firstName }} {{ user?.lastName }}</h2>
           <p>{{ user?.username }}</p>
         </div>
@@ -20,70 +15,51 @@
         <div class="row profile-details-row">
           <div class="col-md-10 offset-md-1">
             <h3 class="table-title">Account Details</h3>
-            <!-- Material Table for details -->
-            <div class="mat-elevation-z8 profile-table-container">
-              <!-- Use *ngIf on the table itself to hide if dataSource is empty -->
-              <table mat-table [dataSource]="dataSource" class="full-width-table" *ngIf="dataSource.length > 0">
-
-                <!-- ID Column -->
-                <ng-container matColumnDef="id">
-                  <th mat-header-cell *matHeaderCellDef> ID </th>
-                  <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-                </ng-container>
-
-                <!-- Username Column -->
-                <ng-container matColumnDef="username">
-                  <th mat-header-cell *matHeaderCellDef> Username </th>
-                  <td mat-cell *matCellDef="let row"> {{row.username}} </td>
-                </ng-container>
-
-                <!-- First Name Column -->
-                <ng-container matColumnDef="firstName">
-                  <th mat-header-cell *matHeaderCellDef> First Name </th>
-                  <td mat-cell *matCellDef="let row"> {{row.firstName}} </td>
-                </ng-container>
-
-                <!-- Last Name Column -->
-                <ng-container matColumnDef="lastName">
-                  <th mat-header-cell *matHeaderCellDef> Last Name </th>
-                  <td mat-cell *matCellDef="let row"> {{row.lastName}} </td>
-                </ng-container>
-
-                <!-- Email Column -->
-                <ng-container matColumnDef="email">
-                  <th mat-header-cell *matHeaderCellDef> Email </th>
-                  <td mat-cell *matCellDef="let row"> {{row.email}} </td>
-                </ng-container>
-
-                <!-- Phone Column -->
-                <ng-container matColumnDef="phone">
-                  <th mat-header-cell *matHeaderCellDef> Phone </th>
-                  <td mat-cell *matCellDef="let row"> {{row.phone}} </td>
-                </ng-container>
-
-                <!-- Enabled Status Column -->
-                <ng-container matColumnDef="enabled">
-                  <th mat-header-cell *matHeaderCellDef> Status </th>
-                  <td mat-cell *matCellDef="let row">
-                    <span [style.color]="row.enabled ? '#4CAF50' : '#F44336'">
-                      {{ row.enabled ? 'Active' : 'Disabled' }}
-                    </span>
-                  </td>
-                </ng-container>
-
-                <!-- Profile Image Name Column (shows filename, not image) -->
-                <ng-container matColumnDef="profile">
-                  <th mat-header-cell *matHeaderCellDef> Profile Image File </th>
-                  <td mat-cell *matCellDef="let row"> {{row.profile || 'N/A'}} </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              </table>
-              <!-- Message if no data is found (e.g., API failed or user doesn't exist) -->
-              <div *ngIf="dataSource.length === 0" class="no-data-message text-center">
-                User details could not be loaded.
-              </div>
+            <!-- **CRITICAL FIX: Use 'table' class here** -->
+            <table class="table details-table" *ngIf="user">
+              <tr>
+                <td><b>ID</b></td>
+                <td class="text-white">{{ user.id }}</td> <!-- Apply text-white if needed -->
+              </tr>
+              <tr>
+                <td><b>Username</b></td>
+                <td class="text-white">{{ user.username }}</td>
+              </tr>
+              <tr>
+                <td><b>First Name</b></td>
+                <td class="text-white">{{ user.firstName }}</td>
+              </tr>
+              <tr>
+                <td><b>Last Name</b></td>
+                <td class="text-white">{{ user.lastName }}</td>
+              </tr>
+              <tr>
+                <td><b>Email</b></td>
+                <td class="text-white">{{ user.email }}</td>
+              </tr>
+              <tr>
+                <td><b>Phone</b></td>
+                <td class="text-white">{{ user.phone }}</td>
+              </tr>
+              <tr>
+                <td><b>Status</b></td>
+                <td class="text-white">
+                  <span [style.color]="user.enabled ? '#4CAF50' : '#F44336'">
+                    {{ user.enabled ? 'Active' : 'Disabled' }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td><b>Profile Image File</b></td>
+                <td class="text-white">{{ user.profile || 'N/A' }}</td>
+              </tr>
+              <tr>
+                <td><b>Role</b></td>
+                <td class="text-white">{{ getRoleString(user.authorities) }}</td>
+              </tr>
+            </table>
+            <div *ngIf="!user" class="no-data-message text-center">
+              User details could not be loaded.
             </div>
           </div>
         </div>

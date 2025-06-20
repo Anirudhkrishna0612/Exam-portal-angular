@@ -1,39 +1,117 @@
+/* src/app/pages/profile/profile.css */
 
-
-
-.pfpimg{
-    max-width: 150px;
-    max-height: 150px;
+.profile-main-card {
+    margin: 20px auto;
+    max-width: 900px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.table{
+.profile-main-card h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+.profile-header-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* **Your pfpimg style** */
+.pfpimg {
+    max-width: 150px; /* Your specified size */
+    max-height: 150px; /* Your specified size */
+    border-radius: 50%; /* Keep it circular */
+    object-fit: cover;
+    margin: 0 auto 15px;
+    display: block;
+    border: 5px solid #F44336; /* Red border */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.profile-header-section h2 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-size: 2em;
+    color: #212121;
+}
+
+.profile-header-section p {
+    font-size: 1.2em;
+    color: #757575;
+}
+
+.profile-details-row {
+    margin-top: 20px;
+}
+
+.table-title {
+    font-size: 1.8em;
+    color: #212121;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* **CRITICAL FIX: Your original table styling** */
+.table {
     width: 100%;
-    background-color: #f44336;
-    border: 5px solid rgb(255, 255, 255);
+    background-color: #f44336; /* Your specified red background */
+    border: 5px solid rgb(255, 255, 255); /* Your specified white border */
     font-family: 'Roboto Mono', monospace;
     font-weight: 500; /* Semi-bold */
-    
+    border-collapse: collapse; /* Ensure borders are flush */
+    border-radius: 8px; /* Assuming you want rounded corners for the outer table */
+    overflow: hidden; /* Important for border-radius to apply */
 }
-.table tr td{
-    padding: 20px 50px;
-    border: 1px solid rgb(255, 255, 255);
+
+/* **CRITICAL FIX: Your original table cell styling** */
+.table tr td {
+    padding: 20px 50px; /* Your specified padding */
+    border: 1px solid rgb(255, 255, 255); /* Your specified white inner borders */
     font-family: 'Roboto Mono', monospace;
     font-weight: 500; /* Semi-bold */
+    color: white; /* Ensure text is white on red background */
+    text-align: center; /* Center align text in cells, typical for a data table like this */
 }
-.text-white{
+
+/* Style for the first column (labels) */
+.table tr td:first-child {
+    font-weight: bold; /* Make the labels bolder */
+    /* text-align: left; /* Optional: Align labels to the left if preferred */
+}
+
+
+/* **CRITICAL FIX: Your original text-white styling** */
+.text-white {
     color: white;
     font-size: 20px;
     font-family: 'Roboto Mono', monospace;
     font-weight: 500; /* Semi-bold */
 }
+
+.no-data-message {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.2em;
+    color: #757575;
+}
+
+/* **CRITICAL FIX: Your original card-buttons-center styling** */
 .card-buttons-center {
     display: flex;
     justify-content: center;
     gap: 15px; /* Increased gap slightly for larger buttons */
     padding: 20px; /* Slightly more padding for the container */
+    border-top: 1px solid #e0e0e0; /* Keep the separator from previous design */
 }
 
-/* Style to target the buttons inside .card-buttons-center */
+/* **CRITICAL FIX: Your original button styling inside card-buttons-center** */
 .card-buttons-center button {
     font-size: 1.4em; /* Make text slightly larger */
     padding: 12px 28px; /* Increase vertical and horizontal padding */
@@ -43,4 +121,35 @@
     border-radius: 8px; /* Slightly more rounded corners for larger buttons */
     font-weight: 500; /* Ensure semi-bold if you want it from your Roboto Mono */
     letter-spacing: 0.5px; /* Add a little letter spacing for better appearance */
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .profile-main-card {
+        padding: 15px;
+        margin: 15px;
+    }
+    .profile-details-row .col-md-10,
+    .profile-details-row .offset-md-1 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-left: 0;
+    }
+    /* Adjust table cells for smaller screens */
+    .table tr td {
+        padding: 10px 20px; /* Reduce padding on mobile */
+        font-size: 0.9em;
+    }
+    .table tr td:first-child {
+        width: 35%; /* Adjust label width for mobile */
+    }
+    .card-buttons-center {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .card-buttons-center button {
+        width: 80%;
+        margin: 0 auto;
+    }
 }
