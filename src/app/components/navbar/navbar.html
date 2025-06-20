@@ -1,36 +1,52 @@
 <mat-toolbar color="warn">
-  <a matIconButton class="whiteicon" [routerLink]="'/'" aria-label="Example icon-button with menu icon">
+  <a matIconButton class="whiteicon" [routerLink]="'/'" aria-label="Home icon">
     <mat-icon>view_agenda</mat-icon>
   </a>
   <span class="navbar-logo-text">Zenith Prove</span>
   <span class="example-spacer"></span>
-  <a 
-  *ngIf="!login.isLoggedIn()"
-  matIconButton 
-  class="whiteicon" 
-  aria-label="Login" 
-  [routerLink]="'/login'"
+
   
+  <a 
+    *ngIf="!(login.loggedInUser$ | async)"
+    matIconButton 
+    class="whiteicon" 
+    aria-label="Login" 
+    [routerLink]="'/login'"
   >
     <mat-icon>login</mat-icon>
   </a>
+
+  
    <a 
-   *ngIf="!login.isLoggedIn()"
-   matIconButton 
-   class="whiteicon" 
-   aria-label="Signup"  
-   [routerLink]="'/signup'"
+    *ngIf="!(login.loggedInUser$ | async)"
+    matIconButton 
+    class="whiteicon" 
+    aria-label="Signup"   
+    [routerLink]="'/signup'"
    >
     <mat-icon>assignment</mat-icon>
    </a>
-   <a 
-   (click)="logout()"
-   *ngIf="login.isLoggedIn()"
-   matIconButton 
-   class="whiteicon" 
-   aria-label="Signup"  
-   
-   >
-    <mat-icon>logout</mat-icon>
-   </a>
+
+  
+  <div *ngIf="login.loggedInUser$ | async as user" class="username-display-wrapper">
+    <!-- Username display link -->
+    <a 
+      matButton="filled" 
+      class="whiteicon user-display-name" 
+      aria-label="Logged in username" 
+      [routerLink]="getDashboardLink()" 
+    >
+      {{ user.username }} 
+    </a>
+
+    <!-- Logout button -->
+    <a 
+      (click)="logout()" 
+      matIconButton 
+      class="whiteicon logout-button" 
+      aria-label="Logout" 
+    >
+      <mat-icon>logout</mat-icon>
+    </a>
+  </div>
 </mat-toolbar>

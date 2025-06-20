@@ -1,14 +1,82 @@
-.example-spacer {
-  flex: 1 1 auto;
+/* src/app/components/navbar/navbar.css */
+
+/* Ensure mat-toolbar is a flex container for proper spacing */
+mat-toolbar {
+  display: flex;
+  align-items: center; /* Vertically align items in the center */
+  padding: 0 16px; /* Default horizontal padding, adjust as needed */
+  height: 64px; /* Standard toolbar height for consistency */
 }
+
+/* Styles for the main logo text (e.g., "Zenith Prove") */
 .navbar-logo-text {
-  font-family: 'Pacifico', cursive; /* Apply the font */
-  font-size: 28px; /* Adjust size to your preference */
-  /* Add other styles like color, font-weight, etc., if desired */
-  /* For instance, if your toolbar is dark, you might want white text: */
-  color: white;
-  margin-right: 20px; /* Example: add some space after the logo */
+  font-family: 'Pacifico', cursive !important; /* Force Pacifico font */
+  font-size: 28px !important; /* Force font size */
+  color: white; /* Keep color white */
+  margin-left: 8px; /* Space between logo icon and text */
+  white-space: nowrap; /* Prevent wrapping */
+  line-height: 1; /* Adjust line height if font appears cut off vertically */
 }
-.whiteicon{
-    color: white;
+
+/* Common style for white icons (e.g., view_agenda, login, assignment, logout) */
+.whiteicon {
+  color: white !important; /* Ensure icons are white */
+}
+
+/* Spacer to push elements to the right, common in toolbars */
+.example-spacer {
+  flex: 1 1 auto; /* Takes up all available space */
+}
+
+/* Wrapper for the logged-in username and its associated logout icon */
+.username-display-wrapper {
+  display: flex; /* Makes its children (username and logout icon) align horizontally */
+  align-items: center; /* Vertically centers children within this wrapper */
+
+  /* Spacing for the entire wrapper relative to elements on its left */
+  margin-right: 0px; /* Adjust this value to add space after the entire username/logout section */
+  
+  /* Padding around the wrapper, if desired */
+  padding: 0 8px; 
+}
+
+/* Apply font styles directly to the <a> tag displaying the username */
+.username-display-wrapper .user-display-name {
+  color: white !important; /* Ensure username text color is white */
+  text-decoration: none; /* Remove underline from link */
+
+  font-family: 'Righteous', cursive !important; /* Force Righteous font */
+  font-size: 18px !important; /* **CRITICAL: Increased font size for readability** */
+  font-weight: normal !important; /* Righteous is typically not bold, enforce normal weight */
+  line-height: 1; /* Ensure single line height */
+  white-space: nowrap; /* Prevent text from wrapping */
+
+  /* Add spacing to the right of the username text to separate it from the logout icon */
+  margin-right: 12px !important; /* **CRITICAL: Increased margin-right for more space** */
+
+  /* Adjust vertical padding to give more clickable area if desired */
+  padding: 20px 0px; /* Adjusted padding slightly for better appearance */
+  border-radius: 4px; /* Optional: Rounded corners if it looks like a button */
+  transition: background-color 0.2s ease;
+  background-color: #f44336; /* Optional: Hover effect */
+}
+
+
+.username-display-wrapper .user-display-name:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Optional hover effect */
+}
+
+/* Style for the logout button itself. Targeting mat-icon within it for precise control. */
+.username-display-wrapper .logout-button {
+  /* No specific styles needed here typically if matIconButton handles it */
+}
+
+/* **CRITICAL FIX: Ensure mat-icon within the logout button has proper sizing and alignment** */
+
+
+/* General style for mat-icon within mat-toolbar for consistent sizing */
+mat-toolbar mat-icon {
+  font-size: 24px; /* Standard icon size, adjust as needed */
+  width: 24px; /* Ensure width matches font-size */
+  height: 24px; /* Ensure height matches font-size */
 }
