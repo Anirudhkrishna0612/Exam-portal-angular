@@ -1,4 +1,46 @@
+
+
+
 .pfpimg{
     max-width: 150px;
     max-height: 150px;
+}
+
+.table{
+    width: 100%;
+    background-color: #f44336;
+    border: 5px solid rgb(255, 255, 255);
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500; /* Semi-bold */
+    
+}
+.table tr td{
+    padding: 20px 50px;
+    border: 1px solid rgb(255, 255, 255);
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500; /* Semi-bold */
+}
+.text-white{
+    color: white;
+    font-size: 20px;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500; /* Semi-bold */
+}
+.card-buttons-center {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Increased gap slightly for larger buttons */
+    padding: 20px; /* Slightly more padding for the container */
+}
+
+/* Style to target the buttons inside .card-buttons-center */
+.card-buttons-center button {
+    font-size: 1.4em; /* Make text slightly larger */
+    padding: 12px 28px; /* Increase vertical and horizontal padding */
+    min-width: 120px; /* Ensure a minimum width for the buttons */
+    height: auto; /* Allow height to adjust based on padding */
+    line-height: normal; /* Reset line-height if Material overrides it */
+    border-radius: 8px; /* Slightly more rounded corners for larger buttons */
+    font-weight: 500; /* Ensure semi-bold if you want it from your Roboto Mono */
+    letter-spacing: 0.5px; /* Add a little letter spacing for better appearance */
 }

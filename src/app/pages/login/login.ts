@@ -2,7 +2,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { LoginService } from '../../login.service';
+import { AuthService } from '../service/auth.service'; // Correct import path for AuthService
 import { Router } from '@angular/router';
 
 import { JwtRequest } from '../models/jwt-request.model';
@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private snack: MatSnackBar,
-    private loginService: LoginService, // The injected service instance
+    private authService: AuthService, // The injected service instance
     private router: Router
   ) { }
 
@@ -60,41 +60,33 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.loginService.generateToken(this.loginData).subscribe({
+    this.authService.generateToken(this.loginData).subscribe({
       next: (data: any) => {
         console.log("success");
         console.log(data);
 
-        this.loginService.setToken(data.jwtToken);
-        // Ensure data.user contains the userRoles property from your backend response
-        this.loginService.setUser(data.user);
+        // **CRITICAL FIX: REMOVE these lines. authService.generateToken handles storage internally.**
+        // this.authService.setToken(data.jwtToken); // Property 'setToken' does not exist on type 'AuthService'.
+        // this.authService.setUser(data.user); // Property 'setUser' does not exist on type 'AuthService'.
 
         this.snack.open("Login successful!", 'Ok', { duration: 3000 });
         
-        // **CRITICAL FIX: Place role-based navigation here, after user data is set**
-        // Use the injected 'loginService' instance.
-        const userRole = this.loginService.getUserRole();
-        console.log("User Role for Navigation:", userRole); // Debug log for the role
+        // **CRITICAL FIX: Use getUserRoles() (plural) instead of getUserRole()**
+        const userRoles = this.authService.getUserRoles(); // Correct method name
+        console.log("User Role for Navigation:", userRoles); // Debug log for the role
 
-        if (userRole === "ADMIN") {
-            // Redirect to admin dashboard
-            this.router.navigate(['/admin']); // Use '/admin' as per your app.routes.ts
+        if (userRoles.includes("ADMIN")) { // Check if the array includes "ADMIN"
+            this.router.navigate(['/admin']);
             this.snack.open("Welcome Admin!", 'Ok', { duration: 2000 });
-        } else if (userRole === "NORMAL") {
-            // Redirect to normal user dashboard
-            this.router.navigate(['/user-dashboard']); // Use '/user-dashboard' as per your app.routes.ts
+        } else if (userRoles.includes("NORMAL")) { // Check if the array includes "NORMAL"
+            this.router.navigate(['/user-dashboard']);
             this.snack.open("Welcome User!", 'Ok', { duration: 2000 });
         } else {
-            // Fallback if role is not recognized or missing
             console.warn("Unknown user role or no role found. Logging out.");
-            this.loginService.logout(); // Use the logout method from loginService
+            this.authService.logout(); // Use the logout method from authService
             this.router.navigate(['/login']); // Redirect back to login after logout
             this.snack.open("Unknown user role, logged out.", 'Ok', { duration: 3000 });
         }
-
-        // Removed the redundant this.loginService.getCurrentUser().subscribe(...)
-        // as user data (including roles) should ideally come from the initial login response.
-
       },
       error: (error) => {
         console.log("Error!");

@@ -1,11 +1,12 @@
-// src/app/service/auth.service.ts (Assuming this is its current location)
+// src/app/service/auth.service.ts
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-// **CRITICAL FIX: Corrected import paths based on auth.service.ts being in 'src/app/service/'**
-import { JwtRequest } from '../models/jwt-request.model'; // Corrected path
-import { JwtResponse } from '../models/jwt-response.model'; // Corrected path
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
+import { JwtRequest } from '../models/jwt-request.model';
+import { JwtResponse } from '../models/jwt-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,29 +15,86 @@ export class AuthService {
 
   private baseUrl = 'http://localhost:8060';
 
-  constructor(private http: HttpClient) { }
+  private currentUserSubject: BehaviorSubject<any | null>;
+  // Public observables for template use (async pipe)
+  public currentUser$: Observable<any | null>; // Observable for the user object
+  public loggedInStatus$: Observable<boolean>; // Observable for login status
+
+  constructor(private http: HttpClient) {
+    console.log('AUTH_SERVICE_DEBUG: AuthService constructor called.');
+    const storedUser = localStorage.getItem('user');
+    console.log('AUTH_SERVICE_DEBUG: Stored user from localStorage on init:', storedUser);
+    this.currentUserSubject = new BehaviorSubject<any | null>(storedUser ? JSON.parse(storedUser) : null);
+    console.log('AUTH_SERVICE_DEBUG: currentUserSubject initial value:', this.currentUserSubject.value);
+
+    // Assign the public observables here in the constructor
+    this.currentUser$ = this.currentUserSubject.asObservable();
+    this.loggedInStatus$ = this.currentUserSubject.asObservable().pipe(
+      map(user => user !== null),
+      tap(status => console.log('AUTH_SERVICE_DEBUG: loggedInStatus$ emitted:', status))
+    );
+
+    this.currentUserSubject.subscribe(user => {
+      console.log('AUTH_SERVICE_DEBUG: currentUserSubject value changed to:', user);
+    });
+  }
 
   generateToken(loginData: JwtRequest): Observable<JwtResponse> {
-    console.log('Sending login request:', loginData);
-    return this.http.post<JwtResponse>(`${this.baseUrl}/generate-token`, loginData);
+    console.log('AUTH_SERVICE_DEBUG: generateToken called for user:', loginData.username);
+    return this.http.post<JwtResponse>(`${this.baseUrl}/generate-token`, loginData).pipe(
+      tap(response => {
+        console.log('AUTH_SERVICE_DEBUG: generateToken - API response received:', response);
+        localStorage.setItem('user', JSON.stringify(response));
+        console.log('AUTH_SERVICE_DEBUG: generateToken - User data SAVED to localStorage.');
+        this.currentUserSubject.next(response);
+        console.log('AUTH_SERVICE_DEBUG: generateToken - currentUserSubject.next(response) called. New value:', this.currentUserSubject.value);
+      })
+    );
   }
 
-  loginUser(token: string): void {
-    localStorage.setItem('token', token);
-    console.log('Token stored in local storage.');
+  // This method now serves as a synchronous getter for the current user object
+  public getUser(): any | null {
+    const userValue = this.currentUserSubject.value;
+    console.log('AUTH_SERVICE_DEBUG: getUser() called. Returning:', userValue);
+    return userValue;
   }
 
-  isLoggedIn(): boolean {
-    const token = localStorage.getItem('token');
-    return !!token;
+  public getToken(): string | null {
+    const user = this.currentUserSubject.value;
+    const token = user ? user.jwtToken : null;
+    console.log('AUTH_SERVICE_DEBUG: getToken() called. Returning token:', token);
+    return token;
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
+  // **CRITICAL FIX: isLoggedIn() returns a synchronous boolean for guards and immediate checks**
+  public isLoggedIn(): boolean {
+    const loggedInStatus = this.currentUserSubject.value !== null;
+    console.log('AUTH_SERVICE_DEBUG: isLoggedIn() (synchronous) called. Returning:', loggedInStatus);
+    return loggedInStatus;
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    console.log('User logged out. Token removed from local storage.');
+    console.log('AUTH_SERVICE_DEBUG: logout() called.');
+    localStorage.removeItem('user');
+    console.log('AUTH_SERVICE_DEBUG: User data removed from localStorage.');
+    this.currentUserSubject.next(null);
+    console.log('AUTH_SERVICE_DEBUG: currentUserSubject.next(null) called. New value:', this.currentUserSubject.value);
+  }
+
+  public getUserRoles(): string[] {
+    const user = this.currentUserSubject.value;
+    let roles: string[] = [];
+    if (user && user.user && user.user.authorities) {
+      roles = user.user.authorities.map((auth: any) => auth.authority);
+    }
+    console.log('AUTH_SERVICE_DEBUG: getUserRoles() called. Returning:', roles);
+    return roles;
+  }
+
+  public hasRole(roleName: string): boolean {
+    const roles = this.getUserRoles();
+    const hasRoleStatus = roles.includes(roleName);
+    console.log(`AUTH_SERVICE_DEBUG: hasRole(${roleName}) called. Returning:`, hasRoleStatus);
+    return hasRoleStatus;
   }
 }

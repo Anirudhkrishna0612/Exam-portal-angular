@@ -1,41 +1,41 @@
-// src/app/pages/service/admin-guard.ts (Consider renaming this file to role.guard.ts for clarity)
+// src/app/pages/service/admin-guard.ts
 
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, Router } from '@angular/router';
+// **CRITICAL: Check and correct this path**
+// If admin-guard.ts is in src/app/pages/service/
+// and auth.service.ts is in src/app/service/
+// then the path should be: '../../service/auth.service'
+import { AuthService } from './auth.service'; // Adjust this path if necessary
 import { Observable } from 'rxjs';
-import { LoginService } from '../../login.service'; // Path to your LoginService
 
 @Injectable({
   providedIn: 'root'
 })
-// **CRITICAL FIX: Renamed AdminGuard to RoleGuard to reflect its generic purpose**
-export class RoleGuard implements CanActivate { // Renamed class
+export class RoleGuard implements CanActivate {
 
-  constructor(private loginService: LoginService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
-    // **CRITICAL FIX: Get the expected role from route.data**
-    const requiredRole = route.data['requiredRole'] as string; // 'ADMIN' or 'NORMAL'
-    
-    // 1. Check if user is logged in
-    if (!this.loginService.isLoggedIn()) {
-      console.warn(`RoleGuard: Not logged in. Attempted access to ${state.url}. Redirecting to login.`);
-      this.loginService.logout(); // Clear any partial state
-      return this.router.parseUrl('/login'); // Redirect to login page
+    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+
+    const requiredRole = route.data['requiredRole'] as string;
+
+    if (!this.authService.isLoggedIn()) { 
+      console.log('RoleGuard: User not logged in. Redirecting to login.');
+      this.router.navigate(['/login']);
+      return false;
     }
 
-    // 2. Check user role against the required role for this route
-    const userRole = this.loginService.getUserRole();
-    if (userRole === requiredRole) {
-      console.log(`RoleGuard: User has '${userRole}' role. Access granted to ${state.url}.`);
-      return true; // Allow access if user role matches required role
+    const hasRole = this.authService.hasRole(requiredRole);
+    if (hasRole) {
+      console.log(`RoleGuard: User has '${requiredRole}' role. Access granted to ${state.url}.`);
+      return true;
     } else {
-      console.warn(`RoleGuard: Unauthorized access to ${state.url}. User role: '${userRole}', Required role: '${requiredRole}'. Redirecting to login.`);
-      this.loginService.logout(); // Logout unauthorized users
-      return this.router.parseUrl('/login'); // Redirect to login page
+      console.warn(`RoleGuard: User does NOT have '${requiredRole}' role. Access denied to ${state.url}.`);
+      this.router.navigate(['/']);
+      return false;
     }
   }
 }

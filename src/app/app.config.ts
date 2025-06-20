@@ -2,22 +2,22 @@
 
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-
 import { routes } from './app.routes';
-
-// **CRITICAL FIX: Corrected import path for auth.interceptor.ts**
-// It is now relative to app.config.ts, pointing into the 'pages' directory.
-import { AuthInterceptorProviders } from './pages/auth.interceptor'; // <--- THIS IS THE CHANGED LINE
+import { provideClientHydration } from '@angular/platform-browser';
+import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http'; // Import withInterceptorsFromDi and HTTP_INTERCEPTORS
+import { AuthInterceptor } from './pages/auth.interceptor'; // **CRITICAL FIX: Import AuthInterceptor directly**
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideAnimations(),
-    provideHttpClient(withInterceptorsFromDi()), // Enable DI-based interceptors
-    AuthInterceptorProviders, // Provide your custom interceptor here
-    // importProvidersFrom(MatSnackBarModule), // Only if needed at root level as a provider
+    provideClientHydration(),
+    // **CRITICAL FIX: Use provideHttpClient with withInterceptorsFromDi()**
+    // And then provide your interceptor via the HTTP_INTERCEPTORS token
+    provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true, // Crucial for multiple interceptors
+    },
   ]
 };
