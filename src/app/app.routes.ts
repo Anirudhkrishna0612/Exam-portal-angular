@@ -13,6 +13,8 @@ import { RoleGuard } from './pages/service/admin-guard'; // Import the renamed R
 
 // Assuming Dashboard component (for admin)
 import { Dashboard } from './pages/admin/dashboard/dashboard';
+import { Welcome } from './pages/admin/welcome/welcome';
+import { ProfileComponent } from './pages/profile/profile';
 
 
 export const routes: Routes = [
@@ -31,8 +33,18 @@ export const routes: Routes = [
     {
         path: 'admin',
         component: Dashboard,
-        canActivate: [RoleGuard], // Use the generic RoleGuard
-        data: { requiredRole: 'ADMIN' } // **CRITICAL: Pass the required role for this route**
+        canActivate: [RoleGuard],
+        data: { requiredRole: 'ADMIN' },
+        children:[
+            {
+                path:'',
+                component: Welcome
+            },
+            {
+                path:'profile',
+                component: ProfileComponent
+            },
+        ] 
     },
     {
         path:'user-dashboard',

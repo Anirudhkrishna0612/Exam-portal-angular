@@ -1,0 +1,29 @@
+<!-- sidebar.html -->
+
+<mat-card>
+    <mat-action-list>
+        <div mat-subheader>Menu</div>
+        <button mat-list-item 
+            routerLink="/admin" 
+            (click)="onProfileClick()"> 
+            <mat-icon matListItemIcon>home</mat-icon>
+            Home
+        </button>
+        <button 
+            mat-list-item 
+            routerLink="/admin/profile" 
+            (click)="onProfileClick()"> 
+            <mat-icon matListItemIcon>person</mat-icon>
+            Profile
+        </button>
+        <button mat-list-item>
+            <mat-icon matListItemIcon>settings</mat-icon>
+            Settings
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-list-item>
+            <mat-icon matListItemIcon>logout</mat-icon>
+            Logout
+        </button>
+    </mat-action-list>
+</mat-card>
