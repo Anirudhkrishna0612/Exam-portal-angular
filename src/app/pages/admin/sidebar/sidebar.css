@@ -1,0 +1,114 @@
+/* src/app/components/sidebar/sidebar.css */
+
+.mt10 {
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+mat-action-list {
+    padding: 0;
+    /* Ensure the list itself can flex items if needed */
+    display: flex;
+    flex-direction: column;
+}
+
+.mat-subheader {
+    font-weight: bold;
+    font-size: 1.2em; /* Default subheader font size */
+    color: #333;
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+}
+
+mat-list-item {
+    font-size: 16px; /* Default list item font size */
+    font-weight: 500;
+    color: #424242;
+    padding: 0 16px;
+    height: 48px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    /* Ensure mat-list-item itself is a flex container for its content (icon and text) */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the start */
+}
+
+/* Hover effect for list items */
+mat-list-item:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #F44336;
+}
+
+/* Red Icons */
+.sidebar-icon {
+    color: #F44336 !important;
+    margin-right: 10px; /* Space between icon and text */
+    font-size: 24px;
+    min-width: 24px; /* Ensure icon doesn't shrink */
+    height: 24px;
+    vertical-align: middle;
+}
+
+/* Styles for active/selected list item (if you have routerLinkActive) */
+mat-list-item.mat-list-item-active {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: #F44336;
+    font-weight: bold;
+}
+
+/* Ensure font sizes for all list item text are consistent and don't overflow */
+mat-list-item .mat-list-item-content > span { /* Target the inner span where Angular puts the text */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflowing text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow */
+    flex-grow: 1; /* Allow text to grow and take available space */
+    min-width: 0; /* Important for flex-grow to work correctly with overflow */
+}
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+    mat-list-item {
+        font-size: 15px; /* Slight adjustment */
+        height: 44px; /* Slight adjustment */
+        padding: 0 10px; /* **CRITICAL: More aggressive padding reduction** */
+    }
+    .mat-subheader {
+        font-size: 1em;
+        padding: 12px 10px; /* Adjust padding for subheader too */
+    }
+    .sidebar-icon {
+        font-size: 22px; /* Slightly smaller icons */
+        min-width: 22px;
+        height: 22px;
+        margin-right: 8px; /* Slight reduction */
+    }
+}
+
+/* Additional adjustment for very small screens if needed */
+@media (max-width: 400px) {
+    mat-list-item {
+        font-size: 14px; /* Even smaller font for very small screens */
+        height: 40px; /* Reduce height further */
+        padding: 0 8px; /* **CRITICAL: Even more aggressive padding reduction** */
+    }
+    .mat-subheader {
+        font-size: 0.9em; /* Even smaller subheader */
+        padding: 10px 8px;
+    }
+    .sidebar-icon {
+        font-size: 20px; /* Smallest icons */
+        min-width: 20px;
+        height: 20px;
+        margin-right: 6px;
+    }
+}
+
+/* Potentially restrict max-width of the entire sidebar if it's too wide */
+/* This might be handled by the parent layout component (e.g., app.component.css)
+   but if the sidebar is standalone and you want to control its max width:
+.mat-card.mt10 {
+    max-width: 200px; // Example max-width, adjust as needed
+}
+*/

@@ -5,8 +5,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink, RouterModule } from '@angular/router';
-import { AuthService } from '../../pages/service/auth.service'; // Ensure this import path is correct
-import { CommonModule } from '@angular/common';
+import { AuthService } from '../../pages/service/auth.service'; 
+import { CommonModule } from '@angular/common'; 
 import { Observable } from 'rxjs';
 
 @Component({

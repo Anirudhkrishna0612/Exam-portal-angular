@@ -1,29 +1,36 @@
-<!-- sidebar.html -->
+<!-- src/app/components/sidebar/sidebar.html -->
 
-<mat-card>
+<mat-card class="mt10">
     <mat-action-list>
         <div mat-subheader>Menu</div>
-        <button mat-list-item 
-            routerLink="/admin" 
-            (click)="onProfileClick()"> 
-            <mat-icon matListItemIcon>home</mat-icon>
-            Home
+
+        <button mat-list-item routerLink="/admin/welcome">
+            <mat-icon class="sidebar-icon">home</mat-icon> Home
         </button>
-        <button 
-            mat-list-item 
-            routerLink="/admin/profile" 
-            (click)="onProfileClick()"> 
-            <mat-icon matListItemIcon>person</mat-icon>
-            Profile
+
+        <button mat-list-item routerLink="/admin/profile">
+            <mat-icon class="sidebar-icon">person</mat-icon> Profile
         </button>
-        <button mat-list-item>
-            <mat-icon matListItemIcon>category</mat-icon>
-            Categories
+
+        <!-- Categories link -->
+        <button mat-list-item routerLink="/admin/categories">
+            <mat-icon class="sidebar-icon">category</mat-icon> Categories
         </button>
+
+        <!-- **CRITICAL FIX: Shorter label for Add Categories** -->
+        <button mat-list-item routerLink="/admin/add-category"> <!-- Adjust routerLink if needed -->
+            <mat-icon class="sidebar-icon">add_box</mat-icon> New Cat
+        </button>
+
+        <!-- QuizZies link (if it's still being truncated, consider "Quizzes") -->
+        <button mat-list-item routerLink="/admin/quizzes"> <!-- Adjust routerLink if needed -->
+            <mat-icon class="sidebar-icon">quiz</mat-icon> Quizzes
+        </button>
+        
         <mat-divider></mat-divider>
-        <button mat-list-item>
-            <mat-icon matListItemIcon>logout</mat-icon>
-            Logout
+
+        <button mat-list-item (click)="logout()">
+            <mat-icon class="sidebar-icon">logout</mat-icon> Logout
         </button>
     </mat-action-list>
 </mat-card>
