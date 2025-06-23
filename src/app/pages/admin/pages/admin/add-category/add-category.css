@@ -4,20 +4,16 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  min-height: calc(100vh - 64px);
-  padding: 30px 20px;
+  min-height: 100%; /* Take full height of main-content */
+  padding: 0; /* Padding handled by parent .main-content */
   box-sizing: border-box;
-  background-color: #F8F8F8; /* Light neutral background */
 }
 
+/* The .add-category-card is also a .content-card, which has common styles from dashboard.css */
 .add-category-card {
-  width: 100%;
-  max-width: 500px;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  background-color: #ffffff; /* Keep card background white for contrast */
-  overflow: hidden;
-  padding: 20px 30px;
+  max-width: 500px; /* Specific max-width for category form */
+  margin: 0 auto; /* Center horizontally within its container */
+  /* padding, border-radius, box-shadow, background-color, color are from .content-card */
 }
 
 .mat-card-header {
@@ -25,22 +21,16 @@
   display: block;
 }
 
-.card-title {
-  font-size: 2.2em;
-  font-weight: 700;
-  color: #DC143C; /* Primary Red for title */
-  text-align: center;
-  margin-bottom: 15px;
-}
+/* card-title styling is now handled by .content-card .card-title in dashboard.css */
 
 .card-content {
-  padding: 0;
+  padding: 0; /* Remove default card content padding if not needed, handled by card inner padding */
 }
 
 .category-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 20px; /* Space between form fields */
 }
 
 .full-width {
@@ -48,16 +38,26 @@
 }
 
 .mat-form-field {
-  margin-bottom: 0 !important;
+  margin-bottom: 0 !important; /* Remove default margin to use gap for spacing */
 }
 
+/* Styling for input elements */
 .mat-input-element,
 textarea {
-  color: #333333; /* Dark text on light background */
+  color: #333333; /* Dark text on white background */
 }
 
 .mat-label {
-  color: #666666;
+  color: #666666; /* Dark gray for labels */
+}
+
+.mat-form-field-underline,
+.mat-form-field-ripple {
+  background-color: #3f51b5 !important; /* Material primary blue underline/ripple */
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #3f51b5 !important; /* Material primary blue label when focused */
 }
 
 .button-container {
@@ -70,8 +70,8 @@ textarea {
   padding: 10px 30px;
   font-size: 1.1em;
   border-radius: 8px;
-  background-image: linear-gradient(45deg, #DC143C, #CC0000); /* Red gradient */
-  color: #FFFFFF; /* White text on red button */
+  background-color: #3f51b5; /* Material primary blue */
+  color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
@@ -79,20 +79,12 @@ textarea {
 .mat-raised-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  background-image: linear-gradient(45deg, #CC0000, #AA0000); /* Slightly darker red on hover */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .add-category-card {
-    padding: 15px 20px;
+    padding: 15px;
   }
-
-  .card-title {
-    font-size: 1.8em;
-  }
-
-  .mat-raised-button {
-    width: 100%;
-  }
+  /* card-title styling is handled by .content-card .card-title in dashboard.css */
 }

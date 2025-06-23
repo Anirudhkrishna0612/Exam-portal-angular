@@ -3,43 +3,36 @@
 .categories-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align to top */
-  min-height: 100%; /* Take full height of content-wrapper */
-  padding: 20px;
+  align-items: flex-start;
+  min-height: 100%;
+  padding: 0; /* Padding handled by parent .content-wrapper */
   box-sizing: border-box;
 }
 
+/* The .categories-card is now also a .content-card, which has common styles */
 .categories-card {
-  width: 100%;
-  max-width: 1000px; /* Adjust max-width as needed for table */
-  padding: 20px 30px;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  background-color: #FFFFFF; /* White background for card */
-  color: #333333; /* Dark text */
+  max-width: 1000px;
+  margin: 0; /* Remove margin here */
+  /* background-color and box-shadow now inherited from .content-card */
+  padding: 20px 30px; /* Keep local padding for the card itself */
 }
 
+/* card-title styling is now handled by .content-card .card-title in dashboard.css */
+/* mat-card-header padding remains local if specific to this page */
 .mat-card-header {
   padding: 0 0 20px 0;
   display: block;
 }
 
-.card-title {
-  font-size: 2.2em;
-  font-weight: 700;
-  color: #DC143C; /* Primary Red for title */
-  text-align: center;
-  margin-bottom: 15px;
-}
 
 .add-button-container {
-  text-align: right; /* Align button to the right */
+  text-align: right;
   margin-bottom: 20px;
 }
 
 .add-button-container .mat-raised-button {
-  background-image: linear-gradient(45deg, #FFD700, #FFA500); /* Yellow-orange gradient */
-  color: #333333; /* Dark text on yellow button */
+  background-color: #3f51b5; /* Material primary color */
+  color: #FFFFFF;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   font-weight: 600;
@@ -50,26 +43,25 @@
 .add-button-container .mat-raised-button:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  background-image: linear-gradient(45deg, #FFA500, #FFC107); /* Slightly different yellow on hover */
 }
 
 .table-container {
-  overflow-x: auto; /* Enable horizontal scrolling for tables on small screens */
+  overflow-x: auto;
 }
 
 .full-width-table {
   width: 100%;
-  border-collapse: collapse; /* Ensure borders are clean */
+  border-collapse: collapse;
 }
 
 .mat-table {
-  background-color: transparent; /* Table background should be transparent to show card background */
-  box-shadow: none; /* Remove default table shadow */
+  background-color: transparent; /* Ensure table background is transparent to show card's white background */
+  box-shadow: none;
 }
 
 .mat-header-row {
-  background-color: #DC143C; /* Primary Red for header row */
-  color: #FFFFFF; /* White text for headers */
+  background-color: #3f51b5; /* Material primary color for header row */
+  color: #FFFFFF;
 }
 
 .mat-header-cell {
@@ -77,30 +69,30 @@
   color: #FFFFFF;
   font-size: 1em;
   padding: 15px 10px;
-  text-align: left; /* Align header text to left */
+  text-align: left;
 }
 
 .mat-row {
-  background-color: #FDFDFD; /* Slightly off-white for data rows */
-  border-bottom: 1px solid #EEEEEE; /* Light separator */
+  background-color: #FDFDFD; /* Light background for rows */
+  border-bottom: 1px solid #EEEEEE;
 }
 
 .mat-row:nth-child(even) {
-  background-color: #FAFAFA; /* Alternate row color for readability */
+  background-color: #FAFAFA;
 }
 
 .mat-cell {
   padding: 12px 10px;
-  color: #333333;
+  color: #333333; /* Dark text for cells */
 }
 
 .mat-icon-button {
-  color: #DC143C; /* Primary Red for edit button */
+  color: #3f51b5;
   transition: transform 0.2s ease-in-out;
 }
 
 .mat-icon-button[color="warn"] {
-  color: #FFD700; /* Accent Yellow for delete button */
+  color: #f44336;
 }
 
 .mat-icon-button:hover {
@@ -120,9 +112,7 @@
     padding: 15px;
   }
 
-  .card-title {
-    font-size: 1.8em;
-  }
+  /* card-title styling is now handled by .content-card .card-title in dashboard.css */
 
   .add-button-container {
     text-align: center;
@@ -130,15 +120,12 @@
   }
 
   .add-button-container .mat-raised-button {
-    width: 100%; /* Full width button on small screens */
+    width: 100%;
     margin-bottom: 10px;
   }
 
   .mat-header-cell, .mat-cell {
-    padding: 10px 5px; /* Smaller padding for cells */
+    padding: 10px 5px;
     font-size: 0.9em;
   }
-
-  /* Hide description column on very small screens if necessary */
-  /* This requires a responsive MatTable setup in TS */
 }

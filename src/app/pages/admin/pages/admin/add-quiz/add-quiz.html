@@ -1,57 +1,88 @@
 <!-- src/app/pages/admin/pages/admin/add-quiz/add-quiz.html -->
 
-<div class="bootstrap-wrapper">
-  <div class="container">
-    <mat-card>
-      <h1 class="text-center">Add New Quiz</h1>
-      <mat-divider></mat-divider>
-      <div class="row">
-        <div class="col-md-12">
-          <form (ngSubmit)="formSubmit()">
-            <mat-form-field class="w100" appearance="outline">
-              <mat-label>Quiz Title</mat-label>
-              <input [(ngModel)]="quizData.title" name="title" matInput placeholder="Enter here" required>
-            </mat-form-field>
+<div class="add-quiz-container">
+  <mat-card class="add-quiz-card content-card">
+    <mat-card-header class="text-center">
+      <mat-card-title class="card-title">Add New Quiz</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-content">
+      <form class="quiz-form" (ngSubmit)="formSubmit()">
+        <!-- Quiz Title -->
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Quiz Title</mat-label>
+          <!-- NOTE: 'quiz' property must be defined in your AddQuizComponent TS file -->
+          <input
+            type="text"
+            name="title"
+            required
+            [(ngModel)]="quiz.title"
+            matInput
+            placeholder="Enter Quiz Title"
+          />
+        </mat-form-field>
 
-            <mat-form-field class="w100" appearance="outline">
-              <mat-label>Quiz Description</mat-label>
-              <textarea [(ngModel)]="quizData.description" name="description" matInput placeholder="Enter here" rows="5"></textarea>
-            </mat-form-field>
+        <!-- Quiz Description -->
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Quiz Description</mat-label>
+          <!-- NOTE: 'quiz' property must be defined in your AddQuizComponent TS file -->
+          <textarea
+            name="description"
+            [(ngModel)]="quiz.description"
+            matInput
+            rows="5"
+            placeholder="Enter Quiz Description"
+          ></textarea>
+        </mat-form-field>
 
-            <div class="row">
-              <div class="col-md-6">
-                <mat-form-field class="w100" appearance="outline">
-                  <mat-label>Maximum Marks</mat-label>
-                  <input [(ngModel)]="quizData.maxMarks" name="maxMarks" type="number" matInput placeholder="Enter here">
-                </mat-form-field>
-              </div>
-              <div class="col-md-6">
-                <mat-form-field class="w100" appearance="outline">
-                  <mat-label>Number of Questions</mat-label>
-                  <input [(ngModel)]="quizData.numberOfQuestions" name="numberOfQuestions" type="number" matInput placeholder="Enter here">
-                </mat-form-field>
-              </div>
-            </div>
+        <!-- Max Marks & Number of Questions -->
+        <div class="row-fields">
+          <mat-form-field class="flex-field" appearance="outline">
+            <mat-label>Max Marks</mat-label>
+            <!-- NOTE: 'quiz' property must be defined in your AddQuizComponent TS file -->
+            <input
+              type="number"
+              name="maxMarks"
+              [(ngModel)]="quiz.maxMarks"
+              matInput
+              placeholder="Enter Max Marks"
+            />
+          </mat-form-field>
 
-            <mat-form-field class="w100" appearance="outline">
-              <mat-label>Category</mat-label>
-              <mat-select [(ngModel)]="quizData.category!.cid" name="category" required>
-                <mat-option *ngFor="let c of categories" [value]="c.cid">
-                  {{c.title}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-slide-toggle [(ngModel)]="quizData.active" name="active" class="mt-2">
-              Publish Status (Active)
-            </mat-slide-toggle>
-
-            <div class="container text-center">
-              <button mat-raised-button color="primary" type="submit">Add Quiz</button>
-            </div>
-          </form>
+          <mat-form-field class="flex-field" appearance="outline">
+            <mat-label>Number of Questions</mat-label>
+            <!-- NOTE: 'quiz' property must be defined in your AddQuizComponent TS file -->
+            <input
+              type="number"
+              name="numberOfQuestions"
+              [(ngModel)]="quiz.numberOfQuestions"
+              matInput
+              placeholder="Enter Number of Questions"
+            />
+          </mat-form-field>
         </div>
-      </div>
-    </mat-card>
-  </div>
+
+        <!-- Active Status Toggle -->
+        <!-- NOTE: 'quiz' property must be defined in your AddQuizComponent TS file. MatSlideToggleModule must be imported in TS. -->
+        <mat-slide-toggle name="active" [(ngModel)]="quiz.active" color="primary">
+          Publish Status (Active)
+        </mat-slide-toggle>
+
+        <!-- Category Dropdown -->
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Select Category</mat-label>
+          <!-- NOTE: 'quiz' and 'categories' properties must be defined in your AddQuizComponent TS file. MatSelectModule must be imported in TS. -->
+          <mat-select name="category" [(ngModel)]="quiz.category.cid">
+            <mat-option *ngFor="let c of categories" [value]="c.cid">
+              {{ c.title }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Add Quiz Button -->
+        <div class="button-container">
+          <button mat-raised-button color="primary" type="submit">Add Quiz</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

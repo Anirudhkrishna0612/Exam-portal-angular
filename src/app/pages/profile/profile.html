@@ -1,72 +1,59 @@
 <!-- src/app/pages/profile/profile.html -->
 
-<div class="bootstrap-wrapper">
-    <div class="container mt20" *ngIf="user">
-        <mat-card>
-            <div class="text-center">
-                <img src="https://placehold.co/150x150/673AB7/white?text=User" alt="Profile Image" class="profile-img">
-                <h1>{{ user.firstName }} {{ user.lastName }}</h1>
-                <p>Welcome to your profile!</p>
-            </div>
+<div class="profile-container">
+  <mat-card *ngIf="user" class="profile-card content-card">
+    <mat-card-header>
+      <div mat-card-avatar class="profile-avatar-wrapper">
+        <img mat-card-avatar [src]="profileImageUrl" alt="Profile Image" class="profile-avatar">
+      </div>
+      <mat-card-title>{{ user.firstName }} {{ user.lastName }}</mat-card-title>
+      <mat-card-subtitle>User Profile</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <mat-icon matListItemIcon>person</mat-icon>
+          <span matListItemTitle>Username:</span>
+          <span matListItemLine>{{ user.username }}</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
 
-            <!-- User Details List -->
-            <mat-list>
-                <mat-list-item>
-                    <mat-icon matListItemIcon>account_circle</mat-icon>
-                    <span matListItemTitle>Username:</span>
-                    <span matListItemLine>{{ user.username }}</span>
-                </mat-list-item>
-                <mat-divider></mat-divider>
+        <mat-list-item>
+          <mat-icon matListItemIcon>email</mat-icon>
+          <span matListItemTitle>Email:</span>
+          <span matListItemLine>{{ user.email }}</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
 
-                <mat-list-item>
-                    <mat-icon matListItemIcon>badge</mat-icon>
-                    <span matListItemTitle>User ID:</span>
-                    <span matListItemLine>{{ user.id }}</span>
-                </mat-list-item>
-                <mat-divider></mat-divider>
+        <mat-list-item>
+          <mat-icon matListItemIcon>call</mat-icon>
+          <span matListItemTitle>Phone:</span>
+          <span matListItemLine>{{ user.phone }}</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
 
-                <mat-list-item>
-                    <mat-icon matListItemIcon>email</mat-icon>
-                    <span matListItemTitle>Email:</span>
-                    <span matListItemLine>{{ user.email }}</span>
-                </mat-list-item>
-                <mat-divider></mat-divider>
+        <mat-list-item>
+          <mat-icon matListItemIcon>work</mat-icon>
+          <span matListItemTitle>Role:</span>
+          <span matListItemLine>{{ user.authorities && user.authorities.length > 0 ? user.authorities[0].authority : 'N/A' }}</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
 
-                <mat-list-item>
-                    <mat-icon matListItemIcon>call</mat-icon>
-                    <span matListItemTitle>Phone:</span>
-                    <span matListItemLine>{{ user.phone }}</span>
-                </mat-list-item>
-                <mat-divider></mat-divider>
+        <mat-list-item>
+          <mat-icon matListItemIcon>check_circle_outline</mat-icon>
+          <span matListItemTitle>Status:</span>
+          <span matListItemLine>{{ user.enabled ? 'Active' : 'Disabled' }}</span>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions class="profile-actions">
+      <button mat-raised-button color="primary">Update Profile</button>
+    </mat-card-actions>
+  </mat-card>
 
-                <mat-list-item>
-                    <mat-icon matListItemIcon>check_circle</mat-icon>
-                    <span matListItemTitle>Status:</span>
-                    <span matListItemLine>{{ user.enabled ? 'Active' : 'Inactive' }}</span>
-                </mat-list-item>
-                <mat-divider></mat-divider>
-
-                <mat-list-item>
-                    <mat-icon matListItemIcon>verified_user</mat-icon>
-                    <span matListItemTitle>Roles:</span>
-                    <span matListItemLine *ngIf="user.authorities && user.authorities.length > 0">
-                        <span *ngFor="let auth of user.authorities; last as isLast">
-                            {{ auth.authority }}<span *ngIf="!isLast">, </span>
-                        </span>
-                    </span>
-                    <span matListItemLine *ngIf="!user.authorities || user.authorities.length === 0">No roles assigned</span>
-                </mat-list-item>
-            </mat-list>
-
-            <div class="text-center mt20">
-                <button mat-raised-button color="primary">Update Profile</button>
-                <button mat-raised-button color="warn" class="ml10">Change Password</button>
-            </div>
-        </mat-card>
-    </div>
-    <div class="container mt20" *ngIf="!user">
-        <mat-card>
-            <p class="text-center">Loading user data or user not found...</p>
-        </mat-card>
-    </div>
+  <mat-card *ngIf="!user" class="profile-card no-user-card content-card">
+    <mat-card-content>
+      <p>User data not available. Please log in.</p>
+    </mat-card-content>
+  </mat-card>
 </div>

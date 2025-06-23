@@ -4,20 +4,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%; /* Take full height of content-wrapper */
-  padding: 20px;
+  height: 100%; /* Take full height of main-content */
+  width: 100%;
+  padding: 0; /* Padding handled by parent .main-content */
   box-sizing: border-box;
 }
 
+/* The .welcome-card is also a .content-card, which has common styles from dashboard.css */
 .welcome-card {
-  width: 100%;
-  max-width: 700px;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  background-color: #FFFFFF; /* White background for card */
-  color: #333333; /* Dark text on light background */
-  text-align: center;
+  max-width: 700px; /* Max width for welcome card */
+  margin: 0 auto; /* Center horizontally within its container */
+  /* padding, border-radius, box-shadow, background-color, color are from .content-card */
 }
 
 .welcome-header {
@@ -27,7 +24,7 @@
 .welcome-title {
   font-size: 2.8em;
   font-weight: 800;
-  color: #DC143C; /* Primary Red for title */
+  color: #3f51b5; /* Material primary blue */
   margin-bottom: 10px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -49,14 +46,14 @@
   height: 200px;
   object-fit: cover;
   border-radius: 50%;
-  border: 5px solid #FFD700; /* Accent Yellow border */
+  border: 5px solid #3f51b5; /* Material primary blue border */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .welcome-card {
-    padding: 20px;
+    padding: 15px;
   }
 
   .welcome-title {

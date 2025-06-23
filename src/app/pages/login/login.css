@@ -1,31 +1,31 @@
 /* src/app/pages/login/login.css */
 
-.login-wrapper {
+.login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 64px); /* Adjusted for navbar height */
-  background-color: #F8F8F8; /* Light neutral background for the entire page */
+  background-color: #2C2C2C; /* Deep Charcoal background for the entire page */
   padding: 20px;
   box-sizing: border-box;
 }
 
 .login-card {
   width: 100%;
-  max-width: 450px; /* Slightly wider card */
-  padding: 0; /* Remove padding from card itself, handle inside */
+  max-width: 450px;
+  padding: 0;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Lighter shadow for light background */
-  background-color: #FFFFFF; /* White card background */
-  color: #333333; /* Dark text on light background */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  background-color: #3A3A3A; /* Slightly lighter charcoal for the card */
+  color: #FFFFFF; /* White text on dark background */
   text-align: center;
-  overflow: hidden; /* Ensure content respects border-radius */
+  overflow: hidden;
 }
 
 .login-card-header {
   position: relative;
-  height: 100px; /* Height for the header section */
-  background-color: #DC143C; /* Primary Red for the top header section */
+  height: 100px;
+  background-color: #5C5C5C; /* Darker grey for the top header section */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,7 +33,7 @@
 }
 
 .login-circle {
-  background-color: #FFD700; /* Accent Yellow circle */
+  background-color: #7B1FA2; /* Purple from your original screenshots */
   border-radius: 50%;
   width: 100px;
   height: 100px;
@@ -41,28 +41,28 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 50px; /* Position it overlapping the card body */
+  top: 50px;
   left: 50%;
   transform: translateX(-50%);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  z-index: 1; /* Ensure it's above other content */
+  z-index: 1;
 }
 
 .login-header-text {
-  color: #DC143C; /* Red text on yellow circle */
+  color: #FFFFFF; /* White text on dark circle */
   font-size: 1.8em;
   font-weight: 700;
 }
 
 .login-card-content {
-  padding: 70px 30px 30px 30px; /* Adjust top padding to account for the overlapping circle */
+  padding: 70px 30px 30px 30px;
 }
 
 .login-title {
   font-size: 2.2em;
   font-weight: 700;
   margin-bottom: 25px;
-  color: #DC143C; /* Primary Red for the main title */
+  color: #8C6FEE; /* Blueish-purple for the title */
 }
 
 .full-width {
@@ -73,93 +73,82 @@
   margin-bottom: 15px;
 }
 
-/* Styling for input fields within MatFormField */
 .mat-form-field-appearance-outline .mat-form-field-outline {
-  /* No background here, just outline */
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .mat-form-field-label {
-  color: #666666 !important; /* Dark gray for labels */
+  color: #BBBBBB !important;
 }
 
 .mat-input-element {
-  color: #333333 !important; /* Dark text input */
+  color: #FFFFFF !important;
+  caret-color: #8C6FEE;
 }
 
 .mat-form-field-underline,
 .mat-form-field-ripple {
-  background-color: #DC143C !important; /* Red underline/ripple */
+  background-color: #7B1FA2 !important;
 }
 
 .mat-form-field.mat-focused .mat-form-field-label {
-  color: #DC143C !important; /* Red label when focused */
+  color: #8C6FEE !important;
 }
 
 .mat-form-field-suffix .mat-icon-button,
 .mat-form-field-suffix .mat-icon {
-  color: #666666; /* Dark gray for suffix icons */
+  color: #BBBBBB;
 }
 
 .button-group {
   display: flex;
-  justify-content: space-around; /* Distribute buttons */
-  gap: 15px; /* Space between buttons */
+  justify-content: space-around;
+  gap: 15px;
   margin-top: 30px;
 }
 
 .login-button,
 .register-button {
-  flex: 1; /* Make buttons take equal width */
+  flex: 1;
   padding: 12px 0;
   font-size: 1.1em;
   font-weight: 600;
   border-radius: 8px;
-  color: #333333; /* Dark text on yellow buttons */
+  color: #FFFFFF;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
 }
 
 .login-button {
-  background-image: linear-gradient(45deg, #FFD700, #FFA500); /* Yellow-orange gradient */
+  background-color: #3A7F7C; /* Greenish-blue */
 }
 
 .login-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  background-image: linear-gradient(45deg, #FFA500, #FFC107); /* Slightly darker yellow on hover */
+  background-color: #316866;
 }
 
 .register-button {
-  background-image: linear-gradient(45deg, #FFD700, #FFA500); /* Yellow-orange gradient */
+  background-color: #3A7F7C; /* Greenish-blue */
 }
 
 .register-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  background-image: linear-gradient(45deg, #FFA500, #FFC107); /* Slightly darker yellow on hover */
+  background-color: #316866;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .login-card {
-    padding: 0; /* Handled by inner content */
-    margin: 15px; /* Add margin on very small screens */
-  }
+/* Snackbar customization */
+.mat-snack-bar-container.red-yellow-snackbar {
+  background-color: #7B1FA2;
+  color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
-  .login-card-content {
-    padding: 70px 20px 20px 20px;
-  }
-
-  .login-title {
-    font-size: 2em;
-  }
-
-  .button-group {
-    flex-direction: column; /* Stack buttons vertically on small screens */
-  }
-
-  .login-button,
-  .register-button {
-    width: 100%;
-  }
+.red-yellow-snackbar button.mat-button {
+  color: #FFD700;
 }

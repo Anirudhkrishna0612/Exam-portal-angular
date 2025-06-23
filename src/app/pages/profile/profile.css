@@ -1,12 +1,19 @@
 /* src/app/pages/profile/profile.css */
 
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align to top, cards float in center */
+  min-height: 100%; /* Take full height of main-content */
+  padding: 0; /* Padding handled by parent .main-content */
+  box-sizing: border-box;
+}
+
+/* The .profile-card class is also a .content-card, which has common styles from dashboard.css */
 .profile-card {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #FFFFFF; /* Light neutral background */
+  max-width: 600px; /* Max width for profile card */
+  margin: 0 auto; /* Center horizontally within its container */
+  /* padding, border-radius, box-shadow, background-color, color are from .content-card */
 }
 
 .profile-avatar-wrapper {
@@ -20,7 +27,7 @@
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #DC143C; /* Primary Red border */
+  border: 3px solid #3f51b5; /* Material primary blue border */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -33,11 +40,11 @@
 .mat-card-title {
   font-size: 1.8em;
   font-weight: 600;
-  color: #333333; /* Dark text on light background */
+  color: #333; /* Dark text on white card */
 }
 
 .mat-card-subtitle {
-  color: #777777;
+  color: #777;
   font-size: 1em;
 }
 
@@ -49,25 +56,25 @@
 
 .mat-list-item .mat-icon {
   margin-right: 15px;
-  color: #DC143C; /* Primary Red for icons */
+  color: #3f51b5; /* Material primary blue for icons */
 }
 
 .mat-list-item .mat-list-item-title {
   font-weight: 500;
-  color: #555555;
+  color: #555;
   width: 80px;
   flex-shrink: 0;
 }
 
 .mat-list-item .mat-list-item-line {
-  color: #333333;
+  color: #333;
   flex-grow: 1;
   word-break: break-all;
 }
 
 .mat-divider {
   margin: 10px 0;
-  border-top-color: #EEEEEE;
+  border-top-color: #eee;
 }
 
 .profile-actions {
@@ -80,8 +87,8 @@
   padding: 10px 30px;
   font-size: 1.1em;
   border-radius: 8px;
-  background-image: linear-gradient(45deg, #DC143C, #CC0000); /* Red gradient */
-  color: #FFFFFF; /* White text on red button */
+  background-color: #3f51b5; /* Material primary blue */
+  color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
@@ -89,11 +96,16 @@
 .mat-raised-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  background-image: linear-gradient(45deg, #CC0000, #AA0000); /* Slightly darker red on hover */
 }
 
 .no-user-card {
   text-align: center;
-  color: #DC143C; /* Primary Red for error text */
-  font-size: 1.2em;
+  color: #f44336; /* Material warn color for error text */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-card {
+    padding: 15px;
+  }
 }

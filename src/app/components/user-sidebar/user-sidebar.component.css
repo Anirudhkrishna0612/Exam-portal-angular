@@ -1,78 +1,25 @@
 /* src/app/pages/user/user-dashboard/user-sidebar/user-sidebar.component.css */
 
+/* This CSS should be identical to admin sidebar CSS for consistency */
 .sidebar-card {
-  background-color: #3A3A3A; /* Slightly lighter charcoal for sidebar background */
-  box-shadow: none; /* Remove default card shadow as container handles it */
-  border-radius: 0; /* Remove card border radius if it's part of a full-height sidebar */
-  height: 100%; /* Ensure it fills parent height */
-  padding: 20px 0; /* Padding inside the card */
+  background-color: #3A3A3A; /* Matches sidebar-width background from dashboard.css */
+  box-shadow: none;
+  border-radius: 0;
+  height: 100%;
+  padding: 0;
   box-sizing: border-box;
 }
 
 .mat-list {
-  background-color: transparent; /* Ensure list background is transparent */
+  background-color: transparent;
+  padding: 0;
 }
 
-.mat-list-item {
-  color: #FFFFFF; /* White text for default list items */
-  padding: 15px 20px;
-  font-size: 1em;
-  font-weight: 500;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  border-radius: 8px; /* Slightly rounded corners for list items */
-  margin: 5px 10px; /* Margin to make them float in the sidebar */
-  width: calc(100% - 20px); /* Adjust width for margin */
-  box-sizing: border-box;
-}
+/* Mat-list-item styles are commonly defined in dashboard.css for both sidebars. */
 
-.mat-list-item:hover {
-  background-color: rgba(255, 255, 255, 0.1); /* Subtle white overlay on hover */
-  color: #FFD700; /* Accent Yellow on hover */
-}
-
-.mat-list-item .mat-icon {
-  margin-right: 15px;
-  color: #FFD700; /* Accent Yellow for sidebar icons */
-}
-
-/* Style for the active (selected) sidebar item */
-.mat-list-item.active-list-item {
-  background-color: #FFD700; /* Accent Yellow for active background */
-  color: #333333; /* Dark text on active yellow background */
-  font-weight: 600;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.mat-list-item.active-list-item .mat-icon {
-  color: #DC143C; /* Primary Red icon on active yellow background */
-}
-
-.mat-divider {
-  border-top-color: rgba(255, 255, 255, 0.1); /* Light divider for dark background */
-  margin: 5px 0;
-}
-
-/* Responsive adjustments (mirroring admin dashboard) */
 @media (max-width: 768px) {
   .sidebar-card {
     height: auto;
-    padding: 0; /* No padding on card itself when full width */
-  }
-
-  .mat-list-item {
-    margin: 5px 0;
-    width: 100%;
-    border-radius: 0;
-    text-align: center;
-  }
-
-  .mat-list-item .mat-icon {
-    margin-right: 0;
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  .mat-list-item span {
-    display: block;
+    padding: 0;
   }
 }

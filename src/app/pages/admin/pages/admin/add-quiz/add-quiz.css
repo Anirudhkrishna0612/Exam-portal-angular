@@ -1,76 +1,137 @@
-/* src/app/pages/admin/add-quiz/add-quiz.css */
+/* src/app/pages/admin/pages/admin/add-quiz/add-quiz.css */
 
-mat-card {
-    margin: 20px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+.add-quiz-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align to the top of the container */
+  min-height: 100%; /* Take full height of main-content */
+  padding: 0; /* Padding handled by parent .main-content */
+  box-sizing: border-box;
 }
 
-h1 {
-    color: #3F51B5; /* Primary color */
-    font-family: 'Righteous', cursive;
-    margin-bottom: 15px;
-    font-size: 2em;
+/* The .add-quiz-card is also a .content-card, which has common styles from dashboard.css */
+.add-quiz-card {
+  max-width: 650px; /* Max width for quiz form */
+  margin: 0 auto; /* Center horizontally within its container */
+  /* padding, border-radius, box-shadow, background-color, color are from .content-card */
 }
 
-mat-divider {
-    margin: 15px 0;
-    border-top-color: #e0e0e0;
+.mat-card-header {
+  padding: 0 0 20px 0;
+  display: block;
+}
+
+/* card-title styling is now handled by .content-card .card-title in dashboard.css */
+
+.quiz-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between form fields */
 }
 
 .full-width {
-    width: 100%;
+  width: 100%;
 }
 
-.text-center {
-    text-align: center;
+.row-fields {
+  display: flex;
+  gap: 20px;
+  width: 100%;
 }
 
-.mt20 {
-    margin-top: 20px !important;
+.flex-field {
+  flex: 1; /* Make fields take equal width in a row */
 }
 
-.mb20 {
-    margin-bottom: 20px !important;
+.mat-form-field {
+  margin-bottom: 0 !important; /* Remove default margin to use gap for spacing */
 }
 
-.ml10 {
-    margin-left: 10px !important;
+/* Styling for input elements */
+.mat-input-element,
+textarea {
+  color: #333333; /* Dark text on white background */
 }
 
-/* Row and column styles for responsive layout, if Bootstrap is not used */
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: -15px; /* Compensate for column padding */
-    margin-right: -15px; /* Compensate for column padding */
+.mat-label {
+  color: #666666; /* Dark gray for labels */
 }
 
-.col-md-6 {
-    flex: 0 0 50%;
-    max-width: 50%;
-    padding-left: 15px;
-    padding-right: 15px;
-    box-sizing: border-box; /* Include padding in width calculation */
+.mat-form-field-underline,
+.mat-form-field-ripple {
+  background-color: #3f51b5 !important; /* Material primary blue underline/ripple */
 }
 
-/* Responsive adjustment for smaller screens */
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #3f51b5 !important; /* Material primary blue label when focused */
+}
+
+/* MatSlideToggle styling */
+mat-slide-toggle {
+  margin-top: 10px;
+  color: #333333; /* Dark text for toggle label */
+}
+
+/* MatSelect styling */
+.mat-select-value {
+  color: #333333; /* Dark text for selected value */
+}
+
+.mat-select-arrow {
+  color: #666666; /* Dark gray for arrow */
+}
+
+.mat-option {
+  color: #333333; /* Dark text for options */
+}
+
+.mat-option.mat-selected:not(.mat-option-multiple) {
+  background-color: rgba(63, 81, 181, 0.1);
+  color: #3f51b5;
+}
+
+.mat-option.mat-active {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.mat-raised-button {
+  padding: 10px 30px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  background-color: #3f51b5; /* Material primary blue */
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.mat-raised-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .col-md-6 {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-}
+  .add-quiz-card {
+    padding: 15px;
+  }
 
+  .row-fields {
+    flex-direction: column;
+    gap: 0;
+  }
 
-/* Custom snackbar styles for success and error messages */
-.success-snackbar {
-    background-color: #4CAF50 !important; /* Green */
-    color: white !important;
-}
+  .flex-field {
+    width: 100%;
+  }
 
-.error-snackbar {
-    background-color: #F44336 !important; /* Red */
-    color: white !important;
+  .mat-form-field {
+    margin-bottom: 15px;
+  }
 }
