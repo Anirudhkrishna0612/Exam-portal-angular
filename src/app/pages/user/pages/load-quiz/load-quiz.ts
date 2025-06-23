@@ -8,12 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import Swal from 'sweetalert2';
 
-// Corrected import paths for services (should already be correct)
 import { QuizService } from '../../../../service/quiz.service';
 import { CategoryService } from '../../../../service/category.service';
-// FIX: Changed Quiz and Category model imports to a standard 'src/app/models' path
-import { Quiz } from '../../../../quiz';
-import { Category } from '../../../../category';
+// FIX: Changed Quiz and Category model imports to standard 'src/app/models' path
+import { Quiz } from '../../../../quiz'; // Assuming Quiz model is in src/app/models/quiz.ts
+import { Category } from '../../../../category'; // Assuming Category model is in src/app/models/category.ts
 
 @Component({
   selector: 'app-load-quiz',
@@ -46,11 +45,8 @@ export class LoadQuizComponent implements OnInit {
       if (catIdParam) {
         this.catId = +catIdParam;
       } else {
-        // If no category ID is provided, load all active quizzes
-        this.catId = 0; // Set to 0 to indicate all quizzes
-        // this.snack.open('Loading all available quizzes.', 'Dismiss', { duration: 3000 }); // Optional message
+        this.catId = 0;
       }
-
       this.loadQuizzes();
     });
   }
