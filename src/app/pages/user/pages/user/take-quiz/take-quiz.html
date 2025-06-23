@@ -27,25 +27,27 @@
                                     </div>
                                 </mat-list-item>
                                 <mat-list-item>
+                                    <!-- FIX: Removed optional chaining here -->
                                     <p class="question-content">
-                                        {{ questions[currentQuestionIndex]?.content }}
+                                        {{ questions[currentQuestionIndex].content }}
                                     </p>
                                 </mat-list-item>
 
                                 <mat-list-item>
                                     <mat-radio-group
                                         [(ngModel)]="questions[currentQuestionIndex].givenAnswer">
-                                        <mat-radio-button [value]="questions[currentQuestionIndex]?.option1">
-                                            {{ questions[currentQuestionIndex]?.option1 }}
+                                        <!-- FIX: Removed optional chaining here -->
+                                        <mat-radio-button [value]="questions[currentQuestionIndex].option1">
+                                            {{ questions[currentQuestionIndex].option1 }}
                                         </mat-radio-button>
-                                        <mat-radio-button [value]="questions[currentQuestionIndex]?.option2">
-                                            {{ questions[currentQuestionIndex]?.option2 }}
+                                        <mat-radio-button [value]="questions[currentQuestionIndex].option2">
+                                            {{ questions[currentQuestionIndex].option2 }}
                                         </mat-radio-button>
-                                        <mat-radio-button [value]="questions[currentQuestionIndex]?.option3">
-                                            {{ questions[currentQuestionIndex]?.option3 }}
+                                        <mat-radio-button [value]="questions[currentQuestionIndex].option3">
+                                            {{ questions[currentQuestionIndex].option3 }}
                                         </mat-radio-button>
-                                        <mat-radio-button [value]="questions[currentQuestionIndex]?.option4">
-                                            {{ questions[currentQuestionIndex]?.option4 }}
+                                        <mat-radio-button [value]="questions[currentQuestionIndex].option4">
+                                            {{ questions[currentQuestionIndex].option4 }}
                                         </mat-radio-button>
                                     </mat-radio-group>
                                 </mat-list-item>

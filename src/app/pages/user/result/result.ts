@@ -1,7 +1,7 @@
-// src/app/pages/user/result/result.ts
+// src/app/pages/user/result/result.component.ts
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router'; // Removed RouterLink
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +18,6 @@ import { Quiz } from '../../../quiz';
     CommonModule,
     MatCardModule,
     MatButtonModule,
-    // RouterLink, // REMOVED: Not used directly in template for [routerLink]
     MatDividerModule
   ],
   templateUrl: './result.html',
@@ -31,7 +30,7 @@ export class ResultComponent implements OnInit {
   correctAnswers: number = 0;
   attempted: number = 0;
 
-  quiz: Quiz | undefined;
+  quiz: Quiz | undefined; // Property to store quiz details
 
   constructor(
     private route: ActivatedRoute,

@@ -1,8 +1,8 @@
-// src/app/pages/user/pages/start-quiz/start-quiz.ts
+// src/app/pages/user/pages/start-quiz/start-quiz.component.ts
 
 import { LocationStrategy } from '@angular/common';
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router'; // Added Router for potential navigation
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
@@ -14,9 +14,9 @@ import { NgxUiLoaderModule, NgxUiLoaderService } from 'ngx-ui-loader';
 
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatProgressBarModule } from '@angular/material/progress-bar'; // Ensure MatProgressBarModule is imported
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { QuizService } from '../../../../service/quiz.service'; // Ensure QuizService is imported
+import { QuizService } from '../../../../service/quiz.service';
 import { QuestionService } from '../../../../service/question.service';
 import { Question } from '../../../../question';
 import { Quiz } from '../../../../quiz';
@@ -34,9 +34,9 @@ import { Quiz } from '../../../../quiz';
     NgxUiLoaderModule,
     MatListModule,
     MatDividerModule,
-    MatProgressBarModule // Keep MatProgressBarModule
+    MatProgressBarModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Keep if still needed for ngx-ui-loader
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './start-quiz.html',
   styleUrls: ['./start-quiz.css']
 })
@@ -53,16 +53,16 @@ export class StartQuizComponent implements OnInit {
 
   isSubmit: boolean = false;
   currentQuestionIndex: number = 0;
-  quiz: Quiz | undefined; // Holds the entire quiz object
+  quiz: Quiz | undefined;
 
   constructor(
     private locationSt: LocationStrategy,
     private route: ActivatedRoute,
-    private quizService: QuizService, // Inject QuizService
+    private quizService: QuizService,
     private questionService: QuestionService,
     private snack: MatSnackBar,
     private ngxService: NgxUiLoaderService,
-    private router: Router // Inject Router for navigation
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -70,13 +70,12 @@ export class StartQuizComponent implements OnInit {
 
     this.route.paramMap.subscribe(params => {
       const qIdParam = params.get('qId');
-      const quizTitleParam = params.get('title'); // Get quiz title from route
+      const quizTitleParam = params.get('title');
 
       if (qIdParam) {
         this.qId = +qIdParam;
       } else {
         this.snack.open('Quiz ID not found in route.', 'Dismiss', { duration: 3000 });
-        // Redirect to a safe page if quiz ID is not found
         this.router.navigate(['/user/load-quiz']);
         return;
       }
@@ -84,10 +83,10 @@ export class StartQuizComponent implements OnInit {
       if (quizTitleParam) {
         this.quizTitle = decodeURIComponent(quizTitleParam);
       } else {
-        this.quizTitle = 'Unknown Quiz'; // Default if title not passed
+        this.quizTitle = 'Unknown Quiz';
       }
 
-      this.loadQuizDetails(); // Load quiz details first
+      this.loadQuizDetails();
     });
   }
 
@@ -95,18 +94,17 @@ export class StartQuizComponent implements OnInit {
     this.ngxService.start();
     this.quizService.getQuiz(this.qId).subscribe({
       next: (data: Quiz) => {
-        this.quiz = data; // Assign the fetched quiz data
-        // Use the actual quiz title if available from the fetched data
+        this.quiz = data;
         if (data.title) {
           this.quizTitle = data.title;
         }
-        this.loadQuestions(); // Then load questions
+        this.loadQuestions();
       },
       error: (error: any) => {
         console.error('Error loading quiz details:', error);
         this.snack.open('Error loading quiz details.', 'Dismiss', { duration: 3000 });
         this.ngxService.stop();
-        this.router.navigate(['/user/load-quiz']); // Redirect on error
+        this.router.navigate(['/user/load-quiz']);
       }
     });
   }
@@ -115,13 +113,12 @@ export class StartQuizComponent implements OnInit {
     this.questionService.getQuestionsOfQuizForUser(this.qId).subscribe({
       next: (data: Question[]) => {
         this.questions = data;
-        // Calculate timer based on actual number of questions for the quiz, if available
         if (this.quiz && this.quiz.numberOfQuestions) {
-          const totalTimeMinutes = this.quiz.numberOfQuestions * 2; // Example: 2 minutes per question
-          this.timer = totalTimeMinutes * 60; // Convert to seconds
+          const totalTimeMinutes = this.quiz.numberOfQuestions * 2;
+          this.timer = totalTimeMinutes * 60;
           this.startTimer();
         } else {
-          this.timer = 0; // Set timer to 0 if no quiz data or questions
+          this.timer = 0;
         }
         this.ngxService.stop();
         console.log('Questions for user:', this.questions);
@@ -130,7 +127,7 @@ export class StartQuizComponent implements OnInit {
         console.error('Error loading questions for user:', error);
         Swal.fire('Error', 'Error in loading questions of quiz', 'error');
         this.ngxService.stop();
-        this.router.navigate(['/user/load-quiz']); // Redirect on error
+        this.router.navigate(['/user/load-quiz']);
       }
     });
   }
@@ -174,16 +171,15 @@ export class StartQuizComponent implements OnInit {
 
   evalQuiz() {
     this.ngxService.start();
-    this.questionService.evalQuiz(this.questions).subscribe({
+    this.questionService.evalQuiz(this.qId, this.questions).subscribe({
       next: (data: any) => {
-        console.log('Quiz Evaluation Results:', data);
+        console.log('Quiz Evaluation Results from Backend:', data);
         this.marksGot = parseFloat(Number(data.marksGot).toFixed(2));
         this.correctAnswers = data.correctAnswers;
         this.attempted = data.attempted;
         this.isSubmit = true;
         this.ngxService.stop();
 
-        // Navigate to result page with data
         this.router.navigate([
           '/user/result',
           this.qId,

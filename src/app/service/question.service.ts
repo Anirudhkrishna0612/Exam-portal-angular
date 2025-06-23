@@ -1,55 +1,46 @@
 // src/app/service/question.service.ts
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Question } from '../question';
-import { BASE_URL } from '../app.constants'; // Path to BASE_URL helper (adjust if different)
+import { Question } from '../question'; // Assuming this path for Question model
+import { BASE_URL } from '../app.constants'; // Assuming BASE_URL is in helper.ts
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionService {
 
+  private baseUrl = BASE_URL;
+
   constructor(private http: HttpClient) { }
 
-  // Add a new question
   public addQuestion(question: Question): Observable<Question> {
-    return this.http.post<Question>(`${BASE_URL}/question/`, question);
+    return this.http.post<Question>(`${this.baseUrl}/question/`, question);
   }
 
-  // Update an existing question
   public updateQuestion(question: Question): Observable<Question> {
-    return this.http.put<Question>(`${BASE_URL}/question/`, question);
+    return this.http.put<Question>(`${this.baseUrl}/question/`, question);
   }
 
-  // Get all questions (primarily for admin)
-  public getQuestions(): Observable<Question[]> {
-    return this.http.get<Question[]>(`${BASE_URL}/question/`);
+  public getQuestionsOfQuiz(qId: number): Observable<Question[]> {
+    return this.http.get<Question[]>(`${this.baseUrl}/question/quiz/${qId}`);
   }
 
-  // Get a single question by ID
-  public getQuestion(questionId: number): Observable<Question> {
-    return this.http.get<Question>(`${BASE_URL}/question/${questionId}`);
+  public getQuestionsOfQuizForUser(qId: number): Observable<Question[]> {
+    return this.http.get<Question[]>(`${this.baseUrl}/question/quiz/active/${qId}`);
   }
 
-  // Get questions for a specific quiz (for admin to manage)
-  public getQuestionsOfQuiz(qid: number): Observable<Question[]> { // Takes qid, not Quiz object
-    return this.http.get<Question[]>(`${BASE_URL}/question/quiz/${qid}`);
+  public getQuestion(quesId: number): Observable<Question> {
+    return this.http.get<Question>(`${this.baseUrl}/question/${quesId}`);
   }
 
-  // Get a limited number of questions for a specific quiz (for user to take quiz)
-  public getQuestionsOfQuizForUser(qid: number): Observable<Question[]> {
-    // Backend endpoint is /question/quiz/active/{quizId}
-    return this.http.get<Question[]>(`${BASE_URL}/question/quiz/active/${qid}`);
+  public deleteQuestion(quesId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/question/${quesId}`);
   }
 
-  // Delete a question by ID
-  public deleteQuestion(questionId: number): Observable<any> {
-    return this.http.delete(`${BASE_URL}/question/${questionId}`);
-  }
-
-  // Evaluate Quiz endpoint for users
-  public evalQuiz(questions: Question[]): Observable<any> {
-    return this.http.post(`${BASE_URL}/question/eval-quiz`, questions);
+  // FIX: Updated evalQuiz to accept quizId and send it as a path variable
+  public evalQuiz(quizId: number, questions: Question[]): Observable<any> {
+    return this.http.post(`${this.baseUrl}/question/eval-quiz/${quizId}`, questions);
   }
 }
