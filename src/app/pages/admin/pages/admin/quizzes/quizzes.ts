@@ -3,16 +3,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table'; // Ensure MatTableModule is imported
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import Swal from 'sweetalert2';
 import { RouterLink } from '@angular/router';
 
-// FIX: Import MatListModule and MatSlideToggleModule
-import { MatListModule } from '@angular/material/list';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+// Removed MatListModule and MatSlideToggleModule from imports if they are not used elsewhere in this component's template
+// If you use them elsewhere, keep them. For the quiz list itself, MatTableModule is sufficient.
+// If you still use mat-slide-toggle for "active" status in the table, keep MatSlideToggleModule
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'; // Keep if mat-slide-toggle is used in the table
+
 
 import { QuizService } from '../../../../../service/quiz.service';
 import { Quiz } from '../../../../../quiz';
@@ -23,12 +25,11 @@ import { Quiz } from '../../../../../quiz';
   imports: [
     CommonModule,
     MatCardModule,
-    MatTableModule,
+    MatTableModule, // Re-added/confirmed
     MatIconModule,
     MatButtonModule,
     RouterLink,
-    MatListModule, // ADDED
-    MatSlideToggleModule // ADDED
+    MatSlideToggleModule // Keep if used in the HTML for active status
   ],
   templateUrl: './quizzes.html',
   styleUrls: ['./quizzes.css']
@@ -36,6 +37,7 @@ import { Quiz } from '../../../../../quiz';
 export class QuizzesComponent implements OnInit {
 
   quizzes: Quiz[] = [];
+  // Define columns for mat-table, including actions for View Questions, Edit, Delete
   displayedColumns: string[] = ['qid', 'title', 'description', 'maxMarks', 'numberOfQuestions', 'active', 'category', 'actions'];
 
   constructor(private quizService: QuizService, private snack: MatSnackBar) { }
@@ -57,8 +59,8 @@ export class QuizzesComponent implements OnInit {
     });
   }
 
-  deleteQuiz(qid: number | undefined) { // FIX: Allow qid to be undefined here
-    if (qid === undefined) { // Ensure qid is not undefined before proceeding
+  deleteQuiz(qid: number | undefined) {
+    if (qid === undefined) {
       this.snack.open('Error: Quiz ID is missing for deletion.', 'Dismiss', { duration: 3000 });
       return;
     }
