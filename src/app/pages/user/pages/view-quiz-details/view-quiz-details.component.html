@@ -1,0 +1,20 @@
+<!-- src/app/pages/user/pages/view-quiz-details/view-quiz-details.component.html -->
+
+<div class="bootstrap-wrapper">
+    <div class="container mt20">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Quiz Details: {{ quizTitle || 'Loading...' }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p><b>Quiz ID:</b> {{ quizId }}</p>
+                <p>This page will show more details about the quiz before a user starts it.</p>
+                <p>You can add rules, instructions, or a summary here.</p>
+                <div class="mt20 text-center">
+                    <button mat-raised-button color="primary" [routerLink]="['/user/start-quiz', quizId, quizTitle]">Start Quiz</button>
+                    <button mat-raised-button color="accent" class="ml10" [routerLink]="['/user/load-quiz']">Back to Quizzes</button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

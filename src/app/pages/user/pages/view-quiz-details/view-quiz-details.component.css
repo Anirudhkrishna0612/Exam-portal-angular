@@ -1,0 +1,36 @@
+/* src/app/pages/user/pages/view-quiz-details/view-quiz-details.component.css */
+
+.mt20 {
+    margin-top: 20px;
+}
+
+.ml10 {
+    margin-left: 10px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+mat-card {
+    background-color: #333;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+mat-card-title {
+    color: #f50057;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+mat-card-content p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+mat-card-content b {
+    color: #a7d900; /* A contrasting color for emphasis */
+}

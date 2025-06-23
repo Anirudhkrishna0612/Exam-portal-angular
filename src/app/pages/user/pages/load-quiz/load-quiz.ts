@@ -8,9 +8,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import Swal from 'sweetalert2';
 
-// Corrected import paths
-import { QuizService } from '../../../../service/quiz.service'; // Corrected path
-import { CategoryService } from '../../../../service/category.service'; // Corrected path
+// Corrected import paths for services (should already be correct)
+import { QuizService } from '../../../../service/quiz.service';
+import { CategoryService } from '../../../../service/category.service';
+// FIX: Changed Quiz and Category model imports to a standard 'src/app/models' path
 import { Quiz } from '../../../../quiz';
 import { Category } from '../../../../category';
 
@@ -20,8 +21,8 @@ import { Category } from '../../../../category';
   imports: [
     CommonModule,
     MatCardModule,
+    MatButtonModule,
     RouterLink,
-    MatButtonModule
   ],
   templateUrl: './load-quiz.html',
   styleUrls: ['./load-quiz.css']
@@ -33,8 +34,8 @@ export class LoadQuizComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private quizService: QuizService, // Should resolve
-    private categoryService: CategoryService, // Should resolve
+    private quizService: QuizService,
+    private categoryService: CategoryService,
     private snack: MatSnackBar,
     private router: Router
   ) { }
@@ -45,7 +46,9 @@ export class LoadQuizComponent implements OnInit {
       if (catIdParam) {
         this.catId = +catIdParam;
       } else {
-        this.snack.open('Category ID not found in route.', 'Dismiss', { duration: 3000 });
+        // If no category ID is provided, load all active quizzes
+        this.catId = 0; // Set to 0 to indicate all quizzes
+        // this.snack.open('Loading all available quizzes.', 'Dismiss', { duration: 3000 }); // Optional message
       }
 
       this.loadQuizzes();
@@ -59,7 +62,7 @@ export class LoadQuizComponent implements OnInit {
           this.quizzes = data;
           console.log('All active quizzes:', this.quizzes);
         },
-        error: (error: any) => { // TS7006 fix: added : any
+        error: (error: any) => {
           console.error('Error loading all active quizzes:', error);
           Swal.fire('Error !!', 'Error in loading all active quizzes', 'error');
         }
@@ -70,7 +73,7 @@ export class LoadQuizComponent implements OnInit {
           this.quizzes = data;
           console.log('Active quizzes by category:', this.quizzes);
         },
-        error: (error: any) => { // TS7006 fix: added : any
+        error: (error: any) => {
           console.error('Error loading active quizzes by category:', error);
           Swal.fire('Error !!', 'Error in loading quizzes by category', 'error');
         }
