@@ -1,21 +1,15 @@
 <!-- src/app/pages/admin/dashboard/dashboard.html -->
 
-<!-- Main toolbar for the dashboard itself -->
-<mat-toolbar color="primary" class="dashboard-toolbar">
-  <button mat-icon-button (click)="sidenav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span class="dashboard-title">ZENITHPROVE</span>
-  <span class="spacer"></span>
-  <a [routerLink]="'/admin/profile'" mat-button>PROFILE</a>
-  <button mat-button (click)="logoutAdminFromToolbar()">LOGOUT</button>
-</mat-toolbar>
+<!--
+  IMPORTANT: The internal mat-toolbar has been REMOVED to prevent double navbars.
+  Assuming a GLOBAL NAVBAR (e.g., in app.component.html) is already present.
+-->
 
 <!-- Sidenav Container for sidebar and main content -->
 <mat-sidenav-container class="sidenav-container">
   <!-- The Sidebar -->
   <mat-sidenav #sidenav mode="side" opened class="sidebar-width">
-    <app-admin-sidebar></app-admin-sidebar>
+    <app-admin-sidebar></app-admin-sidebar> <!-- Your Admin Sidebar Component -->
   </mat-sidenav>
 
   <!-- Main Content Area where child routes will be displayed -->

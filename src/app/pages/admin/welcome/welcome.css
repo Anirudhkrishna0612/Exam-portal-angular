@@ -1,20 +1,20 @@
 /* src/app/pages/admin/welcome/welcome.css */
 
 .welcome-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%; /* Take full height of main-content */
-  width: 100%;
+  /* IMPORTANT: Removed display: flex and justify-content: center.
+     The card will now fill the 100% width of the main-content due to .content-card styles. */
+  height: 100%; /* Ensure it takes full height of main-content */
+  width: 100%; /* Ensure it spans full width of its parent */
   padding: 0; /* Padding handled by parent .main-content */
   box-sizing: border-box;
 }
 
-/* The .welcome-card is also a .content-card, which has common styles from dashboard.css */
+/* The .welcome-card is also a .content-card. It will now naturally expand. */
 .welcome-card {
-  max-width: 700px; /* Max width for welcome card */
-  margin: 0 auto; /* Center horizontally within its container */
-  /* padding, border-radius, box-shadow, background-color, color are from .content-card */
+  /* No specific max-width here; inherits width: 100% from .content-card in dashboard.css */
+  /* No specific margin or padding; inherits from .content-card */
+  background-color: #FFFFFF; /* Explicitly set background to white */
+  color: #333333; /* Dark text on white background for readability */
 }
 
 .welcome-header {
@@ -24,7 +24,7 @@
 .welcome-title {
   font-size: 2.8em;
   font-weight: 800;
-  color: #3f51b5; /* Material primary blue */
+  color: #3f51b5;
   margin-bottom: 10px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -46,7 +46,7 @@
   height: 200px;
   object-fit: cover;
   border-radius: 50%;
-  border: 5px solid #3f51b5; /* Material primary blue border */
+  border: 5px solid #3f51b5;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -54,6 +54,7 @@
 @media (max-width: 768px) {
   .welcome-card {
     padding: 15px;
+    max-width: 100%;
   }
 
   .welcome-title {

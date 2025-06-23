@@ -1,96 +1,99 @@
 /* src/app/pages/profile/profile.css */
 
 .profile-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Align to top, cards float in center */
-  min-height: 100%; /* Take full height of main-content */
+  /* IMPORTANT: Removed display: flex and justify-content: center.
+     The card will now fill the 100% width of the main-content due to .content-card styles. */
+  min-height: 100%; /* Still ensure it takes full height if content is short */
   padding: 0; /* Padding handled by parent .main-content */
   box-sizing: border-box;
+  width: 100%; /* Ensure it spans full width of its parent */
 }
 
-/* The .profile-card class is also a .content-card, which has common styles from dashboard.css */
-.profile-card {
-  max-width: 600px; /* Max width for profile card */
-  margin: 0 auto; /* Center horizontally within its container */
-  /* padding, border-radius, box-shadow, background-color, color are from .content-card */
-}
+/* The .profile-card class is also a .content-card. It will now naturally expand. */
+
 
 .profile-avatar-wrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .profile-avatar {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #3f51b5; /* Material primary blue border */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border: 4px solid #3f51b5;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .mat-card-header {
   text-align: center;
   display: block;
-  padding-bottom: 20px;
+  padding-bottom: 25px;
 }
 
 .mat-card-title {
-  font-size: 1.8em;
+  font-size: 2.2em;
   font-weight: 600;
-  color: #333; /* Dark text on white card */
+  color: #333;
 }
 
 .mat-card-subtitle {
   color: #777;
-  font-size: 1em;
+  font-size: 1.1em;
 }
 
 .mat-list-item {
   height: auto !important;
-  padding: 10px 0;
+  padding: 12px 0;
   align-items: flex-start;
+  flex-wrap: nowrap;
 }
 
 .mat-list-item .mat-icon {
-  margin-right: 15px;
-  color: #3f51b5; /* Material primary blue for icons */
+  margin-right: 20px;
+  color: #3f51b5;
+  font-size: 1.5em;
+  flex-shrink: 0;
 }
 
 .mat-list-item .mat-list-item-title {
   font-weight: 500;
   color: #555;
-  width: 80px;
+  min-width: 100px;
   flex-shrink: 0;
+  font-size: 1.1em;
 }
 
 .mat-list-item .mat-list-item-line {
   color: #333;
   flex-grow: 1;
-  word-break: break-all;
+  word-break: break-word;
+  font-size: 1.1em;
+  padding-left: 10px;
 }
 
 .mat-divider {
-  margin: 10px 0;
+  margin: 15px 0;
   border-top-color: #eee;
 }
 
 .profile-actions {
   display: flex;
   justify-content: center;
-  padding-top: 20px;
+  padding-top: 30px;
 }
 
 .mat-raised-button {
-  padding: 10px 30px;
-  font-size: 1.1em;
+  padding: 12px 40px;
+  font-size: 1.2em;
   border-radius: 8px;
-  background-color: #3f51b5; /* Material primary blue */
+  background-color: #3f51b5;
   color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .mat-raised-button:hover {
@@ -100,12 +103,36 @@
 
 .no-user-card {
   text-align: center;
-  color: #f44336; /* Material warn color for error text */
+  color: #f44336;
 }
 
-/* Responsive adjustments */
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
   .profile-card {
-    padding: 15px;
+    padding: 20px;
+    max-width: 100%;
+  }
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+  }
+  .mat-list-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 0;
+  }
+  .mat-list-item .mat-icon {
+    margin-right: 0;
+    margin-bottom: 5px;
+    font-size: 1.2em;
+  }
+  .mat-list-item .mat-list-item-title,
+  .mat-list-item .mat-list-item-line {
+    width: 100%;
+    font-size: 1em;
+    padding-left: 0;
+  }
+  .profile-actions .mat-raised-button {
+    width: 100%;
   }
 }

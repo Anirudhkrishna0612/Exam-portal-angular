@@ -1,43 +1,39 @@
 /* src/app/pages/admin/pages/admin/categories/categories.css */
 
 .categories-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  /* IMPORTANT: Removed display: flex and justify-content: center.
+     The card will now fill the 100% width of the main-content due to .content-card styles. */
   min-height: 100%;
-  padding: 0; /* Padding handled by parent .content-wrapper */
+  padding: 0; /* Padding handled by parent .main-content */
   box-sizing: border-box;
+  width: 100%; /* Ensure it spans full width of its parent */
 }
 
-/* The .categories-card is now also a .content-card, which has common styles */
-.categories-card {
-  max-width: 1000px;
-  margin: 0; /* Remove margin here */
-  /* background-color and box-shadow now inherited from .content-card */
-  padding: 20px 30px; /* Keep local padding for the card itself */
-}
+/* The .categories-card class is also a .content-card. It will now naturally expand. */
 
-/* card-title styling is now handled by .content-card .card-title in dashboard.css */
-/* mat-card-header padding remains local if specific to this page */
+
 .mat-card-header {
-  padding: 0 0 20px 0;
+  padding: 0 0 25px 0;
   display: block;
 }
 
+/* card-title styling is now handled by .content-card .card-title in dashboard.css */
 
 .add-button-container {
   text-align: right;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .add-button-container .mat-raised-button {
-  background-color: #3f51b5; /* Material primary color */
+  background-color: #3f51b5;
   color: #FFFFFF;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   font-weight: 600;
-  padding: 8px 20px;
+  padding: 10px 25px;
+  font-size: 1.05em;
   border-radius: 6px;
+  cursor: pointer;
 }
 
 .add-button-container .mat-raised-button:hover {
@@ -47,6 +43,8 @@
 
 .table-container {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 20px;
 }
 
 .full-width-table {
@@ -55,25 +53,27 @@
 }
 
 .mat-table {
-  background-color: transparent; /* Ensure table background is transparent to show card's white background */
+  background-color: transparent;
   box-shadow: none;
+  min-width: 1000px; /* Ensure a wider minimum width for the table */
 }
 
 .mat-header-row {
-  background-color: #3f51b5; /* Material primary color for header row */
+  background-color: #3f51b5;
   color: #FFFFFF;
 }
 
 .mat-header-cell {
   font-weight: 600;
   color: #FFFFFF;
-  font-size: 1em;
-  padding: 15px 10px;
+  font-size: 1.1em;
+  padding: 18px 15px;
   text-align: left;
+  white-space: nowrap;
 }
 
 .mat-row {
-  background-color: #FDFDFD; /* Light background for rows */
+  background-color: #FDFDFD;
   border-bottom: 1px solid #EEEEEE;
 }
 
@@ -82,13 +82,17 @@
 }
 
 .mat-cell {
-  padding: 12px 10px;
-  color: #333333; /* Dark text for cells */
+  padding: 15px 15px;
+  color: #333333;
+  white-space: nowrap;
+  font-size: 0.95em;
 }
 
 .mat-icon-button {
   color: #3f51b5;
   transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  font-size: 1.2em;
 }
 
 .mat-icon-button[color="warn"] {
@@ -101,22 +105,21 @@
 
 .no-categories-message {
   text-align: center;
-  padding: 30px;
-  font-size: 1.1em;
+  padding: 40px;
+  font-size: 1.2em;
   color: #666666;
 }
 
-/* Responsive adjustments */
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
   .categories-card {
-    padding: 15px;
+    padding: 20px;
+    max-width: 100%;
   }
-
-  /* card-title styling is now handled by .content-card .card-title in dashboard.css */
 
   .add-button-container {
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
 
   .add-button-container .mat-raised-button {
@@ -124,8 +127,15 @@
     margin-bottom: 10px;
   }
 
+  .mat-table {
+    min-width: 600px;
+  }
+
   .mat-header-cell, .mat-cell {
-    padding: 10px 5px;
+    padding: 12px 8px;
     font-size: 0.9em;
+  }
+  .mat-icon-button {
+    font-size: 1em;
   }
 }

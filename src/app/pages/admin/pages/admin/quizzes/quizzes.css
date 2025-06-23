@@ -1,23 +1,19 @@
 /* src/app/pages/admin/pages/admin/quizzes/quizzes.css */
 
 .quizzes-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  /* IMPORTANT: Removed display: flex and justify-content: center.
+     The card will now fill the 100% width of the main-content due to .content-card styles. */
   min-height: 100%;
   padding: 0; /* Padding handled by parent .main-content */
   box-sizing: border-box;
+  width: 100%; /* Ensure it spans full width of its parent */
 }
 
-/* The .quizzes-card is also a .content-card, which has common styles from dashboard.css */
-.quizzes-card {
-  max-width: 1200px; /* Wider card for quizzes table */
-  margin: 0 auto; /* Center horizontally within its container */
-  /* padding, border-radius, box-shadow, background-color, color are from .content-card */
-}
+/* The .quizzes-card is also a .content-card. It will now naturally expand. */
+
 
 .mat-card-header {
-  padding: 0 0 20px 0;
+  padding: 0 0 25px 0;
   display: block;
 }
 
@@ -25,16 +21,17 @@
 
 .add-button-container {
   text-align: right;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .add-button-container .mat-raised-button {
-  background-color: #3f51b5; /* Material primary blue */
+  background-color: #3f51b5;
   color: #FFFFFF;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   font-weight: 600;
-  padding: 8px 20px;
+  padding: 10px 25px;
+  font-size: 1.05em;
   border-radius: 6px;
   cursor: pointer;
 }
@@ -46,6 +43,8 @@
 
 .table-container {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 20px;
 }
 
 .full-width-table {
@@ -56,19 +55,21 @@
 .mat-table {
   background-color: transparent;
   box-shadow: none;
+  min-width: 900px; /* Ensure a wide minimum width for the table */
 }
 
 .mat-header-row {
-  background-color: #3f51b5; /* Material primary blue for header row */
+  background-color: #3f51b5;
   color: #FFFFFF;
 }
 
 .mat-header-cell {
   font-weight: 600;
   color: #FFFFFF;
-  font-size: 1em;
-  padding: 15px 10px;
+  font-size: 1.1em;
+  padding: 18px 15px;
   text-align: left;
+  white-space: nowrap;
 }
 
 .mat-row {
@@ -81,18 +82,21 @@
 }
 
 .mat-cell {
-  padding: 12px 10px;
+  padding: 15px 15px;
   color: #333333;
+  white-space: nowrap;
+  font-size: 0.95em;
 }
 
 .mat-icon-button {
   color: #3f51b5;
   transition: transform 0.2s ease-in-out;
   cursor: pointer;
+  font-size: 1.2em;
 }
 
-.mat-icon-button[color="accent"] { /* For question_answer icon */
-  color: #FFA000; /* Material Orange for accent icons */
+.mat-icon-button[color="accent"] {
+  color: #FFA000;
 }
 
 .mat-icon-button[color="warn"] {
@@ -114,31 +118,32 @@
 }
 
 .mat-chip-option[color="accent"] {
-  background-color: #4CAF50; /* Green for Active */
+  background-color: #4CAF50;
   color: #FFFFFF;
 }
 
 .mat-chip-option[color="warn"] {
-  background-color: #F44336; /* Red for Inactive */
+  background-color: #F44336;
   color: #FFFFFF;
 }
 
 .no-quizzes-message {
   text-align: center;
-  padding: 30px;
-  font-size: 1.1em;
+  padding: 40px;
+  font-size: 1.2em;
   color: #666666;
 }
 
-/* Responsive adjustments */
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
   .quizzes-card {
-    padding: 15px;
+    padding: 20px;
+    max-width: 100%;
   }
 
   .add-button-container {
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
 
   .add-button-container .mat-raised-button {
@@ -146,8 +151,15 @@
     margin-bottom: 10px;
   }
 
+  .mat-table {
+    min-width: 600px;
+  }
+
   .mat-header-cell, .mat-cell {
-    padding: 10px 5px;
-    font-size: 0.8em;
+    padding: 12px 8px;
+    font-size: 0.9em;
+  }
+  .mat-icon-button {
+    font-size: 1em;
   }
 }

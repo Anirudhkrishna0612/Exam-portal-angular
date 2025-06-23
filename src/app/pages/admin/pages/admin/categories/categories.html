@@ -1,9 +1,9 @@
 <!-- src/app/pages/admin/pages/admin/categories/categories.html -->
 
 <div class="categories-container">
-  <mat-card class="categories-card content-card"> <!-- Added content-card class -->
+  <mat-card class="categories-card content-card">
     <mat-card-header class="text-center">
-      <mat-card-title class="card-title">All Categories</mat-card-title> <!-- Using common card-title -->
+      <mat-card-title class="card-title">All Categories</mat-card-title>
     </mat-card-header>
     <mat-card-content class="card-content">
       <div class="add-button-container">
@@ -13,9 +13,9 @@
       <div class="table-container">
         <table mat-table [dataSource]="categories" class="mat-elevation-z8 full-width-table">
           <!-- ID Column -->
-          <ng-container matColumnDef="cId">
+          <ng-container matColumnDef="cid"> <!-- Changed to cid -->
             <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let category">{{ category.cId }}</td>
+            <td mat-cell *matCellDef="let category">{{ category.cid }}</td> <!-- Changed to cid -->
           </ng-container>
 
           <!-- Title Column -->
@@ -34,10 +34,10 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let category">
-              <button mat-icon-button color="primary" routerLink="/admin/update-category/{{category.cId}}">
+              <button mat-icon-button color="primary" routerLink="/admin/update-category/{{category.cid}}"> <!-- Changed to cid -->
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button color="warn" (click)="deleteCategory(category.cId)">
+              <button mat-icon-button color="warn" (click)="deleteCategory(category.cid)"> <!-- Changed to cid -->
                 <mat-icon>delete</mat-icon>
               </button>
             </td>

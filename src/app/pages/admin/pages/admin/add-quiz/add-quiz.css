@@ -1,23 +1,19 @@
 /* src/app/pages/admin/pages/admin/add-quiz/add-quiz.css */
 
 .add-quiz-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Align to the top of the container */
-  min-height: 100%; /* Take full height of main-content */
+  /* IMPORTANT: Removed display: flex and justify-content: center.
+     The card will now fill the 100% width of the main-content due to .content-card styles. */
+  min-height: 100%;
   padding: 0; /* Padding handled by parent .main-content */
   box-sizing: border-box;
+  width: 100%; /* Ensure it spans full width of its parent */
 }
 
-/* The .add-quiz-card is also a .content-card, which has common styles from dashboard.css */
-.add-quiz-card {
-  max-width: 650px; /* Max width for quiz form */
-  margin: 0 auto; /* Center horizontally within its container */
-  /* padding, border-radius, box-shadow, background-color, color are from .content-card */
-}
+/* The .add-quiz-card is also a .content-card. It will now naturally expand. */
+
 
 .mat-card-header {
-  padding: 0 0 20px 0;
+  padding: 0 0 25px 0;
   display: block;
 }
 
@@ -26,7 +22,10 @@
 .quiz-form {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Space between form fields */
+  gap: 25px;
+  width: 100%; /* Ensure form itself takes full width of card */
+  max-width: 700px; /* IMPORTANT: Add max-width to the form itself for readability, not the card */
+  margin: 0 auto; /* Center the form within the card */
 }
 
 .full-width {
@@ -35,54 +34,57 @@
 
 .row-fields {
   display: flex;
-  gap: 20px;
+  gap: 25px;
   width: 100%;
 }
 
 .flex-field {
-  flex: 1; /* Make fields take equal width in a row */
+  flex: 1;
 }
 
 .mat-form-field {
-  margin-bottom: 0 !important; /* Remove default margin to use gap for spacing */
+  margin-bottom: 0 !important;
+  font-size: 1.1em;
 }
 
 /* Styling for input elements */
 .mat-input-element,
 textarea {
-  color: #333333; /* Dark text on white background */
+  color: #333333;
 }
 
 .mat-label {
-  color: #666666; /* Dark gray for labels */
+  color: #666666;
 }
 
 .mat-form-field-underline,
 .mat-form-field-ripple {
-  background-color: #3f51b5 !important; /* Material primary blue underline/ripple */
+  background-color: #3f51b5 !important;
 }
 
 .mat-form-field.mat-focused .mat-form-field-label {
-  color: #3f51b5 !important; /* Material primary blue label when focused */
+  color: #3f51b5 !important;
 }
 
 /* MatSlideToggle styling */
 mat-slide-toggle {
   margin-top: 10px;
-  color: #333333; /* Dark text for toggle label */
+  color: #333333;
+  font-size: 1.1em;
+  padding: 5px 0;
 }
 
 /* MatSelect styling */
 .mat-select-value {
-  color: #333333; /* Dark text for selected value */
+  color: #333333;
 }
 
 .mat-select-arrow {
-  color: #666666; /* Dark gray for arrow */
+  color: #666666;
 }
 
 .mat-option {
-  color: #333333; /* Dark text for options */
+  color: #333333;
 }
 
 .mat-option.mat-selected:not(.mat-option-multiple) {
@@ -97,14 +99,14 @@ mat-slide-toggle {
 .button-container {
   display: flex;
   justify-content: center;
-  padding-top: 20px;
+  padding-top: 30px;
 }
 
 .mat-raised-button {
-  padding: 10px 30px;
-  font-size: 1.1em;
+  padding: 12px 40px;
+  font-size: 1.2em;
   border-radius: 8px;
-  background-color: #3f51b5; /* Material primary blue */
+  background-color: #3f51b5;
   color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
@@ -116,22 +118,31 @@ mat-slide-toggle {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
   .add-quiz-card {
-    padding: 15px;
+    padding: 20px;
+    max-width: 100%;
   }
-
+  .quiz-form {
+    gap: 20px;
+    max-width: 100%;
+  }
   .row-fields {
     flex-direction: column;
     gap: 0;
   }
-
   .flex-field {
     width: 100%;
   }
-
   .mat-form-field {
     margin-bottom: 15px;
+    font-size: 1em;
+  }
+  mat-slide-toggle {
+    font-size: 1em;
+  }
+  .button-container .mat-raised-button {
+    width: 100%;
   }
 }

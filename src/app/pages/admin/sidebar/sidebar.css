@@ -2,20 +2,19 @@
 
 .sidebar-card {
   background-color: #3A3A3A; /* Matches sidebar-width background from dashboard.css */
-  box-shadow: none; /* Remove default card shadow as parent handles it */
-  border-radius: 0; /* No border radius, as it's part of the sidenav */
-  height: 100%; /* Ensure it fills parent height */
+  box-shadow: none;
+  border-radius: 0;
+  height: 100%;
   padding: 0; /* Padding is handled by the parent mat-sidenav */
   box-sizing: border-box;
 }
 
 .mat-list {
-  background-color: transparent; /* Ensure list background is transparent */
+  background-color: transparent;
   padding: 0; /* Remove default list padding */
 }
 
-/* All mat-list-item styling is now defined in dashboard.css for consistency and better cascade. */
-/* This file can remain minimal, relying on the parent's styles. */
+/* Mat-list-item styling is now primarily handled by dashboard.css for common responsiveness */
 
 @media (max-width: 768px) {
   .sidebar-card {
