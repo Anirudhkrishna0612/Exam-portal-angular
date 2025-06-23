@@ -1,44 +1,190 @@
-/* src/app/pages/user/dashboard/user-dashboard.css */
+/* src/app/pages/user/user-dashboard/user-dashboard.css */
 
-.user-dashboard-container {
-    height: calc(100vh - 64px); /* Full viewport height minus navbar height */
-    display: flex;
-    flex-direction: column;
+/* --- GLOBAL CONTAINER STYLES (Crucial for Layout & No White Bar) --- */
+/* Ensure html and body are consistent, assuming styles from main styles.css or similar */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Control overall scrolling here */
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
 }
 
+/* --- MAIN SIDENAV LAYOUT (User Dashboard) --- */
 .sidenav-container {
-    flex: 1; /* Take up remaining space */
-    width: 100%;
+  display: flex; /* Use flexbox for robust side-by-side layout */
+  flex-direction: row; /* Sidebar and content side by side */
+  position: absolute; /* Position absolutely to fill space precisely */
+  top: 64px; /* Position below global navbar (assuming 64px height) */
+  left: 0;
+  right: 0;
+  bottom: 0; /* Ensures it fills remaining viewport height */
+  background-color: #2C2C2C; /* Deep Charcoal background for the whole dashboard area */
+  overflow: hidden; /* Crucial: prevent unintended scrollbars on this container */
 }
 
-.sidebar-sidenav {
-    width: 250px; /* Fixed width for the sidebar */
-    box-shadow: 2px 0 5px rgba(0,0,0,0.05); /* Subtle shadow for separation */
-    border-right: none; /* Remove default border from sidenav */
-    padding-top: 10px; /* Space from top of sidenav-container */
+/* --- SIDEBAR STYLES --- */
+.sidebar-width { /* For mat-sidenav */
+  width: 250px; /* Fixed width for sidebar */
+  background-color: #3A3A3A; /* Slightly lighter charcoal */
+  padding-top: 20px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5); /* Deep shadow */
+  flex-shrink: 0; /* Prevent sidebar from shrinking */
+  box-sizing: border-box;
+  /* mat-sidenav internally handles its own overflow-y: auto */
 }
 
-.sidenav-content {
-    padding: 20px; /* Padding for the main content area */
-    background-color: #f0f2f5; /* Light background for the content area */
-    overflow-y: auto; /* Enable scrolling for content if it overflows */
+/* --- MAIN CONTENT AREA (The "Filled" Area) --- */
+.main-content { /* For mat-sidenav-content */
+  flex-grow: 1; /* Allows it to take all remaining horizontal space */
+  padding: 30px; /* Generous padding around the content cards */
+  background-color: #2C2C2C; /* Consistent dark background for content area */
+  color: #FFFFFF; /* Default text color on dark background */
+  overflow-y: auto; /* THIS IS THE ONLY ELEMENT THAT SHOULD VERTICALLY SCROLL */
+  box-sizing: border-box;
 }
 
-/* Responsive adjustments */
+/* --- COMMON CONTENT CARD STYLES (To make them "Filled") --- */
+.content-card {
+  width: 100%; /* Make card take full width of its padded container */
+  max-width: none; /* Ensure no maximum width is enforced here */
+  margin: 0 0 30px 0; /* No horizontal margin (let padding handle it), only bottom margin for spacing */
+  padding: 35px 45px; /* Generous internal padding for the card content */
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  background-color: #FFFFFF; /* White background for all cards */
+  color: #333333; /* Dark text on white card background */
+  box-sizing: border-box;
+}
+
+.content-card .card-title {
+  font-size: 2.5em;
+  font-weight: 700;
+  color: #3f51b5;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* --- SIDEBAR LIST ITEM STYLES (for app-user-sidebar) --- */
+.sidebar-width .mat-list-item {
+  color: #FFFFFF;
+  padding: 15px 20px;
+  font-size: 1em;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 8px;
+  margin: 5px 10px;
+  width: calc(100% - 20px); /* Account for horizontal margin */
+  box-sizing: border-box;
+}
+
+.sidebar-width .mat-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #8C6FEE;
+}
+
+.sidebar-width .mat-list-item .mat-icon {
+  margin-right: 15px;
+  color: #8C6FEE;
+}
+
+.sidebar-width .mat-list-item.active-list-item {
+  background-color: #8C6FEE;
+  color: #FFFFFF;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-width .mat-list-item.active-list-item .mat-icon {
+  color: #FFFFFF;
+}
+
+.sidebar-width .mat-divider {
+  border-top-color: rgba(255, 255, 255, 0.1);
+  margin: 5px 0;
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 992px) {
+  .sidebar-width {
+    width: 200px;
+  }
+  .main-content {
+    padding: 20px;
+  }
+  .content-card {
+    padding: 25px 35px;
+  }
+  .content-card .card-title {
+    font-size: 2.2em;
+  }
+}
+
 @media (max-width: 768px) {
-    .sidebar-sidenav {
-        width: 200px; /* Slightly narrower sidebar on smaller screens */
-    }
-    .sidenav-container {
-        /* On smaller screens, the 'side' mode for mat-sidenav might behave like 'over'
-           depending on MatDrawerContainer configuration. No specific changes needed here
-           unless there's a problem with overlay behavior.
-        */
-    }
-}
+  .sidenav-container {
+    flex-direction: column;
+    height: calc(100vh - 56px); /* Adjust height for mobile global navbar */
+    margin-top: 56px; /* Adjust margin for mobile global navbar */
+    overflow-y: auto;
+  }
 
-/* Ensure children elements of sidenav-content take up available space if needed */
-.sidenav-content > * {
+  .sidebar-width {
     width: 100%;
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    height: auto;
+    padding-top: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .sidebar-width .mat-list {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    padding-bottom: 10px;
+  }
+
+  .sidebar-width .mat-list-item {
+    flex-shrink: 0;
+    margin: 5px;
+    padding: 10px 15px;
+    text-align: center;
+    border-radius: 8px;
+    width: auto;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sidebar-width .mat-list-item .mat-icon {
+    margin-right: 0;
+    margin-bottom: 5px;
+    font-size: 1.5em;
+  }
+
+  .sidebar-width .mat-list-item span {
+    display: block;
+    font-size: 0.8em;
+  }
+
+  .sidebar-width .mat-divider {
+    display: none;
+  }
+
+  .main-content {
+    padding: 15px;
+    overflow-y: auto;
+  }
+
+  .content-card {
+    padding: 15px;
+    margin: 0 auto 15px auto;
+    max-width: 100%;
+  }
+
+  .content-card .card-title {
+    font-size: 1.8em;
+  }
 }

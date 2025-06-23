@@ -1,0 +1,31 @@
+<!-- src/app/pages/user/user-dashboard/user-home/user-home.html -->
+
+<div class="user-home-container">
+  <mat-card class="user-home-card content-card">
+    <mat-card-header class="text-center">
+      <mat-card-title class="card-title">Available Categories</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-content">
+      <div *ngIf="categories.length === 0" class="no-content-message">
+        No categories available at the moment.
+      </div>
+      <mat-grid-list cols="3" rowHeight="200px" gutterSize="20px" *ngIf="categories.length > 0">
+        <mat-grid-tile *ngFor="let c of categories">
+          <mat-card class="category-item-card">
+            <mat-card-header>
+              <mat-card-title>{{ c.title }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{ c.description }}</p>
+            </mat-card-content>
+            <mat-card-actions class="category-actions">
+              <button mat-raised-button color="primary" [routerLink]="'/user/0/quizzes/' + c.cid">
+                View Quizzes
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
+</div>

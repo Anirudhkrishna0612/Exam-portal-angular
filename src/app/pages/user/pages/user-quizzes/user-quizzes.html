@@ -1,0 +1,40 @@
+<!-- src/app/pages/user/user-dashboard/user-quizzes/user-quizzes.html -->
+
+<div class="user-quizzes-container">
+  <mat-card class="user-quizzes-card content-card">
+    <mat-card-header class="text-center">
+      <mat-card-title class="card-title">Available Quizzes</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-content">
+      <div *ngIf="quizzes.length === 0" class="no-content-message">
+        No quizzes available at the moment.
+      </div>
+      <mat-list *ngIf="quizzes.length > 0">
+        <mat-list-item *ngFor="let q of quizzes">
+          <mat-card class="quiz-item-card">
+            <mat-card-header>
+              <mat-card-title>{{ q.title }}</mat-card-title>
+              <mat-card-subtitle>{{ q.category ? q.category.title : 'General' }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{ q.description }}</p>
+              <div class="quiz-details">
+                <span>Questions: {{ q.numberOfQuestions }}</span>
+                <span>Max Marks: {{ q.maxMarks }}</span>
+                <mat-chip-listbox>
+                  <mat-chip-option [color]="q.active ? 'accent' : 'warn'" [selected]="true">
+                    {{ q.active ? 'Active' : 'Inactive' }}
+                  </mat-chip-option>
+                </mat-chip-listbox>
+              </div>
+            </mat-card-content>
+            <mat-card-actions class="quiz-actions">
+              <button mat-raised-button color="primary" [disabled]="!q.active">Start Quiz</button>
+              <button mat-raised-button color="accent" [routerLink]="'/user/0/view-quiz-details/' + q.qId">View Details</button>
+            </mat-card-actions>
+          </mat-card>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

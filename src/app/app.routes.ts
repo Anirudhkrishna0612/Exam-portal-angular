@@ -23,6 +23,10 @@ import { StartQuizComponent } from './pages/user/pages/start-quiz/start-quiz';
 import { ResultComponent } from './pages/user/result/result';
 import { UpdateCategoryComponent } from './pages/admin/update-category/update-category';
 
+// NEW IMPORTS FOR USER DASHBOARD PAGES
+import { UserHomeComponent } from './pages/user/pages/user-home/user-home.component';
+import { UserQuizzesComponent } from './pages/user/pages/user-quizzes/user-quizzes.component';
+
 
 export const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
@@ -51,10 +55,27 @@ export const routes: Routes = [
     component: UserDashboardComponent,
     canActivate: [NormalGuard],
     children: [
-      { path: ':catId', component: LoadQuizComponent },
-      // { path: 'instructions/:quizId', component: InstructionsComponent }, // REMOVED
+      // NEW: Default route for /user redirects to /user/home
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      // NEW: User Home (Categories List)
+      { path: 'home', component: UserHomeComponent },
+      // NEW: User Quizzes (All Quizzes List)
+      { path: 'quizzes', component: UserQuizzesComponent },
+      // NEW: User Quizzes (Quizzes by Category ID) - MUST be before generic :catId
+      { path: 'quizzes/:cid', component: UserQuizzesComponent },
+
+      // EXISTING ROUTES - Reordered to appear after more specific paths
+      // This is for taking a specific quiz
       { path: 'take-quiz/:quizId', component: StartQuizComponent },
-      { path: 'result', component: ResultComponent }
+      // This is for viewing results
+      { path: 'result', component: ResultComponent },
+      // This generic :catId route (for LoadQuizComponent)
+      // is placed last to avoid conflicts with 'home' or 'quizzes'
+      // If LoadQuizComponent's actual purpose is to list quizzes by category,
+      // it is now superseded by 'quizzes/:cid' using UserQuizzesComponent.
+      // If it has another distinct purpose (e.g., instructions for a quiz based on ID),
+      // it will still work for paths like /user/123 (if 123 is treated as a catId by LoadQuizComponent).
+      { path: ':catId', component: LoadQuizComponent },
     ],
   },
 ];

@@ -1,20 +1,18 @@
 <!-- src/app/pages/user/user-dashboard/user-dashboard.html -->
 
-<mat-toolbar color="primary">
-  <button mat-icon-button (click)="sidenav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>ZENITHPROVE</span>
-  <span class="spacer"></span>
-  <a [routerLink]="'/user-dashboard'">USER DASHBOARD</a>
-  <a [routerLink]="'/user/profile'">PROFILE</a>
-  <button mat-button (click)="logoutUserFromToolbar()">LOGOUT</button>
-</mat-toolbar>
+<!--
+  IMPORTANT: The internal mat-toolbar has been REMOVED to prevent double navbars.
+  Assuming a GLOBAL NAVBAR (e.g., in app.component.html) is already present.
+-->
 
+<!-- Sidenav Container for sidebar and main content -->
 <mat-sidenav-container class="sidenav-container">
+  <!-- The User Sidebar -->
   <mat-sidenav #sidenav mode="side" opened class="sidebar-width">
     <app-user-sidebar></app-user-sidebar>
   </mat-sidenav>
+
+  <!-- Main Content Area where child routes will be displayed -->
   <mat-sidenav-content class="main-content">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
