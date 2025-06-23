@@ -1,144 +1,99 @@
-/* src/app/pages/admin/pages/admin/view-quiz-questions/view-quiz-questions.component.css */
+/* src/app/pages/admin/pages/admin/view-quiz-questions/view-quiz-questions.css */
 
-.mb-4 {
-  margin-bottom: 1rem;
+.mt20 {
+    margin-top: 20px;
 }
 
-.w-full {
-  width: 100%;
-}
-
-.spacer {
-  flex: 1 1 auto;
-}
-
-.table-responsive {
-  overflow-x: auto;
-}
-
-table {
-  min-width: 700px;
-}
-
-mat-card {
-  background-color: #2a2a2a;
-  color: #e0e0e0;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px;
-}
-
-mat-card-header {
-  border-bottom: 1px solid #333;
-  padding-bottom: 15px;
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-}
-
-mat-card-title {
-  color: #ffffff;
-  font-size: 1.5em;
-  font-weight: bold;
-}
-
-mat-form-field {
-  width: 100%;
-}
-
-mat-label {
-  color: #bbb;
-}
-
-.mat-mdc-input-element {
-  color: #e0e0e0;
-}
-
-.mdc-notched-outline__notch,
-.mdc-notched-outline__leading,
-.mdc-notched-outline__trailing {
-  border-color: #555 !important;
-}
-
-.mdc-text-field--focused .mdc-notched-outline__notch,
-.mdc-text-field--focused .mdc-notched-outline__leading,
-.mdc-text-field--focused .mdc-notched-outline__trailing {
-  border-color: #4CAF50 !important;
-}
-
-mat-radio-button {
-  margin-right: 15px;
-  color: #e0e0e0;
-}
-
-mat-radio-button .mat-radio-outer-circle {
-  border-color: #888;
-}
-
-mat-radio-button.mat-mdc-radio-button.mat-primary .mat-radio-inner-circle {
-  background-color: #4CAF50;
-}
-
-.mat-mdc-radio-button.mat-primary.mat-mdc-radio-checked .mat-mdc-radio-outer-circle {
-  border-color: #4CAF50;
+.w100 {
+    width: 100%;
 }
 
 .text-center {
-  text-align: center;
+    text-align: center;
 }
 
-.p-4 {
-  padding: 1rem;
+.header-with-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px; /* Material Card default padding */
 }
 
-.text-gray-500 {
-  color: #a0a0a0;
+.header-actions {
+    margin-left: auto; /* Push button to the right */
 }
 
-/* Table specific styles */
-.mat-column-content {
-  flex: 0 0 40% !important;
-  word-wrap: break-word;
-  white-space: normal;
+.card-content-padding {
+    padding: 16px; /* Material Card default padding */
 }
 
-.mat-column-options {
-  flex: 0 0 30% !important;
-  word-wrap: break-word;
-  white-space: normal;
+.questions-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between question cards */
 }
 
-.mat-column-action {
-  flex: 0 0 15% !important;
-  text-align: center;
+.question-card {
+    width: 100%;
+    /* Added some box-shadow for visual separation */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px; /* Rounded corners */
 }
 
-mat-row:nth-child(even) {
-  background-color: #333;
+.question-card mat-card-title h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #f50057; /* Accent color for quiz title */
 }
 
-mat-row:hover {
-  background-color: #444;
+.question-card mat-card-subtitle {
+    font-size: 18px;
+    color: #eee; /* Light color for subtitle/question content */
+    margin-bottom: 15px;
 }
 
-/* Responsive grid for options */
-.grid.grid-cols-1.md\:grid-cols-2 {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-@media (min-width: 768px) {
-  .grid.grid-cols-1.md\:grid-cols-2 {
-    grid-template-columns: 1fr 1fr;
-  }
+.options-display {
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
-.flex.justify-end.gap-2 {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
+.option-list {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0;
+    margin: 0;
 }
 
-.mt-4 {
-  margin-top: 1rem;
+.option-list li {
+    background-color: #424242; /* Slightly lighter dark background for options */
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    border: 1px solid #555;
+}
+
+.correct-answer-display {
+    font-size: 18px;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #81c784; /* Green color for correct answer */
+}
+
+.correct-answer-display .highlight {
+    background-color: #2e7d32; /* Darker green background */
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.question-actions {
+    display: flex;
+    justify-content: flex-end; /* Push action buttons to the right */
+    padding: 8px 16px; /* Padding for actions */
+    border-top: 1px solid #444; /* Separator line */
+}
+
+.question-actions button {
+    margin-left: 8px; /* Space between buttons */
 }

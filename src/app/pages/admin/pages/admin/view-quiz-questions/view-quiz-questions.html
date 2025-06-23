@@ -1,41 +1,47 @@
 <!-- src/app/pages/admin/pages/admin/view-quiz-questions/view-quiz-questions.html -->
 
-<mat-card>
-    <h1>Questions for Quiz: {{ quizTitle }}</h1>
-    <div class="container text-center" *ngIf="questions.length === 0">
-        <p>No Questions added for this Quiz yet.</p>
-        <button mat-raised-button color="primary" [routerLink]="['/admin/add-question', qId, quizTitle]">Add Question</button>
-    </div>
+<mat-card class="mt20">
+    <mat-card-header class="header-with-button">
+        <mat-card-title>
+            <h1>Questions for Quiz: {{ quizTitle }}</h1>
+        </mat-card-title>
+        <div class="header-actions">
+            <button mat-raised-button color="primary" [routerLink]="['/admin/add-question', qId, quizTitle]">Add Question</button>
+        </div>
+    </mat-card-header>
 
-    <div class="container-fluid" *ngIf="questions.length > 0">
-        <mat-list> <!-- FIX: This mat-list now works -->
-            <mat-list-item *ngFor="let q of questions; let i = index"> <!-- FIX: mat-list-item now works -->
-                <p class="question-number"><b>Q{{ i + 1 }}.</b></p>
-                <p class="question-content">{{ q.content }}</p>
+    <mat-card-content class="card-content-padding">
+        <div class="container text-center" *ngIf="questions.length === 0">
+            <p>No Questions added for this Quiz yet.</p>
+        </div>
 
-                <div class="options-group">
-                    <p><b>Options:</b></p>
-                    <ul>
-                        <li>{{ q.option1 }}</li>
-                        <li>{{ q.option2 }}</li>
-                        <li>{{ q.option3 }}</li>
-                        <li>{{ q.option4 }}</li>
-                    </ul>
-                </div>
-                <p class="correct-answer"><b>Answer:</b> {{ q.answer }}</p>
-
-                <mat-divider></mat-divider> <!-- FIX: mat-divider now works -->
-
-                <mat-action-list>
+        <div class="questions-list-container" *ngIf="questions.length > 0">
+            <mat-card *ngFor="let q of questions; let i = index" class="question-card mt20">
+                <mat-card-header>
+                    <mat-card-title>Question {{ i + 1 }}.</mat-card-title>
+                    <mat-card-subtitle>{{ q.content }}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="options-display">
+                        <p><b>Options:</b></p>
+                        <ul class="option-list">
+                            <li>A) {{ q.option1 }}</li>
+                            <li>B) {{ q.option2 }}</li>
+                            <li>C) {{ q.option3 }}</li>
+                            <li>D) {{ q.option4 }}</li>
+                        </ul>
+                    </div>
+                    <p class="correct-answer-display"><b>Correct Answer:</b> <span class="highlight">{{ q.answer }}</span></p>
+                </mat-card-content>
+                <mat-card-actions class="question-actions">
                     <button mat-icon-button color="accent" [routerLink]="['/admin/update-question', qId, q.quesId, quizTitle]">
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button color="warn" (click)="deleteQuestion(q.quesId)">
                         <mat-icon>delete</mat-icon>
                     </button>
-                </mat-action-list>
-                <mat-divider></mat-divider> <!-- FIX: mat-divider now works -->
-            </mat-list-item>
-        </mat-list>
-    </div>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </mat-card-content>
 </mat-card>

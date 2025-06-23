@@ -4,10 +4,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-import { UserSidebarComponent } from '../../../components/user-sidebar/user-sidebar.component'; // Assuming this is your user sidebar
-import { RouterOutlet } from '@angular/router'; // For <router-outlet> in HTML
+import { UserSidebarComponent } from '../../../components/user-sidebar/user-sidebar.component';
+import { RouterOutlet } from '@angular/router';
 
-// FIX: Import MatSidenavModule for Angular Material Sidenav components
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 
@@ -18,9 +17,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     CommonModule,
     MatCardModule,
     MatListModule,
-    UserSidebarComponent, // Assuming this is the correct selector
-    RouterOutlet, // For <router-outlet>
-    MatSidenavModule // FIX: Add MatSidenavModule here
+    UserSidebarComponent,
+    RouterOutlet,
+    MatSidenavModule
+    // Removed ɵEmptyOutletComponent as it's an internal symbol and should not be directly imported
   ],
   templateUrl: './user-dashboard.html',
   styleUrls: ['./user-dashboard.css']

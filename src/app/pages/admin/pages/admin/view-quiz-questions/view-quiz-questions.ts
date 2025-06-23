@@ -3,18 +3,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card'; // Ensure MatCardModule is imported
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import Swal from 'sweetalert2';
 
-// FIX: Import MatListModule and MatDividerModule
-import { MatListModule } from '@angular/material/list';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatRadioModule } from '@angular/material/radio'; // For mat-radio-group if used
-
+// Removed MatTableModule, MatListModule, MatDividerModule as we are using cards for display
+// If MatRadioModule is not explicitly used in this component's template, it can also be removed.
 
 import { QuestionService } from '../../../../../service/question.service';
 import { Question } from '../../../../../question';
@@ -24,14 +20,11 @@ import { Question } from '../../../../../question';
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatTableModule,
+    MatCardModule, // Keep MatCardModule
     MatIconModule,
     MatButtonModule,
     RouterLink,
-    MatListModule, // ADDED
-    MatDividerModule, // ADDED
-    MatRadioModule // Add if using mat-radio-group here
+    // Removed: MatTableModule, MatListModule, MatDividerModule, MatRadioModule
   ],
   templateUrl: './view-quiz-questions.html',
   styleUrls: ['./view-quiz-questions.css']
@@ -41,7 +34,8 @@ export class ViewQuizQuestionsComponent implements OnInit {
   qId: number = 0;
   quizTitle: string = '';
   questions: Question[] = [];
-  displayedColumns: string[] = ['quesId', 'content', 'option1', 'option2', 'option3', 'option4', 'answer', 'actions'];
+  // No longer using displayedColumns for mat-table, but kept as a reminder if needed later
+  // displayedColumns: string[] = ['quesId', 'content', 'option1', 'option2', 'option3', 'option4', 'answer', 'actions'];
 
   constructor(
     private route: ActivatedRoute,
@@ -84,7 +78,7 @@ export class ViewQuizQuestionsComponent implements OnInit {
     });
   }
 
-  deleteQuestion(quesId: number | undefined): void { // Allow quesId to be undefined
+  deleteQuestion(quesId: number | undefined): void {
     if (quesId === undefined) {
       this.snack.open('Error: Question ID is missing for deletion.', 'Dismiss', { duration: 3000 });
       return;

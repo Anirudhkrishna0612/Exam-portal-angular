@@ -1,165 +1,75 @@
 /* src/app/pages/admin/pages/admin/quizzes/quizzes.css */
 
-.quizzes-container {
-  /* IMPORTANT: Removed display: flex and justify-content: center.
-     The card will now fill the 100% width of the main-content due to .content-card styles. */
-  min-height: 100%;
-  padding: 0; /* Padding handled by parent .main-content */
-  box-sizing: border-box;
-  width: 100%; /* Ensure it spans full width of its parent */
+.mt20 {
+    margin-top: 20px;
 }
 
-/* The .quizzes-card is also a .content-card. It will now naturally expand. */
-
-
-.mat-card-header {
-  padding: 0 0 25px 0;
-  display: block;
-}
-
-/* card-title styling is now handled by .content-card .card-title in dashboard.css */
-
-.add-button-container {
-  text-align: right;
-  margin-bottom: 30px;
-}
-
-.add-button-container .mat-raised-button {
-  background-color: #3f51b5;
-  color: #FFFFFF;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-  font-weight: 600;
-  padding: 10px 25px;
-  font-size: 1.05em;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.add-button-container .mat-raised-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.table-container {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  margin-top: 20px;
-}
-
-.full-width-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.mat-table {
-  background-color: transparent;
-  box-shadow: none;
-  min-width: 900px; /* Ensure a wide minimum width for the table */
-}
-
-.mat-header-row {
-  background-color: #3f51b5;
-  color: #FFFFFF;
-}
-
-.mat-header-cell {
-  font-weight: 600;
-  color: #FFFFFF;
-  font-size: 1.1em;
-  padding: 18px 15px;
-  text-align: left;
-  white-space: nowrap;
-}
-
-.mat-row {
-  background-color: #FDFDFD;
-  border-bottom: 1px solid #EEEEEE;
-}
-
-.mat-row:nth-child(even) {
-  background-color: #FAFAFA;
-}
-
-.mat-cell {
-  padding: 15px 15px;
-  color: #333333;
-  white-space: nowrap;
-  font-size: 0.95em;
-}
-
-.mat-icon-button {
-  color: #3f51b5;
-  transition: transform 0.2s ease-in-out;
-  cursor: pointer;
-  font-size: 1.2em;
-}
-
-.mat-icon-button[color="accent"] {
-  color: #FFA000;
-}
-
-.mat-icon-button[color="warn"] {
-  color: #f44336;
-}
-
-.mat-icon-button:hover {
-  transform: scale(1.1);
-}
-
-.mat-chip-listbox .mat-chip-option {
-  border-radius: 4px;
-  height: 28px;
-  padding: 0 8px;
-  font-size: 0.8em;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-}
-
-.mat-chip-option[color="accent"] {
-  background-color: #4CAF50;
-  color: #FFFFFF;
-}
-
-.mat-chip-option[color="warn"] {
-  background-color: #F44336;
-  color: #FFFFFF;
-}
-
-.no-quizzes-message {
-  text-align: center;
-  padding: 40px;
-  font-size: 1.2em;
-  color: #666666;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .quizzes-card {
-    padding: 20px;
-    max-width: 100%;
-  }
-
-  .add-button-container {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .add-button-container .mat-raised-button {
+.w100 {
     width: 100%;
-    margin-bottom: 10px;
-  }
+}
 
-  .mat-table {
-    min-width: 600px;
-  }
+.text-right {
+    text-align: right;
+}
 
-  .mat-header-cell, .mat-cell {
-    padding: 12px 8px;
-    font-size: 0.9em;
-  }
-  .mat-icon-button {
-    font-size: 1em;
-  }
+.text-center {
+    text-align: center;
+}
+
+.ml20 {
+    margin-left: 20px;
+}
+
+.mat-elevation-z8 {
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+/* Styles for the table itself */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th.mat-header-cell, td.mat-cell {
+    padding: 8px 16px; /* Adjust padding as needed */
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12); /* Light border for dark theme */
+    color: #fff; /* Text color */
+}
+
+th.mat-header-cell {
+    font-weight: bold;
+    background-color: #333; /* Darker header background */
+}
+
+tr.mat-row:hover {
+    background-color: #424242; /* Slightly lighter background on hover */
+}
+
+/* Adjust column widths if needed, example for 'actions' */
+.mat-column-actions {
+    width: 120px; /* Give enough space for action buttons */
+    text-align: center;
+}
+
+/* Styles for the quiz cards in load-quiz.html (if not already defined) */
+.quiz-card {
+    margin-bottom: 20px;
+    background-color: #333; /* Dark card background */
+    color: #fff; /* White text for cards */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.quiz-card mat-card-title {
+    color: #f50057; /* Accent color for quiz titles */
+}
+
+.quiz-actions {
+    padding: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: 10px; /* Space between buttons */
 }

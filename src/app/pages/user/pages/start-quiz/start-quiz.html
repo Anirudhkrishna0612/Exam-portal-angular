@@ -5,64 +5,73 @@
         <div class="row">
             <div class="col-md-9">
                 <mat-card class="mt20">
-                    <mat-card-title class="card-title">Quiz: {{ quizTitle }}</mat-card-title>
+                    <mat-card-header>
+                        <mat-card-title>Quiz: {{ quiz?.title || 'Loading Quiz...' }}</mat-card-title>
+                        <mat-card-subtitle>All the best !!</mat-card-subtitle>
+                    </mat-card-header>
                     <mat-card-content class="ml20">
-
                         <div class="questions-section">
                             <mat-list *ngIf="questions.length > 0">
-                                <mat-list-item *ngFor="let q of questions; let i = index">
-                                    <p class="question-number"><b>{{ i + 1 }}.</b></p>
-                                    <p class="question-content">{{ q.content }}</p>
-
-                                    <div class="options-group">
-                                        <mat-radio-group [(ngModel)]="q.givenAnswer">
-                                            <mat-radio-button [value]="q.option1"> {{ q.option1 }}</mat-radio-button>
-                                            <mat-radio-button [value]="q.option2"> {{ q.option2 }}</mat-radio-button>
-                                            <mat-radio-button [value]="q.option3"> {{ q.option3 }}</mat-radio-button>
-                                            <mat-radio-button [value]="q.option4"> {{ q.option4 }}</mat-radio-button>
-                                        </mat-radio-group>
+                                <mat-list-item>
+                                    <div class="container-fluid">
+                                        <p class="question-number">
+                                            <b>{{ (currentQuestionIndex + 1) }} / {{ questions.length }}</b>
+                                        </p>
+                                        <mat-progress-bar mode="determinate"
+                                            [value]="((currentQuestionIndex + 1) / questions.length) * 100">
+                                        </mat-progress-bar>
                                     </div>
-                                    <mat-divider></mat-divider>
                                 </mat-list-item>
+                                <mat-list-item>
+                                    <p class="question-content">
+                                        {{ questions[currentQuestionIndex]?.content }}
+                                    </p>
+                                </mat-list-item>
+
+                                <mat-list-item>
+                                    <mat-radio-group
+                                        [(ngModel)]="questions[currentQuestionIndex].givenAnswer">
+                                        <mat-radio-button [value]="questions[currentQuestionIndex]?.option1">
+                                            {{ questions[currentQuestionIndex]?.option1 }}
+                                        </mat-radio-button>
+                                        <mat-radio-button [value]="questions[currentQuestionIndex]?.option2">
+                                            {{ questions[currentQuestionIndex]?.option2 }}
+                                        </mat-radio-button>
+                                        <mat-radio-button [value]="questions[currentQuestionIndex]?.option3">
+                                            {{ questions[currentQuestionIndex]?.option3 }}
+                                        </mat-radio-button>
+                                        <mat-radio-button [value]="questions[currentQuestionIndex]?.option4">
+                                            {{ questions[currentQuestionIndex]?.option4 }}
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </mat-list-item>
+
                             </mat-list>
                         </div>
-
                         <div class="text-center mt20">
-                            <button mat-raised-button color="primary" (click)="submitQuiz()">Submit Quiz</button>
+                            <button mat-raised-button color="primary" class="mr10"
+                                (click)="currentQuestionIndex = currentQuestionIndex - 1"
+                                [disabled]="currentQuestionIndex === 0">Previous</button>
+
+                            <button mat-raised-button color="primary" class="ml10"
+                                (click)="currentQuestionIndex = currentQuestionIndex + 1"
+                                [disabled]="currentQuestionIndex === questions.length - 1">Next</button>
+
+                            <button mat-raised-button color="accent" class="ml10" (click)="submitQuiz()"
+                                [disabled]="isSubmit">Submit Quiz</button>
                         </div>
                     </mat-card-content>
                 </mat-card>
-
-                <div *ngIf="isSubmit" class="mt20">
-                    <mat-card>
-                        <mat-card-title>Quiz Result</mat-card-title>
-                        <mat-card-content>
-                            <p>Marks Got: <b>{{ marksGot }}</b></p>
-                            <p>Correct Answers: <b>{{ correctAnswers }}</b></p>
-                            <p>Attempted: <b>{{ attempted }}</b></p>
-                        </mat-card-content>
-                    </mat-card>
-                </div>
             </div>
 
             <div class="col-md-3">
                 <mat-card class="mt20">
                     <mat-card-title>Progress</mat-card-title>
                     <mat-card-content class="text-center">
-                        <h1 class="text-primary">{{ getFormattedTime() }}</h1>
-                        <button mat-raised-button color="accent" (click)="submitQuiz()">Submit Quiz</button>
+                        <h1 class="text-5xl font-bold">{{ getFormattedTime() }}</h1>
+                        <button mat-raised-button color="accent" (click)="submitQuiz()" [disabled]="isSubmit">Submit Quiz</button>
                     </mat-card-content>
                 </mat-card>
-                <ngx-ui-loader
-                    [text]="'Loading...'"
-                    [fgsType]="'ball-spin-clockwise'"
-                    [fgsColor]="'#ffc107'"
-                    [bgsOpacity]="0.5"
-                    [bgsColor]="'#000000'"
-                    [fgsSize]="60"
-                    [bgsBlur]="10"
-                    [overlayColor]="'rgba(255,255,255,0.8)'"
-                ></ngx-ui-loader>
             </div>
         </div>
     </div>
