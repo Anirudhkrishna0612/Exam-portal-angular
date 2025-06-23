@@ -1,19 +1,11 @@
 <!-- src/app/pages/user/user-dashboard/user-dashboard.html -->
-
-<!--
-  IMPORTANT: The internal mat-toolbar has been REMOVED to prevent double navbars.
-  Assuming a GLOBAL NAVBAR (e.g., in app.component.html) is already present.
--->
-
-<!-- Sidenav Container for sidebar and main content -->
 <mat-sidenav-container class="sidenav-container">
-  <!-- The User Sidebar -->
-  <mat-sidenav #sidenav mode="side" opened class="sidebar-width">
-    <app-user-sidebar></app-user-sidebar>
-  </mat-sidenav>
-
-  <!-- Main Content Area where child routes will be displayed -->
-  <mat-sidenav-content class="main-content">
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
+    <mat-sidenav #sidenav mode="side" opened class="sidebar-width">
+        <!-- Assuming your UserSidebarComponent selector is app-user-sidebar -->
+        <app-user-sidebar></app-user-sidebar>
+    </mat-sidenav>
+    <mat-sidenav-content class="main-content">
+        <!-- Main Content Area where child routes will be displayed -->
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
 </mat-sidenav-container>

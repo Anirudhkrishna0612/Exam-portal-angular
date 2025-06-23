@@ -2,37 +2,44 @@
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CategoryService } from '../../service/src/app/service/category.service';
+
+// FIX: Import MatDividerModule
+import { MatDividerModule } from '@angular/material/divider';
+
+import { CategoryService } from '../../../service/category.service';
+import Swal from 'sweetalert2';
 import { Category } from '../../../category';
-import { MatDividerModule } from '@angular/material/divider'; // Added for mat-divider in HTML
+
 
 @Component({
   selector: 'app-update-category',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatSnackBarModule,
-    MatDividerModule
+    FormsModule,
+    MatDividerModule // ADDED
   ],
   templateUrl: './update-category.html',
   styleUrls: ['./update-category.css']
 })
 export class UpdateCategoryComponent implements OnInit {
 
-  cId: number | undefined;
-  category: Category = new Category();
+  cId: number = 0;
+  category: Category = {
+    title: '',
+    description: ''
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -42,43 +49,49 @@ export class UpdateCategoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.cId = Number(this.route.snapshot.paramMap.get('cid'));
-
-    this.categoryService.getCategory(this.cId).subscribe({
-      next: (data: Category) => {
-        this.category = data;
-      },
-      error: (error: any) => {
-        console.error('Error loading category:', error);
-        this.snack.open('Error loading category!', 'Dismiss', { duration: 3000 });
+    this.route.paramMap.subscribe(params => {
+      const cIdParam = params.get('cId');
+      if (cIdParam) {
+        this.cId = +cIdParam;
+        this.categoryService.getCategory(this.cId).subscribe({
+          next: (data: Category) => {
+            this.category.cid = data.cid;
+            this.category.title = data.title ?? '';
+            this.category.description = data.description ?? '';
+          },
+          error: (error: any) => {
+            console.error('Error loading category:', error);
+            this.snack.open('Error loading category details!', 'Dismiss', { duration: 3000 });
+            this.router.navigate(['/admin/categories']);
+          }
+        });
+      } else {
+        this.snack.open('Category ID not found in route.', 'Dismiss', { duration: 3000 });
         this.router.navigate(['/admin/categories']);
       }
     });
   }
 
-  formSubmit(): void { // Corrected method name `formSubmit`
-    if (!this.category.title || this.category.title.trim() === '') {
-      this.snack.open('Title is required!', 'Dismiss', { duration: 3000 });
-      return;
-    }
-    if (!this.category.description || this.category.description.trim() === '') {
-      this.snack.open('Description is required!', 'Dismiss', { duration: 3000 });
+  formSubmit() {
+    if (String(this.category.title).trim() === '') {
+      this.snack.open('Title required!', 'Dismiss', {
+        duration: 3000,
+      });
       return;
     }
 
     this.categoryService.updateCategory(this.category).subscribe({
-      next: (data: Category) => {
-        this.snack.open('Category updated successfully!', 'OK', {
-          duration: 3000, verticalPosition: 'top', horizontalPosition: 'right', panelClass: ['success-snackbar']
+      next: (data: any) => {
+        Swal.fire('Success !!', 'Category updated successfully', 'success').then((e) => {
+          this.router.navigate(['/admin/categories']);
         });
-        this.router.navigate(['/admin/categories']);
       },
       error: (error: any) => {
-        console.error('Error updating category:', error);
-        this.snack.open('Error updating category!', 'Dismiss', {
-          duration: 3000, verticalPosition: 'top', horizontalPosition: 'right', panelClass: ['error-snackbar']
+        console.log(error);
+        this.snack.open('Something went wrong !!', 'Dismiss', {
+          duration: 3000,
         });
-      }
+      },
     });
   }
 }

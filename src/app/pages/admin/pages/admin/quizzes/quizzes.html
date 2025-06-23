@@ -1,90 +1,55 @@
 <!-- src/app/pages/admin/pages/admin/quizzes/quizzes.html -->
 
-<div class="quizzes-container">
-  <mat-card class="quizzes-card content-card">
-    <mat-card-header class="text-center">
-      <mat-card-title class="card-title">All Quizzes</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="card-content">
-      <div class="add-button-container">
-        <a mat-raised-button color="accent" routerLink="/admin/add-quiz">Add New Quiz</a>
-      </div>
-
-      <div class="table-container">
-        <table mat-table [dataSource]="quizzes" class="mat-elevation-z8 full-width-table">
-          <!-- ID Column -->
-          <ng-container matColumnDef="qId">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let quiz">{{ quiz.qId }}</td>
-          </ng-container>
-
-          <!-- Title Column -->
-          <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef>Title</th>
-            <td mat-cell *matCellDef="let quiz">{{ quiz.title }}</td>
-          </ng-container>
-
-          <!-- Description Column -->
-          <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>Description</th>
-            <td mat-cell *matCellDef="let quiz">{{ quiz.description }}</td>
-          </ng-container>
-
-          <!-- Max Marks Column -->
-          <ng-container matColumnDef="maxMarks">
-            <th mat-header-cell *matHeaderCellDef>Max Marks</th>
-            <td mat-cell *matCellDef="let quiz">{{ quiz.maxMarks }}</td>
-          </ng-container>
-
-          <!-- Number of Questions Column -->
-          <ng-container matColumnDef="numberOfQuestions">
-            <th mat-header-cell *matHeaderCellDef>Questions</th>
-            <td mat-cell *matCellDef="let quiz">{{ quiz.numberOfQuestions }}</td>
-          </ng-container>
-
-          <!-- Category Column -->
-          <ng-container matColumnDef="category">
-            <th mat-header-cell *matHeaderCellDef>Category</th>
-            <td mat-cell *matCellDef="let quiz">{{ quiz.category ? quiz.category.title : 'N/A' }}</td>
-          </ng-container>
-
-          <!-- Active Status Column -->
-          <ng-container matColumnDef="active">
-            <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let quiz">
-              <!-- NOTE: mat-chip-listbox and mat-chip-option require MatChipsModule to be imported in TS. -->
-              <mat-chip-listbox>
-                <mat-chip-option [color]="quiz.active ? 'accent' : 'warn'" [selected]="true">
-                  {{ quiz.active ? 'Active' : 'Inactive' }}
-                </mat-chip-option>
-              </mat-chip-listbox>
-            </td>
-          </ng-container>
-
-          <!-- Actions Column -->
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
-            <td mat-cell *matCellDef="let quiz">
-              <button mat-icon-button color="accent" routerLink="/admin/view-questions/{{quiz.qId}}/{{quiz.title}}">
-                <mat-icon>question_answer</mat-icon>
-              </button>
-              <button mat-icon-button color="primary" routerLink="/admin/update-quiz/{{quiz.qId}}">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" (click)="deleteQuiz(quiz.qId)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-
-        <div *ngIf="quizzes.length === 0" class="no-quizzes-message">
-          No quizzes found. Please add some!
+<mat-card class="mt20">
+    <mat-card-header>
+        <div class="row">
+            <div class="col-md-6">
+                <mat-card-title>
+                    All Quizzes
+                </mat-card-title>
+            </div>
+            <div class="col-md-6 text-right">
+                <button mat-raised-button color="primary" [routerLink]="['/admin/add-quiz']">Add Quiz</button>
+            </div>
         </div>
-      </div>
+    </mat-card-header>
+    <mat-card-content class="ml20">
+        <mat-list> <!-- FIX: This mat-list now works -->
+            <div class="container text-center" *ngIf="quizzes.length === 0">
+                <h1>No quizzes in this category !!</h1>
+            </div>
+            <mat-list-item *ngFor="let quiz of quizzes">
+                <h3 matLine>{{ quiz.title }}</h3>
+                <p matLine>Description: {{ quiz.description }}</p>
+                <p matLine>Max Marks: <b>{{ quiz.maxMarks }}</b></p>
+                <p matLine>Number of Questions: <b>{{ quiz.numberOfQuestions }}</b></p>
+                <p matLine>
+                    Category: <b>{{ quiz.category?.title || 'No Category' }}</b>
+                </p>
+                <p matLine>
+                    <!-- FIX: Use [checked] for active status, and (click) to toggle for admin -->
+                    <mat-slide-toggle
+                        [checked]="quiz.active"
+                        (click)="updateQuizStatus(quiz)"
+                        color="primary">
+                        {{ quiz.active ? 'ACTIVE' : 'INACTIVE' }}
+                    </mat-slide-toggle>
+                </p>
+
+                <mat-action-list>
+                    <button mat-icon-button color="primary" [routerLink]="['/admin/view-questions', quiz.qid, quiz.title]">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                    <button mat-icon-button color="accent" [routerLink]="['/admin/update-quiz', quiz.qid]">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <!-- FIX: Ensure quiz.qid is not undefined, use nullish coalescing or check in TS -->
+                    <button mat-icon-button color="warn" (click)="deleteQuiz(quiz.qid)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-action-list>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+        </mat-list>
     </mat-card-content>
-  </mat-card>
-</div>
+</mat-card>

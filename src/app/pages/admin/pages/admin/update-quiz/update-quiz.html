@@ -1,65 +1,71 @@
 <!-- src/app/pages/admin/pages/admin/update-quiz/update-quiz.html -->
 
-<div class="bootstrap-wrapper">
-  <div class="container">
-    <mat-card>
-      <h1 class="text-center">Update Quiz</h1>
-      <div class="container" *ngIf="quizData.qid">
-        <form (ngSubmit)="updateQuiz()">
-          <mat-form-field class="w100" appearance="outline">
-            <mat-label>Quiz ID</mat-label>
-            <input matInput [ngModel]="quizData.qid" name="qid" placeholder="Enter here" disabled>
-          </mat-form-field>
+<mat-card>
+    <h1>Update Quiz</h1>
+    <div class="container text-center" *ngIf="quiz.qid">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form (ngSubmit)="updateQuizSubmit()">
+                    <mat-form-field class="w100" appearance="outline">
+                        <mat-label>Quiz ID</mat-label>
+                        <input type="text" name="qid" matInput placeholder="Enter Quiz ID"
+                            [ngModel]="quiz.qid" readonly>
+                    </mat-form-field>
 
-          <mat-form-field class="w100" appearance="outline">
-            <mat-label>Quiz Title</mat-label>
-            <input [(ngModel)]="quizData.title" name="title" matInput placeholder="Enter here">
-          </mat-form-field>
+                    <mat-form-field class="w100" appearance="outline">
+                        <mat-label>Enter Title</mat-label>
+                        <input [(ngModel)]="quiz.title" name="title" type="text" matInput
+                            placeholder="Enter here">
+                    </mat-form-field>
 
-          <mat-form-field class="w100" appearance="outline">
-            <mat-label>Quiz Description</mat-label>
-            <textarea [(ngModel)]="quizData.description" name="description" matInput placeholder="Enter here" rows="5"></textarea>
-          </mat-form-field>
+                    <mat-form-field class="w100" appearance="outline">
+                        <mat-label>Enter Description</mat-label>
+                        <textarea [(ngModel)]="quiz.description" name="description" matInput rows="5"
+                            placeholder="Enter here"></textarea>
+                    </mat-form-field>
 
-          <div class="row">
-            <div class="col-md-6">
-              <mat-form-field class="w100" appearance="outline">
-                <mat-label>Maximum Marks</mat-label>
-                <input [(ngModel)]="quizData.maxMarks" name="maxMarks" type="number" matInput placeholder="Enter here">
-              </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="w100" appearance="outline">
+                                <mat-label>Maximum Marks</mat-label>
+                                <input [(ngModel)]="quiz.maxMarks" name="maxMarks" type="number" matInput
+                                    placeholder="Enter here">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field class="w100" appearance="outline">
+                                <mat-label>Number of Questions</mat-label>
+                                <input [(ngModel)]="quiz.numberOfQuestions" name="numberOfQuestions" type="number"
+                                    matInput placeholder="Enter here">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <mat-slide-toggle class="mt20" color="primary" name="active"
+                        [(ngModel)]="quiz.active">
+                        Publish Status
+                    </mat-slide-toggle>
+
+                    <mat-form-field appearance="outline" class="w100 mt20">
+                        <mat-label>Categories</mat-label>
+                        <!-- FIX: Bind compareWith to the compareFn method in the component -->
+                        <mat-select name="category" [(ngModel)]="quiz.category" [compareWith]="compareFn">
+                            <mat-option *ngFor="let c of categories" [value]="c">
+                                {{ c.title }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div class="container text-center mt20">
+                        <button mat-raised-button color="primary" type="submit">Update</button>
+                    </div>
+                </form>
             </div>
-            <div class="col-md-6">
-              <mat-form-field class="w100" appearance="outline">
-                <mat-label>Number of Questions</mat-label>
-                <input [(ngModel)]="quizData.numberOfQuestions" name="numberOfQuestions" type="number" matInput placeholder="Enter here">
-              </mat-form-field>
-            </div>
-          </div>
-
-          <mat-form-field class="w100" appearance="outline">
-            <mat-label>Category</mat-label>
-            <!-- [compareWith] uses the new compareCategories method -->
-            <mat-select [(ngModel)]="quizData.category!.cid" name="category" [compareWith]="compareCategories" required>
-              <mat-option *ngFor="let c of categories" [value]="c.cid">
-                {{c.title}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-slide-toggle [checked]="quizData.active" [(ngModel)]="quizData.active" name="active" class="mt-2">
-            Publish Status (Active)
-          </mat-slide-toggle>
-
-          <div class="container text-center">
-            <button mat-raised-button color="primary" type="submit">Update Quiz</button>
-          </div>
-        </form>
-      </div>
-      <div class="container text-center" *ngIf="!quizData.qid">
+        </div>
+    </div>
+    <div class="container text-center" *ngIf="!quiz.qid">
         <mat-card-content>
-          <h1>Loading...</h1>
+            <h1>Loading Quiz Data...</h1>
         </mat-card-content>
-      </div>
-    </mat-card>
-  </div>
-</div>
+    </div>
+</mat-card>

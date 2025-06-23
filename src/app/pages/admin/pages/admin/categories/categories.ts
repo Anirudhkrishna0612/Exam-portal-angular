@@ -1,15 +1,17 @@
-// src/app/pages/admin/pages/admin/categories/categories.component.ts
+// src/app/pages/admin/pages/admin/categories/categories.ts
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+// Corrected import path
+import { CategoryService } from '../../../../../service/category.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CategoryService } from '../../../../service/src/app/service/category.service'; // Adjust path
-import { RouterLink, ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
-import { Category } from '../../../../../category'; // Import your Category class
+import Swal from 'sweetalert2';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router'; // Keep this if used in template
+import { Category } from '../../../../../category';
 
 
 @Component({
@@ -18,9 +20,9 @@ import { Category } from '../../../../../category'; // Import your Category clas
   imports: [
     CommonModule,
     MatCardModule,
-    MatButtonModule,
-    MatIconModule,
     MatTableModule,
+    MatIconModule,
+    MatButtonModule,
     RouterLink
   ],
   templateUrl: './categories.html',
@@ -28,50 +30,50 @@ import { Category } from '../../../../../category'; // Import your Category clas
 })
 export class CategoriesComponent implements OnInit {
 
-  categories: Category[] = []; // Explicitly type categories array
+  categories: Category[] = []; // Type this array
+  displayedColumns: string[] = ['cid', 'title', 'description', 'actions'];
 
-  displayedColumns: string[] = ['cid', 'title', 'description', 'actions']; // Use 'cid' for column definition
-
-  constructor(
-    private categoryService: CategoryService,
-    private snack: MatSnackBar,
-    private route: ActivatedRoute // Inject ActivatedRoute
-  ) { }
+  constructor(private categoryService: CategoryService, private snack: MatSnackBar) { } // Should resolve
 
   ngOnInit(): void {
-    // IMPORTANT FIX: Reload categories every time this component is activated.
-    // This handles cases where categories are added/deleted from other routes.
-    this.route.paramMap.subscribe(() => {
-      this.loadCategories();
-    });
+    this.loadCategories();
   }
 
   loadCategories() {
-    this.categoryService.categories().subscribe({
+    this.categoryService.getCategories().subscribe({
       next: (data: Category[]) => {
         this.categories = data;
-        console.log('Categories loaded:', this.categories);
+        console.log(this.categories);
       },
-      error: (error: any) => {
-        console.error('Error loading categories:', error);
-        this.snack.open('Error loading categories from server', 'Dismiss', { duration: 3000 });
+      error: (error: any) => { // TS7006 fix: added : any
+        console.log(error);
+        Swal.fire('Error !!', 'Error in loading categories', 'error');
       }
     });
   }
 
-  deleteCategory(cid: any) { // Use cid for the parameter
-    if (confirm('Are you sure you want to delete this category?')) {
-      this.categoryService.deleteCategory(cid).subscribe({
-        next: (data: any) => {
-          this.categories = this.categories.filter((category: Category) => category.cid !== cid); // Use cid
-          this.snack.open('Category deleted successfully !!', 'OK', { duration: 3000 });
-        },
-        error: (error: any) => {
-          console.error('Error deleting category:', error);
-          this.snack.open('Error deleting category !!', 'Dismiss', { duration: 3000 });
-        }
-      });
-    }
+  deleteCategory(cid: number) {
+    Swal.fire({
+      icon: 'info',
+      title: 'Are you sure?',
+      confirmButtonText: 'Delete',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.categoryService.deleteCategory(cid).subscribe({
+          next: (data: any) => {
+            this.snack.open('Category Deleted Successfully', 'Ok', {
+              duration: 3000,
+            });
+            this.categories = this.categories.filter((category: any) => category.cid !== cid);
+          },
+          error: (error: any) => { // TS7006 fix: added : any
+            this.snack.open('Error in deleting category', 'Ok', {
+              duration: 3000,
+            });
+          },
+        });
+      }
+    });
   }
-
 }

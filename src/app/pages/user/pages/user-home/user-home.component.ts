@@ -1,14 +1,17 @@
-// src/app/pages/user/user-dashboard/user-home/user-home.component.ts
+// src/app/pages/user/pages/user-home/user-home.component.ts
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBar } from '@angular/material/snack-bar'; // Keep the import for the service
-import { CategoryService } from '../../../service/src/app/service/category.service';
-import { MatGridListModule } from '@angular/material/grid-list';
+import { MatListModule } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 
+// FIX: Import MatGridListModule
+import { MatGridListModule } from '@angular/material/grid-list';
+
+import { CategoryService } from '../../../../service/category.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import Swal from 'sweetalert2';
 import { Category } from '../../../../category';
 
 @Component({
@@ -17,10 +20,9 @@ import { Category } from '../../../../category';
   imports: [
     CommonModule,
     MatCardModule,
-    MatButtonModule,
-    // REMOVED: MatSnackBar from imports array, as it's a service.
-    MatGridListModule,
-    RouterLink
+    MatListModule,
+    RouterLink,
+    MatGridListModule // ADDED
   ],
   templateUrl: './user-home.html',
   styleUrls: ['./user-home.css']
@@ -29,27 +31,17 @@ export class UserHomeComponent implements OnInit {
 
   categories: Category[] = [];
 
-  constructor(
-    private categoryService: CategoryService,
-    private snack: MatSnackBar // MatSnackBar is injected here as a service
-  ) { }
+  constructor(private categoryService: CategoryService, private snack: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.loadCategories();
-  }
-
-  loadCategories() {
-    this.categoryService.categories().subscribe({
+    this.categoryService.getCategories().subscribe({
       next: (data: Category[]) => {
         this.categories = data;
-        console.log('User Home Categories loaded:', this.categories);
-        if (this.categories.length === 0) {
-          this.snack.open('No categories found.', 'Dismiss', { duration: 3000 });
-        }
+        console.log(this.categories);
       },
       error: (error: any) => {
-        console.error('Error loading categories for user home:', error);
-        this.snack.open('Error loading categories from server.', 'Dismiss', { duration: 3000 });
+        console.log(error);
+        Swal.fire('Error !!', 'Error in loading categories from server', 'error');
       }
     });
   }

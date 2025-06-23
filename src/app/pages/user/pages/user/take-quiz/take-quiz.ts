@@ -1,21 +1,26 @@
 // src/app/pages/user/pages/user/take-quiz/take-quiz.ts
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { LocationStrategy } from '@angular/common';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import Swal from 'sweetalert2';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { QuizService } from '../../../../service/src/app/service/quiz.service';
-import { QuestionService } from '../../../../service/src/app/service/question.service';
-import { Quiz } from '../../../../../quiz';
-import { Question } from '../../../../../question';
-import { QuizSubmissionRequest } from '../../../../../quiz-submission-request';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { NgxUiLoaderModule, NgxUiLoaderService } from 'ngx-ui-loader';
+
+import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+// FIX: Import MatProgressBarModule
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+import { QuizService } from '../../../../../service/quiz.service';
+import { QuestionService } from '../../../../../service/question.service';
+import { Question } from '../../../../../question';
+import { Quiz } from '../../../../../quiz';
 
 
 @Component({
@@ -24,146 +29,151 @@ import { MatDividerModule } from '@angular/material/divider';
   imports: [
     CommonModule,
     MatCardModule,
-    MatProgressBarModule,
-    MatButtonModule,
     MatRadioModule,
     FormsModule,
-    MatIconModule,
-    MatDividerModule
+    MatButtonModule,
+    NgxUiLoaderModule,
+    MatListModule,
+    MatDividerModule,
+    MatProgressBarModule // ADDED
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Keep if still needed for ngx-ui-loader
   templateUrl: './take-quiz.html',
   styleUrls: ['./take-quiz.css']
 })
-export class TakeQuizComponent implements OnInit, OnDestroy {
+export class TakeQuizComponent implements OnInit {
 
-  qId: number | undefined;
+  qId: number = 0;
+  quizTitle: string = '';
   questions: Question[] = [];
-  quiz: Quiz | undefined;
   timer: any;
-  minutes: number = 0;
-  seconds: number = 0;
-  currentQuestionIndex: number = 0; // **CRITICAL FIX: Added for progress tracking**
 
-  isSubmit: boolean = false;
-
-  // Result variables
   marksGot: number = 0;
   correctAnswers: number = 0;
   attempted: number = 0;
 
+  isSubmit: boolean = false;
+  // FIX: Add currentQuestionIndex property
+  currentQuestionIndex: number = 0;
+  // FIX: Add quiz property to hold the full quiz object
+  quiz: Quiz | undefined;
+
+
   constructor(
+    private locationSt: LocationStrategy,
     private route: ActivatedRoute,
-    private quizService: QuizService,
+    private quizService: QuizService, // To fetch quiz details
     private questionService: QuestionService,
     private snack: MatSnackBar,
-    private router: Router
+    private ngxService: NgxUiLoaderService
   ) { }
 
   ngOnInit(): void {
-    this.qId = Number(this.route.snapshot.paramMap.get('quizId'));
-    this.loadQuestions();
-  }
+    this.preventBackButton();
 
-  ngOnDestroy(): void {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-  }
-
-  loadQuestions(): void {
-    this.quizService.getQuiz(this.qId!).subscribe({
-      next: (quizData: Quiz) => {
-        this.quiz = quizData;
-        console.log('Quiz loaded for take-quiz:', this.quiz);
-
-        this.questionService.getQuestionsOfQuizForUser(this.qId!).subscribe({
-          next: (questionsData: Question[]) => {
-            this.questions = questionsData;
-            console.log('Questions for user loaded:', this.questions);
-
-            this.questions.forEach(q => {
-              q.givenAnswer = '';
-            });
-
-            this.minutes = Number(this.quiz?.numberOfQuestions) * 2;
-            this.seconds = 0;
-            this.startTimer();
-
-          },
-          error: (error) => {
-            console.error('Error loading questions for user:', error);
-            this.snack.open('Error loading questions for quiz!', 'Dismiss', { duration: 3000 });
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Error loading quiz details in take-quiz:', error);
-        this.snack.open('Error loading quiz details!', 'Dismiss', { duration: 3000 });
-        this.router.navigate(['/user/0']);
+    this.route.paramMap.subscribe(params => {
+      const qIdParam = params.get('qId');
+      if (qIdParam) {
+        this.qId = +qIdParam;
+        this.loadQuizDetails(); // Load quiz details first
+      } else {
+        this.snack.open('Quiz ID not found in route.', 'Dismiss', { duration: 3000 });
+        return;
       }
     });
   }
 
-  startTimer(): void {
-    let t = window.setInterval(() => {
-      if (this.seconds <= 0) {
-        if (this.minutes <= 0) {
-          this.submitQuiz(); // Auto-submit when time runs out
-          clearInterval(t);
+  loadQuizDetails(): void {
+    this.quizService.getQuiz(this.qId).subscribe({
+      next: (data: Quiz) => {
+        this.quiz = data;
+        this.quizTitle = data.title || 'Unknown Quiz'; // Set quizTitle from loaded quiz
+        this.loadQuestions(); // Load questions after quiz details are loaded
+      },
+      error: (error: any) => {
+        console.error('Error loading quiz details:', error);
+        this.snack.open('Error loading quiz details for quiz.', 'Dismiss', { duration: 3000 });
+      }
+    });
+  }
+
+  loadQuestions() {
+    this.ngxService.start();
+    this.questionService.getQuestionsOfQuizForUser(this.qId).subscribe({
+      next: (data: Question[]) => {
+        this.questions = data;
+        if (this.questions.length > 0 && this.quiz?.numberOfQuestions) { // Use this.quiz for numberOfQuestions
+          const totalTimeMinutes = this.quiz.numberOfQuestions * 2; // Use this.quiz.numberOfQuestions
+          this.timer = totalTimeMinutes * 60;
+          this.startTimer();
         } else {
-          this.minutes--;
-          this.seconds = 59;
+          this.timer = 0;
         }
+        this.ngxService.stop();
+        console.log('Questions for user:', this.questions);
+      },
+      error: (error: any) => {
+        console.error('Error loading questions for user:', error);
+        Swal.fire('Error', 'Error in loading questions of quiz', 'error');
+        this.ngxService.stop();
+      }
+    });
+  }
+
+  preventBackButton() {
+    history.pushState(null, '', location.href);
+    this.locationSt.onPopState(() => {
+      history.pushState(null, '', location.href);
+    });
+  }
+
+  submitQuiz() {
+    Swal.fire({
+      title: 'Do you want to submit the quiz?',
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      icon: 'info'
+    }).then((e) => {
+      if (e.isConfirmed) {
+        this.evalQuiz();
+      }
+    });
+  }
+
+  startTimer() {
+    let t = window.setInterval(() => {
+      if (this.timer <= 0) {
+        this.evalQuiz();
+        clearInterval(t);
       } else {
-        this.seconds--;
+        this.timer--;
       }
     }, 1000);
-    this.timer = t;
   }
 
-  formatTime(): string {
-    let min = this.minutes < 10 ? '0' + this.minutes : this.minutes.toString();
-    let sec = this.seconds < 10 ? '0' + this.seconds : this.seconds.toString();
-    return `${min}:${sec}`;
+  // FIX: Rename to getFormattedTime to match HTML
+  getFormattedTime() {
+    let minutes = Math.floor(this.timer / 60);
+    let seconds = this.timer - minutes * 60;
+    return `${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds}`;
   }
 
-  submitQuiz(): void {
-    if (this.isSubmit) {
-      return;
-    }
-
-    if (confirm('Are you sure you want to submit the quiz?')) {
-      this.isSubmit = true;
-      clearInterval(this.timer);
-
-      const submissionRequest: QuizSubmissionRequest = {
-        quizId: this.qId,
-        userAnswers: this.questions
-      };
-
-      this.questionService.evalQuiz(submissionRequest).subscribe({
-        next: (data: any) => {
-          console.log('Quiz Evaluation Result:', data);
-          this.marksGot = parseFloat(data.marksGot);
-          this.correctAnswers = data.correctAnswers;
-          this.attempted = data.attempted;
-
-          this.router.navigate(['/user/result'], {
-            state: {
-              marksGot: this.marksGot,
-              correctAnswers: this.correctAnswers,
-              attempted: this.attempted,
-              totalQuestions: this.questions.length,
-              quizTitle: this.quiz?.title
-            }
-          });
-        },
-        error: (error) => {
-          console.error('Error evaluating quiz:', error);
-          this.snack.open('Error evaluating quiz. Server Error!', 'Dismiss', { duration: 3000 });
-          this.isSubmit = false;
-        }
-      });
-    }
+  evalQuiz() {
+    this.ngxService.start();
+    this.questionService.evalQuiz(this.questions).subscribe({
+      next: (data: any) => {
+        console.log('Quiz Evaluation Results:', data);
+        this.marksGot = parseFloat(Number(data.marksGot).toFixed(2));
+        this.correctAnswers = data.correctAnswers;
+        this.attempted = data.attempted;
+        this.isSubmit = true;
+        this.ngxService.stop();
+      },
+      error: (error: any) => {
+        console.error('Error evaluating quiz:', error);
+        Swal.fire('Error', 'Error in evaluating quiz', 'error');
+        this.ngxService.stop();
+      }
+    });
   }
 }

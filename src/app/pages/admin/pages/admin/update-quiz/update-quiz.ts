@@ -2,43 +2,50 @@
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { CategoryService } from '../../../../service/src/app/service/category.service';
-import { QuizService } from '../../../../service/src/app/service/quiz.service';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { CategoryService } from '../../../../../service/category.service';
+import { QuizService } from '../../../../../service/quiz.service';
+import Swal from 'sweetalert2';
 import { Quiz } from '../../../../../quiz';
 import { Category } from '../../../../../category';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatDividerModule } from '@angular/material/divider'; // Add MatDividerModule if used in HTML
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'; // Ensure MatSlideToggleModule is imported
+
 
 @Component({
   selector: 'app-update-quiz',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
-    MatSelectModule,
-    MatSlideToggleModule,
     MatButtonModule,
-    MatSnackBarModule,
-    MatDividerModule // Include MatDividerModule
+    MatSelectModule,
+    FormsModule,
+    MatSlideToggleModule // Add MatSlideToggleModule
   ],
   templateUrl: './update-quiz.html',
   styleUrls: ['./update-quiz.css']
 })
 export class UpdateQuizComponent implements OnInit {
 
-  quizId: number | undefined;
-  quizData: Quiz = new Quiz();
+  qId: number = 0;
+  quiz: Quiz = {
+    title: '',
+    description: '',
+    maxMarks: 0,
+    numberOfQuestions: 0,
+    active: false,
+    category: undefined
+  };
   categories: Category[] = [];
 
   constructor(
@@ -50,21 +57,38 @@ export class UpdateQuizComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.quizId = Number(this.route.snapshot.paramMap.get('quizId'));
-
-    this.quizService.getQuiz(this.quizId).subscribe({
-      next: (data: Quiz) => {
-        this.quizData = data;
-        console.log('Quiz data loaded for update:', this.quizData);
-      },
-      error: (error: any) => {
-        console.error('Error loading quiz for update:', error);
-        this.snack.open('Error loading quiz for update!', 'Dismiss', { duration: 3000 });
+    this.route.paramMap.subscribe(params => {
+      const qIdParam = params.get('qId');
+      if (qIdParam) {
+        this.qId = +qIdParam;
+        this.loadQuizData();
+      } else {
+        this.snack.open('Quiz ID not found in route.', 'Dismiss', { duration: 3000 });
         this.router.navigate(['/admin/quizzes']);
       }
     });
 
-    this.categoryService.categories().subscribe({
+    this.loadCategories();
+  }
+
+  loadQuizData(): void {
+    this.quizService.getQuiz(this.qId).subscribe({
+      next: (data: Quiz) => {
+        this.quiz = data;
+        this.quiz.maxMarks = data.maxMarks ?? 0;
+        this.quiz.numberOfQuestions = data.numberOfQuestions ?? 0;
+        console.log('Loaded Quiz:', this.quiz);
+      },
+      error: (error: any) => {
+        console.error('Error loading quiz:', error);
+        this.snack.open('Error loading quiz details!', 'Dismiss', { duration: 3000 });
+        this.router.navigate(['/admin/quizzes']);
+      }
+    });
+  }
+
+  loadCategories(): void {
+    this.categoryService.getCategories().subscribe({
       next: (data: Category[]) => {
         this.categories = data;
       },
@@ -75,45 +99,39 @@ export class UpdateQuizComponent implements OnInit {
     });
   }
 
-  compareCategories(c1: Category, c2: Category): boolean {
-    return c1 && c2 ? c1.cid === c2.cid : c1 === c2;
-  }
-
-  updateQuiz(): void {
-    if (!this.quizData.title || this.quizData.title.trim() === '') {
-      this.snack.open('Title is required!', 'Dismiss', { duration: 3000 });
+  public updateQuizSubmit(): void {
+    if (this.quiz.title.trim() === '' || this.quiz.description.trim() === '') {
+      this.snack.open('Title and Description are required!', 'Dismiss', { duration: 3000 });
       return;
     }
-    if (!this.quizData.description || this.quizData.description.trim() === '') {
-      this.snack.open('Description is required!', 'Dismiss', { duration: 3000 });
-      return;
+    if (this.quiz.maxMarks === undefined || this.quiz.maxMarks <= 0) {
+        this.snack.open('Max Marks must be greater than 0!', 'Dismiss', { duration: 3000 });
+        return;
     }
-    if (this.quizData.maxMarks === undefined || this.quizData.maxMarks <= 0) {
-      this.snack.open('Maximum Marks must be a positive number!', 'Dismiss', { duration: 3000 });
-      return;
+    if (this.quiz.numberOfQuestions === undefined || this.quiz.numberOfQuestions <= 0) {
+        this.snack.open('Number of Questions must be greater than 0!', 'Dismiss', { duration: 3000 });
+        return;
     }
-    if (this.quizData.numberOfQuestions === undefined || this.quizData.numberOfQuestions <= 0) {
-      this.snack.open('Number of Questions must be a positive number!', 'Dismiss', { duration: 3000 });
-      return;
-    }
-    if (!this.quizData.category || this.quizData.category.cid === undefined) {
-      this.snack.open('Category is required!', 'Dismiss', { duration: 3000 });
+    if (!this.quiz.category || !this.quiz.category.cid) {
+      this.snack.open('Category must be selected!', 'Dismiss', { duration: 3000 });
       return;
     }
 
-    this.quizService.updateQuiz(this.quizData).subscribe({
+    this.quizService.updateQuiz(this.quiz).subscribe({
       next: (data: Quiz) => {
-        this.snack.open('Quiz updated successfully!', 'OK', {
-          duration: 3000, verticalPosition: 'top', horizontalPosition: 'right', panelClass: ['success-snackbar']
+        Swal.fire('Success', 'Quiz updated successfully!', 'success').then((e) => {
+          this.router.navigate(['/admin/quizzes']);
         });
-        this.router.navigate(['/admin/quizzes']);
       },
       error: (error: any) => {
         console.error('Error updating quiz:', error);
-        this.snack.open('Error updating quiz! Server error.', 'Dismiss', {
-          duration: 3000, verticalPosition: 'top', horizontalPosition: 'right', panelClass: ['error-snackbar']
-        });
+        Swal.fire('Error', 'Error updating quiz!', 'error');
       }
     });
+  }
+
+  // FIX: Define compareFn in TypeScript
+  compareFn(o1: Category, o2: Category): boolean {
+    return o1 && o2 ? o1.cid === o2.cid : o1 === o2;
   }
 }

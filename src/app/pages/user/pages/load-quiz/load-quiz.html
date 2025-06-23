@@ -1,59 +1,39 @@
 <!-- src/app/pages/user/pages/load-quiz/load-quiz.html -->
-
 <div class="bootstrap-wrapper">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-3">
-        <mat-card class="mt20">
-          <mat-list>
-            <mat-list-item [routerLink]="['/user/0']">
-              <mat-icon matListItemIcon>list</mat-icon>
-              <div matListItemTitle>All Quizzes</div>
-            </mat-list-item>
-            <mat-divider></mat-divider>
-            <mat-list-item [routerLink]="['/user/category', c.cid]" *ngFor="let c of categories">
-              <mat-icon matListItemIcon>category</mat-icon>
-              <div matListItemTitle>{{ c.title }}</div>
-            </mat-list-item>
-          </mat-list>
-        </mat-card>
+    <div class="row mt20">
+      <div class="col-md-12">
+        <h1 class="text-center">Available Quizzes</h1>
       </div>
-      <div class="col-md-9">
-        <mat-card class="mt20" *ngFor="let q of quizzes">
+      <div class="col-md-12">
+        <mat-card *ngFor="let q of quizzes" class="mt20">
           <mat-card-header>
-            <mat-card-title>
-              {{ q.title }}
-            </mat-card-title>
-            <mat-card-subtitle>
-              {{ q.category?.title }}
-            </mat-card-subtitle>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{ q.title }}</mat-card-title>
+            <mat-card-subtitle>{{ q.category ? q.category.title : 'General' }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
             <p>{{ q.description }}</p>
             <div class="container-fluid">
               <div class="row">
-                <div class="col-md-4">
-                  <b>Questions:</b> {{ q.numberOfQuestions }}
+                <div class="col-md-6">
+                  <b>Questions: </b> {{ q.numberOfQuestions }}
                 </div>
-                <div class="col-md-4">
-                  <b>Marks:</b> {{ q.maxMarks }}
-                </div>
-                <div class="col-md-4">
-                  <b>Status:</b> {{ q.active ? 'Active' : 'Inactive' }}
+                <div class="col-md-6">
+                  <b>M.M: </b> {{ q.maxMarks }}
                 </div>
               </div>
             </div>
-            <div class="buttons text-center mt20">
-              <button mat-raised-button color="primary" [routerLink]="['/user/take-quiz', q.qid]">Start</button>
-              <button mat-raised-button color="accent" class="ml10">View</button>
-            </div>
           </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" [routerLink]="['/user/take-quiz', q.qid]">Start</button>
+            <button mat-raised-button color="accent">View</button>
+          </mat-card-actions>
         </mat-card>
+
         <div class="col-md-12 text-center" *ngIf="quizzes.length === 0">
           <mat-card>
-            <mat-card-content>
-              <h1>No quizzes found in this category!</h1>
-            </mat-card-content>
+            <h1>No quizzes in this category.</h1>
           </mat-card>
         </div>
       </div>

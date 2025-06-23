@@ -1,14 +1,21 @@
-// src/app/pages/user/user-dashboard/user-quizzes/user-quizzes.component.ts
+// src/app/pages/user/pages/user-quizzes/user-quizzes.component.ts
 
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { QuizService } from '../../../service/src/app/service/quiz.service';
+import Swal from 'sweetalert2';
+
+// Import MatListModule (already added in previous step)
 import { MatListModule } from '@angular/material/list';
+// FIX: Import MatChipsModule for mat-chip-listbox and mat-chip-option
 import { MatChipsModule } from '@angular/material/chips';
-import { ActivatedRoute, RouterLink, ParamMap } from '@angular/router'; // IMPORTANT: Import ParamMap
+
+
+import { QuizService } from '../../../../service/quiz.service';
+import { Quiz } from '../../../../quiz';
 
 
 @Component({
@@ -18,67 +25,60 @@ import { ActivatedRoute, RouterLink, ParamMap } from '@angular/router'; // IMPOR
     CommonModule,
     MatCardModule,
     MatButtonModule,
+    RouterLink,
     MatListModule,
-    MatChipsModule,
-    RouterLink
+    MatChipsModule // FIX: Added MatChipsModule here
   ],
   templateUrl: './user-quizzes.html',
   styleUrls: ['./user-quizzes.css']
 })
 export class UserQuizzesComponent implements OnInit {
 
-  quizzes: any[] = [];
-  cid: number | null = null;
+  catId: number = 0;
+  quizzes: Quiz[] = [];
 
   constructor(
+    private route: ActivatedRoute,
     private quizService: QuizService,
-    private snack: MatSnackBar,
-    private route: ActivatedRoute // Injected ActivatedRoute
+    private snack: MatSnackBar
   ) { }
 
   ngOnInit(): void {
-    // FIX 1: Explicitly type 'params' as ParamMap
-    // FIX 2: Ensure categoryId is converted to a number using the '+' unary operator
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      const categoryId = params.get('cid');
-      if (categoryId) {
-        this.cid = +categoryId; // Use unary '+' operator to convert string to number
-        this.loadQuizzesByCategory(this.cid);
+    this.route.paramMap.subscribe(params => {
+      const catIdParam = params.get('catId');
+      if (catIdParam) {
+        this.catId = +catIdParam;
       } else {
-        this.loadActiveQuizzes();
+        this.snack.open('Category ID not found in route.', 'Dismiss', { duration: 3000 });
       }
+
+      this.loadQuizzes();
     });
   }
 
-  loadActiveQuizzes() {
-    this.quizService.getActiveQuizzes().subscribe({
-      next: (data: any[]) => {
-        this.quizzes = data;
-        console.log('User Quizzes loaded:', this.quizzes);
-        if (this.quizzes.length === 0) {
-          this.snack.open('No active quizzes found.', 'Dismiss', { duration: 3000 });
+  loadQuizzes(): void {
+    if (this.catId === 0) {
+      this.quizService.getActiveQuizzes().subscribe({
+        next: (data: Quiz[]) => {
+          this.quizzes = data;
+          console.log('All active quizzes (User Quizzes):', this.quizzes);
+        },
+        error: (error: any) => {
+          console.error('Error loading all active quizzes (User Quizzes):', error);
+          Swal.fire('Error !!', 'Error in loading all active quizzes', 'error');
         }
-      },
-      error: (error: any) => {
-        console.error('Error loading quizzes for user:', error);
-        this.snack.open('Error loading quizzes from server.', 'Dismiss', { duration: 3000 });
-      }
-    });
-  }
-
-  loadQuizzesByCategory(cid: number) {
-    this.quizService.getActiveQuizzesOfCategory(cid).subscribe({
-      next: (data: any[]) => {
-        this.quizzes = data;
-        console.log(`User Quizzes for category ${cid} loaded:`, this.quizzes);
-        if (this.quizzes.length === 0) {
-          this.snack.open(`No active quizzes found for this category.`, 'Dismiss', { duration: 3000 });
+      });
+    } else {
+      this.quizService.getActiveQuizzesOfCategory(this.catId).subscribe({
+        next: (data: Quiz[]) => {
+          this.quizzes = data;
+          console.log('Active quizzes by category (User Quizzes):', this.quizzes);
+        },
+        error: (error: any) => {
+          console.error('Error loading active quizzes by category (User Quizzes):', error);
+          Swal.fire('Error !!', 'Error in loading quizzes by category', 'error');
         }
-      },
-      error: (error: any) => {
-        console.error(`Error loading quizzes for category ${cid}:`, error);
-        this.snack.open('Error loading quizzes for this category from server.', 'Dismiss', { duration: 3000 });
-      }
-    });
+      });
+    }
   }
 }

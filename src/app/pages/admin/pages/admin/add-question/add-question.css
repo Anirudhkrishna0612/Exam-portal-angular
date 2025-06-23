@@ -1,92 +1,143 @@
-/* src/app/pages/admin/add-question/add-question.css */
+/* src/app/pages/admin/pages/admin/add-question/add-question.css */
 
-mat-card {
-    margin: 20px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+.add-question-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100%;
+  padding: 0; /* Padding handled by parent .main-content */
+  box-sizing: border-box;
+  width: 100%; /* Ensure it takes full width */
 }
 
-h1 {
-    color: #3F51B5; /* Primary color */
-    font-family: 'Righteous', cursive;
-    margin-bottom: 15px;
-    font-size: 2em;
+/* The .add-question-card is also a .content-card. It will now naturally expand. */
+
+
+.mat-card-header {
+  padding: 0 0 25px 0;
+  display: block;
 }
 
-mat-divider {
-    margin: 15px 0;
-    border-top-color: #e0e0e0;
+/* card-title and card-subtitle styles are inherited from dashboard.css */
+
+.card-content {
+  padding: 0; /* Ensures inner content uses padding from .add-question-card */
+}
+
+.question-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px; /* Space between form fields */
+  width: 100%; /* Ensure form takes full width of card content area */
+  max-width: 800px; /* Optional: Set a max-width for the form itself if it looks too stretched */
+  margin: 0 auto; /* Center the form within the card if max-width is applied */
 }
 
 .full-width {
-    width: 100%;
+  width: 100%;
 }
 
-.text-center {
-    text-align: center;
+.row-fields {
+  display: flex;
+  gap: 25px; /* Space between fields in a row */
+  width: 100%;
 }
 
-.mt20 {
-    margin-top: 20px !important;
+.flex-field {
+  flex: 1; /* Each field in a row takes equal space */
 }
 
-.mb20 {
-    margin-bottom: 20px !important;
+.mat-form-field {
+  margin-bottom: 0 !important; /* Remove default margin to use gap for spacing */
+  font-size: 1.1em; /* Consistent font size for form fields */
 }
 
-.ml10 {
-    margin-left: 10px !important;
+/* Styling for input elements */
+.mat-input-element,
+textarea {
+  color: #333333;
 }
 
-/* Styles for the CKEditor container */
-.ck-editor__editable_inline {
-    min-height: 200px; /* Adjust height as needed */
-    border: 1px solid #c0c0c0;
-    border-radius: 4px;
-    padding: 10px;
-    background-color: #fff;
+.mat-label {
+  color: #666666;
 }
 
-/* Styles for the MatFormField containing CKEditor to integrate it better */
-mat-form-field.full-width .mat-form-field-wrapper {
-    padding-bottom: 0; /* Remove default padding that might misalign editor */
-}
-mat-form-field.full-width .mat-form-field-flex {
-    align-items: flex-start; /* Align label/content to top */
+/* Material design colors for underline/ripple on focus */
+.mat-form-field-underline,
+.mat-form-field-ripple {
+  background-color: #3f51b5 !important;
 }
 
-/* Row and column styles for responsive layout */
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: -15px; /* Compensate for column padding */
-    margin-right: -15px; /* Compensate for column padding */
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #3f51b5 !important;
 }
 
-.col-md-6 {
-    flex: 0 0 50%;
-    max-width: 50%;
-    padding-left: 15px;
-    padding-right: 15px;
-    box-sizing: border-box; /* Include padding in width calculation */
+/* MatSelect styling for the answer dropdown */
+.mat-select-value {
+  color: #333333;
 }
 
-/* Responsive adjustment for smaller screens */
+.mat-select-arrow {
+  color: #666666;
+}
+
+.mat-option {
+  color: #333333;
+}
+
+.mat-option.mat-selected:not(.mat-option-multiple) {
+  background-color: rgba(63, 81, 181, 0.1);
+  color: #3f51b5;
+}
+
+.mat-option.mat-active {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px; /* Space above button */
+}
+
+.mat-raised-button {
+  padding: 12px 40px;
+  font-size: 1.2em;
+  border-radius: 8px;
+  background-color: #3f51b5;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.mat-raised-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
-    .col-md-6 {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-}
-
-/* Custom snackbar styles for success and error messages */
-.success-snackbar {
-    background-color: #4CAF50 !important; /* Green */
-    color: white !important;
-}
-
-.error-snackbar {
-    background-color: #F44336 !important; /* Red */
-    color: white !important;
+  .add-question-card {
+    padding: 20px;
+    max-width: 100%;
+  }
+  .question-form {
+    gap: 20px;
+    max-width: 100%;
+  }
+  .row-fields {
+    flex-direction: column; /* Stack fields vertically on mobile */
+    gap: 0; /* Remove horizontal gap when stacked */
+  }
+  .flex-field {
+    width: 100%;
+  }
+  .mat-form-field {
+    margin-bottom: 15px; /* Re-introduce margin for stacked fields */
+    font-size: 1em;
+  }
+  .button-container .mat-raised-button {
+    width: 100%;
+  }
 }

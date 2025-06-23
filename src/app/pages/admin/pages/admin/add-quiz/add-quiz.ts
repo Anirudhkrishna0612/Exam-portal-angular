@@ -1,19 +1,22 @@
-// src/app/pages/admin/pages/admin/add-quiz/add-quiz.component.ts
+// src/app/pages/admin/pages/admin/add-quiz/add-quiz.ts
 
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // For NgIf, NgFor
-import { FormsModule } from '@angular/forms'; // For ngModel
+import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input'; // For MatInput
-import { MatFormFieldModule } from '@angular/material/form-field'; // For MatFormField
-import { MatButtonModule } from '@angular/material/button'; // For MatButton
-import { MatSnackBar } from '@angular/material/snack-bar'; // For MatSnackBar notifications
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { CategoryService } from '../../../../service/src/app/service/category.service'; // Adjust path based on your service location
-import { QuizService } from '../../../../service/src/app/service/quiz.service'; // Adjust path
-import { Router } from '@angular/router'; // For navigation
-import { Category } from '../../../../../category';// <<< IMPORTANT: Updated import path and using your class
+
+// Corrected import paths based on the 'service' folder now being directly under 'src/app'
+import { QuizService } from '../../../../../service/quiz.service';
+import { CategoryService } from '../../../../../service/category.service';
+import { Quiz } from '../../../../../quiz';
+import { Category } from '../../../../../category';
+
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -21,12 +24,11 @@ import { Category } from '../../../../../category';// <<< IMPORTANT: Updated imp
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatSlideToggleModule,
+    FormsModule,
     MatSelectModule
   ],
   templateUrl: './add-quiz.html',
@@ -34,72 +36,78 @@ import { Category } from '../../../../../category';// <<< IMPORTANT: Updated imp
 })
 export class AddQuizComponent implements OnInit {
 
-  quiz = {
+  categories: Category[] = [];
+
+  quizData: Quiz = {
     title: '',
     description: '',
     maxMarks: 0,
     numberOfQuestions: 0,
     active: false,
-    // IMPORTANT: Initializing category using the properties from your Category class
-    // and correctly setting 'cid' to null.
-    category: new Category() // Initialize as an instance of your Category class
+    category: undefined
   };
 
-  categories: Category[] = []; // Explicitly type categories array as Category[]
-
   constructor(
-    private categoryService: CategoryService,
-    private quizService: QuizService,
-    private snack: MatSnackBar,
-    private router: Router
+    private quizService: QuizService, // Should resolve after path fix
+    private categoryService: CategoryService, // Should resolve after path fix
+    private snack: MatSnackBar
   ) { }
 
   ngOnInit(): void {
-    // Ensure the default cid is null/undefined for the dropdown to show "Select Category" initially
-    this.quiz.category.cid = undefined; // Initialize with undefined for proper dropdown behavior
-
-    // Load categories when component initializes
-    this.categoryService.categories().subscribe({
-      next: (data: Category[]) => { // Type the incoming data as Category[]
+    this.categoryService.getCategories().subscribe({
+      next: (data: Category[]) => {
         this.categories = data;
-        console.log('Categories loaded:', this.categories);
+        console.log(this.categories);
       },
-      error: (error: any) => {
+      error: (error: any) => { // TS7006 fix: added : any
         console.error('Error loading categories:', error);
-        this.snack.open('Error loading categories from server', 'Dismiss', { duration: 3000 });
+        this.snack.open('Error loading categories from server!', 'Dismiss', {
+          duration: 3000
+        });
       }
     });
   }
 
-  formSubmit() {
-    if (this.quiz.title.trim() === '' || this.quiz.title === null) {
-      this.snack.open('Quiz Title Required !!', 'Dismiss', { duration: 3000 });
-      return;
-    }
-    // Check if category is selected by cid (using your Category class's property name)
-    if (this.quiz.category.cid === null || this.quiz.category.cid === undefined) {
-      this.snack.open('Please select a category !!', 'Dismiss', { duration: 3000 });
+  addQuiz() {
+    if (this.quizData.title.trim() === '' || this.quizData.description.trim() === '') {
+      this.snack.open('Title and Description are required!', 'Dismiss', { duration: 3000 });
       return;
     }
 
-    // Add quiz
-    this.quizService.addQuiz(this.quiz).subscribe({
+    if (this.quizData.maxMarks === undefined || this.quizData.maxMarks <= 0) {
+      this.snack.open('Max Marks must be greater than 0!', 'Dismiss', { duration: 3000 });
+      return;
+    }
+
+    if (this.quizData.numberOfQuestions === undefined || this.quizData.numberOfQuestions <= 0) {
+      this.snack.open('Number of Questions must be greater than 0!', 'Dismiss', { duration: 3000 });
+      return;
+    }
+
+    if (!this.quizData.category || !this.quizData.category.cid) {
+      this.snack.open('Category must be selected!', 'Dismiss', { duration: 3000 });
+      return;
+    }
+
+    this.quizService.addQuiz(this.quizData).subscribe({
       next: (data: any) => {
-        this.snack.open('Quiz added successfully !!', 'OK', { duration: 3000 });
-        this.quiz = { // Reset form to initial state with correct types and Category instance
+        this.snack.open('Quiz added successfully!', 'OK', {
+          duration: 3000
+        });
+        this.quizData = {
           title: '',
           description: '',
           maxMarks: 0,
           numberOfQuestions: 0,
           active: false,
-          category: new Category() // Reset as a new Category instance
+          category: undefined
         };
-        this.quiz.category.cid = undefined; // Ensure dropdown resets correctly
-        this.router.navigate(['/admin/quizzes']); // Navigate back to view quizzes
       },
-      error: (error: any) => {
+      error: (error: any) => { // TS7006 fix: added : any
         console.error('Error adding quiz:', error);
-        this.snack.open('Something went wrong !!', 'Dismiss', { duration: 3000 });
+        this.snack.open('Error adding quiz to server!', 'Dismiss', {
+          duration: 3000
+        });
       }
     });
   }

@@ -1,16 +1,21 @@
-// src/app/pages/admin/pages/admin/quizzes/quizzes.component.ts
+// src/app/pages/admin/pages/admin/quizzes/quizzes.ts
 
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // For NgIf, NgFor
+import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table'; // For MatTable
+import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { QuizService } from '../../../../service/src/app/service/quiz.service'; // Adjust path
-import { RouterLink } from '@angular/router'; // For routerLink in HTML
-import { MatChipsModule } from '@angular/material/chips'; // IMPORTANT: This was missing in imports
+import Swal from 'sweetalert2';
+import { RouterLink } from '@angular/router';
 
+// FIX: Import MatListModule and MatSlideToggleModule
+import { MatListModule } from '@angular/material/list';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
+import { QuizService } from '../../../../../service/quiz.service';
+import { Quiz } from '../../../../../quiz';
 
 @Component({
   selector: 'app-quizzes',
@@ -18,20 +23,20 @@ import { MatChipsModule } from '@angular/material/chips'; // IMPORTANT: This was
   imports: [
     CommonModule,
     MatCardModule,
-    MatButtonModule,
+    MatTableModule,
     MatIconModule,
-    MatTableModule, // Add to imports
-    MatChipsModule, // ADDED: Required for mat-chip-listbox and mat-chip-option
-    RouterLink // Add to imports if using routerLink
+    MatButtonModule,
+    RouterLink,
+    MatListModule, // ADDED
+    MatSlideToggleModule // ADDED
   ],
   templateUrl: './quizzes.html',
   styleUrls: ['./quizzes.css']
 })
 export class QuizzesComponent implements OnInit {
 
-  quizzes: any = []; // Initialize as an empty array
-
-  displayedColumns: string[] = ['qId', 'title', 'description', 'maxMarks', 'numberOfQuestions', 'category', 'active', 'actions'];
+  quizzes: Quiz[] = [];
+  displayedColumns: string[] = ['qid', 'title', 'description', 'maxMarks', 'numberOfQuestions', 'active', 'category', 'actions'];
 
   constructor(private quizService: QuizService, private snack: MatSnackBar) { }
 
@@ -40,31 +45,69 @@ export class QuizzesComponent implements OnInit {
   }
 
   loadQuizzes() {
-    this.quizService.quizzes().subscribe({
-      next: (data: any) => {
+    this.quizService.getQuizzes().subscribe({
+      next: (data: Quiz[]) => {
         this.quizzes = data;
-        console.log('Quizzes loaded:', this.quizzes);
+        console.log(this.quizzes);
       },
       error: (error: any) => {
         console.error('Error loading quizzes:', error);
-        this.snack.open('Error loading quizzes from server', 'Dismiss', { duration: 3000 });
+        Swal.fire('Error !!', 'Error in loading quizzes', 'error');
       }
     });
   }
 
-  deleteQuiz(qId: any) {
-    if (confirm('Are you sure you want to delete this quiz?')) { // Using confirm as requested
-      this.quizService.deleteQuiz(qId).subscribe({
-        next: (data: any) => {
-          this.quizzes = this.quizzes.filter((quiz: any) => quiz.qId !== qId);
-          this.snack.open('Quiz deleted successfully !!', 'OK', { duration: 3000 });
-        },
-        error: (error: any) => {
-          console.error('Error deleting quiz:', error);
-          this.snack.open('Error deleting quiz !!', 'Dismiss', { duration: 3000 });
-        }
-      });
+  deleteQuiz(qid: number | undefined) { // FIX: Allow qid to be undefined here
+    if (qid === undefined) { // Ensure qid is not undefined before proceeding
+      this.snack.open('Error: Quiz ID is missing for deletion.', 'Dismiss', { duration: 3000 });
+      return;
     }
+    Swal.fire({
+      icon: 'info',
+      title: 'Are you sure?',
+      confirmButtonText: 'Delete',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.quizService.deleteQuiz(qid).subscribe({
+          next: (data: any) => {
+            this.snack.open('Quiz Deleted Successfully', 'Ok', {
+              duration: 3000,
+            });
+            this.quizzes = this.quizzes.filter((quiz) => quiz.qid !== qid);
+          },
+          error: (error: any) => {
+            this.snack.open('Error in deleting quiz', 'Ok', {
+              duration: 3000,
+            });
+          },
+        });
+      }
+    });
   }
 
+  updateQuizStatus(quiz: Quiz) {
+    const newStatus = !quiz.active;
+    Swal.fire({
+      title: `Confirm change status to ${newStatus ? 'active' : 'inactive'} for "${quiz.title}"?`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedQuizData = { ...quiz, active: newStatus };
+        this.quizService.updateQuiz(updatedQuizData).subscribe({
+          next: (response: Quiz) => {
+            quiz.active = response.active;
+            this.snack.open(`Quiz "${quiz.title}" is now ${newStatus ? 'active' : 'inactive'}`, 'Dismiss', { duration: 3000 });
+          },
+          error: (error: any) => {
+            console.error('Error updating quiz status:', error);
+            this.snack.open('Failed to update quiz status.', 'Dismiss', { duration: 3000 });
+          }
+        });
+      }
+    });
+  }
 }

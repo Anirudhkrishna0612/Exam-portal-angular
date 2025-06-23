@@ -1,19 +1,11 @@
 <!-- src/app/pages/admin/dashboard/dashboard.html -->
-
-<!--
-  IMPORTANT: The internal mat-toolbar has been REMOVED to prevent double navbars.
-  Assuming a GLOBAL NAVBAR (e.g., in app.component.html) is already present.
--->
-
-<!-- Sidenav Container for sidebar and main content -->
 <mat-sidenav-container class="sidenav-container">
-  <!-- The Sidebar -->
-  <mat-sidenav #sidenav mode="side" opened class="sidebar-width">
-    <app-admin-sidebar></app-admin-sidebar> <!-- Your Admin Sidebar Component -->
-  </mat-sidenav>
-
-  <!-- Main Content Area where child routes will be displayed -->
-  <mat-sidenav-content class="main-content">
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
+    <mat-sidenav #sidenav mode="side" opened class="sidebar-width">
+        <!-- Assuming your AdminSidebarComponent selector is app-admin-sidebar -->
+        <app-admin-sidebar></app-admin-sidebar>
+    </mat-sidenav>
+    <mat-sidenav-content class="main-content">
+        <!-- This is where dynamic content will be rendered by the router -->
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
 </mat-sidenav-container>
