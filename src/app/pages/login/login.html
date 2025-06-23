@@ -1,63 +1,49 @@
-<div class="bootstrap-wrapper">
-    <div class="container">
-        <div class="row mt20" style="margin-top: 20px;">
-            <div class="col-md-6 offset-md-3 text-center">
-                <mat-card>
+<!-- src/app/pages/login/login.html -->
 
-                <mat-card-header>
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header class="text-center login-card-header">
+      <div class="login-circle">
+        <mat-card-title class="login-header-text">Login</mat-card-title>
+      </div>
+    </mat-card-header>
+    <mat-card-content class="login-card-content">
+      <h1 class="login-title">Login Here !!</h1>
 
-                </mat-card-header>
+      <form (ngSubmit)="formSubmit()">
+        <!-- Username Field -->
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Username *</mat-label>
+          <input
+            [(ngModel)]="loginData.username"
+            name="username"
+            required
+            matInput
+            placeholder="Enter your username"
+          />
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
 
-                <mat-card-content>
-                <div class="container">
-                    <img src="/assets/loggin.png" alt="Register img" class="img-fluid signup-img">
-                </div>
+        <!-- Password Field -->
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Password *</mat-label>
+          <input
+            [(ngModel)]="loginData.password"
+            name="password"
+            type="password"
+            required
+            matInput
+            placeholder="Enter your password"
+          />
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
 
-                <div class="crostext">
-                <h3 class="text-center ">Welcome Back </h3>
-                </div>
-
-                
-                <form (ngSubmit)="formSubmit()">
-
-                    <!--Username field-->
-
-                    <mat-form-field class="full-width" appearance="outline">
-                        <mat-label>User Name</mat-label>
-                        <input
-                        [(ngModel)]="loginData.username"
-                        name="username"
-                        required
-                        matInput 
-                        placeholder="Enter Here"
-                        >
-                    </mat-form-field>
-
-                    <!--Password field-->
-                    
-                    <mat-form-field class="full-width" appearance="outline">
-                        <mat-label>Password</mat-label>
-                        <input
-                        [(ngModel)]="loginData.password"
-                        name="password"
-                        required
-                        type="password" 
-                        matInput 
-                        placeholder="Enter Here"
-                        >
-                    </mat-form-field>
-
-                    <div class="container">
-                        <div class="example-button-row">
-                            <button type="submit" mat-raised-button color="primary">Login</button>
-                            <button type="reset" style="margin-left: 5px;" mat-raised-button color="warn">Reset</button>
-                        </div>
-                    </div>
-
-                </form>
-                </mat-card-content></mat-card>
-
-            </div>
+        <!-- Buttons -->
+        <div class="button-group"> <!-- Flex container for buttons -->
+          <button mat-raised-button color="primary" type="submit" class="login-button">Login</button>
+          <a mat-raised-button color="accent" routerLink="/signup" class="register-button">Register Here</a>
         </div>
-    </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

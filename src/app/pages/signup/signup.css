@@ -1,3 +1,13 @@
-.full-width{
+/* src/app/pages/signup/signup.css */
+
+.full-width {
     width: 100%;
+}
+
+.signup-img {
+    /* Styles for the image, often shared globally or per component */
+    max-width: 100px;
+    height: auto;
+    border-radius: 50%; /* Make it round if desired */
+    margin-bottom: 20px; /* Spacing below the image */
 }

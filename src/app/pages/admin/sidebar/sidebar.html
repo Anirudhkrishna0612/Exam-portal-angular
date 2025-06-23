@@ -1,36 +1,55 @@
-<!-- src/app/components/sidebar/sidebar.html -->
+<!-- src/app/pages/admin/dashboard/sidebar/sidebar.component.html -->
 
-<mat-card class="mt10">
-    <mat-action-list>
-        <div mat-subheader>Menu</div>
+<mat-card class="sidebar-card">
+  <mat-card-content>
+    <mat-list>
+      <!-- Home/Welcome Link -->
+      <mat-list-item routerLink="/admin" routerLinkActive="active-list-item">
+        <mat-icon matListItemIcon>home</mat-icon>
+        <span matListItemTitle>Home</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
 
-        <button mat-list-item routerLink="/admin/welcome">
-            <mat-icon class="sidebar-icon">home</mat-icon> Home
-        </button>
+      <!-- Profile Link -->
+      <mat-list-item routerLink="/admin/profile" routerLinkActive="active-list-item">
+        <mat-icon matListItemIcon>account_circle</mat-icon>
+        <span matListItemTitle>Profile</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
 
-        <button mat-list-item routerLink="/admin/profile">
-            <mat-icon class="sidebar-icon">person</mat-icon> Profile
-        </button>
+      <!-- Categories Links -->
+      <mat-list-item routerLink="/admin/categories" routerLinkActive="active-list-item">
+        <mat-icon matListItemIcon>list</mat-icon>
+        <span matListItemTitle>Categories</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
 
-        <!-- Categories link -->
-        <button mat-list-item routerLink="/admin/categories">
-            <mat-icon class="sidebar-icon">category</mat-icon> Categories
-        </button>
+      <mat-list-item routerLink="/admin/add-category" routerLinkActive="active-list-item">
+        <mat-icon matListItemIcon>add_circle_outline</mat-icon>
+        <span matListItemTitle>Add Category</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
 
-        <!-- **CRITICAL FIX: Shorter label for Add Categories** -->
-        <button mat-list-item routerLink="/admin/add-category"> <!-- Adjust routerLink if needed -->
-            <mat-icon class="sidebar-icon">add_box</mat-icon> New Cat
-        </button>
+      <!-- Quizzes Links -->
+      <mat-list-item routerLink="/admin/quizzes" routerLinkActive="active-list-item">
+        <mat-icon matListItemIcon>quiz</mat-icon>
+        <span matListItemTitle>Quizzes</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
 
-        <!-- QuizZies link (if it's still being truncated, consider "Quizzes") -->
-        <button mat-list-item routerLink="/admin/quizzes"> <!-- Adjust routerLink if needed -->
-            <mat-icon class="sidebar-icon">quiz</mat-icon> Quizzes
-        </button>
-        
-        <mat-divider></mat-divider>
+      <mat-list-item routerLink="/admin/add-quiz" routerLinkActive="active-list-item">
+        <mat-icon matListItemIcon>add</mat-icon>
+        <span matListItemTitle>Add Quiz</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
 
-        <button mat-list-item (click)="logout()">
-            <mat-icon class="sidebar-icon">logout</mat-icon> Logout
-        </button>
-    </mat-action-list>
+      <!-- Logout Link -->
+      <mat-list-item (click)="logoutAdmin()" style="cursor: pointer;">
+        <mat-icon matListItemIcon>logout</mat-icon>
+        <span matListItemTitle>Logout</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+
+    </mat-list>
+  </mat-card-content>
 </mat-card>

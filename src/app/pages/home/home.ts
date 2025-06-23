@@ -1,24 +1,28 @@
 // src/app/pages/home/home.ts
 
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Needed for standalone components
+import { CommonModule } from '@angular/common'; // For NgIf
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router'; // **CRITICAL FIX: Import RouterLink for routerLink directive**
+
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.html',
-  styleUrls: ['./home.css'],
-  standalone: true, // Mark this component as standalone
+  standalone: true,
   imports: [
     CommonModule,
-    // Add any Material modules if your home.html uses them
-  ]
+    MatCardModule,
+    MatButtonModule,
+    RouterLink // Add RouterLink to imports
+  ],
+  templateUrl: './home.html',
+  styleUrls: ['./home.css']
 })
-export class Home implements OnInit { // **CRITICAL: The class name is 'Home' as per your instruction**
+export class HomeComponent implements OnInit {
 
   constructor() { }
 
   ngOnInit(): void {
   }
-
-  // Any home page specific logic
 }

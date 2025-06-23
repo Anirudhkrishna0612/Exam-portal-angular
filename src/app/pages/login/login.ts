@@ -1,97 +1,105 @@
 // src/app/pages/login/login.ts
 
-import { Component, OnInit } from '@angular/core';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { AuthService } from '../service/auth.service'; // Correct import path for AuthService
-import { Router } from '@angular/router';
-
-import { JwtRequest } from '../models/jwt-request.model';
-import { User } from '../../user'; // Confirmed path to User model
-
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router, RouterLink } from '@angular/router';
+import { LoginService } from '../../pages/service/login.service';
+import { User } from '../../user';
+import { JwtRequest } from '../models/jwt-request.model';
+import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators'; // Import switchMap for chaining observables
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.html',
-  styleUrls: ['./login.css'],
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     MatCardModule,
-    MatFormFieldModule,
     MatInputModule,
+    MatFormFieldModule,
     MatButtonModule,
     MatSnackBarModule,
-  ]
+    RouterLink
+  ],
+  templateUrl: './login.html',
+  styleUrls: ['./login.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
-  public loginData: JwtRequest = {
+  loginData: JwtRequest = {
     username: '',
     password: ''
   };
 
+  private userSubscription: Subscription | undefined;
+
   constructor(
     private snack: MatSnackBar,
-    private authService: AuthService, // The injected service instance
+    private loginService: LoginService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    // No subscription to user changes needed here, login component is for direct login
   }
 
-  formSubmit() {
-    console.log("DEBUG: formSubmit() method was triggered!");
-    console.log("login btn clicked");
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
 
-    if (this.loginData.username.trim() === '') {
-      this.snack.open("Username is required !!", 'Ok', { duration: 3000 });
+  formSubmit(): void {
+    console.log('Login data submitted:', this.loginData);
+
+    if (!this.loginData.username || this.loginData.username.trim() === '') {
+      this.snack.open('Username is required !!', 'Dismiss', { duration: 3000 });
       return;
     }
 
-    if (this.loginData.password.trim() === '') {
-      this.snack.open("Password is required !!", 'Ok', { duration: 3000 });
+    if (!this.loginData.password || (typeof this.loginData.password === 'string' && this.loginData.password.trim() === '')) {
+      this.snack.open('Password is required !!', 'Dismiss', { duration: 3000 });
       return;
     }
 
-    this.authService.generateToken(this.loginData).subscribe({
-      next: (data: any) => {
-        console.log("success");
-        console.log(data);
+    // Chain the token generation and user fetch using switchMap
+    this.loginService.generateToken(this.loginData).pipe(
+      switchMap((tokenResponse: any) => {
+        // First, save the token and user data from the generate-token response
+        // Assuming tokenResponse directly contains { token: "...", user: {...} }
+        // CRITICAL: Ensure 'loginUser' method saves the token to localStorage
+        this.loginService.loginUser(tokenResponse.token, tokenResponse.user);
+        console.log('Login success: ', tokenResponse); // Log what was received
 
-        // **CRITICAL FIX: REMOVE these lines. authService.generateToken handles storage internally.**
-        // this.authService.setToken(data.jwtToken); // Property 'setToken' does not exist on type 'AuthService'.
-        // this.authService.setUser(data.user); // Property 'setUser' does not exist on type 'AuthService'.
+        // Now, after the token is saved, proceed to fetch current user from server.
+        // The interceptor should now be able to pick up the token.
+        return this.loginService.fetchUserFromServer();
+      })
+    ).subscribe({
+      next: (user: User) => {
+        console.log('User details fetched after login:', user);
+        // LoginUser already called in switchMap, so now just redirect.
 
-        this.snack.open("Login successful!", 'Ok', { duration: 3000 });
-        
-        // **CRITICAL FIX: Use getUserRoles() (plural) instead of getUserRole()**
-        const userRoles = this.authService.getUserRoles(); // Correct method name
-        console.log("User Role for Navigation:", userRoles); // Debug log for the role
-
-        if (userRoles.includes("ADMIN")) { // Check if the array includes "ADMIN"
-            this.router.navigate(['/admin']);
-            this.snack.open("Welcome Admin!", 'Ok', { duration: 2000 });
-        } else if (userRoles.includes("NORMAL")) { // Check if the array includes "NORMAL"
-            this.router.navigate(['/user-dashboard']);
-            this.snack.open("Welcome User!", 'Ok', { duration: 2000 });
+        if (this.loginService.getUserRole() === 'ADMIN') {
+          this.router.navigate(['/admin']);
+        } else if (this.loginService.getUserRole() === 'NORMAL') {
+          this.router.navigate(['/user/0']);
         } else {
-            console.warn("Unknown user role or no role found. Logging out.");
-            this.authService.logout(); // Use the logout method from authService
-            this.router.navigate(['/login']); // Redirect back to login after logout
-            this.snack.open("Unknown user role, logged out.", 'Ok', { duration: 3000 });
+          this.loginService.logout();
+          this.snack.open('Invalid credentials or no role assigned!', 'Dismiss', { duration: 3000 });
         }
       },
-      error: (error) => {
-        console.log("Error!");
-        console.error(error);
-        this.snack.open("Invalid Credentials !! Try again", 'Ok', { duration: 3000 });
+      error: (error: any) => {
+        console.error('Login error or Error fetching user details:', error);
+        this.loginService.logout();
+        this.snack.open('Invalid Details !! Try again.', 'Dismiss', { duration: 3000 });
       }
     });
   }

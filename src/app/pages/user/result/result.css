@@ -1,0 +1,202 @@
+/* src/app/pages/user/result/result.css */
+
+.container {
+    padding: 20px;
+}
+
+.mt20 {
+    margin-top: 20px !important;
+}
+
+.ml10 {
+    margin-left: 10px !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Result Summary Card */
+.result-summary-card {
+    margin: 0 auto; /* Center the card horizontally */
+    max-width: 900px; /* Limit width for readability */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+}
+
+h1 {
+    color: #3F51B5; /* Primary color */
+    font-family: 'Righteous', cursive;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 15px;
+}
+
+.summary-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px; /* Space between items */
+    margin-top: 20px;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e8eaf6; /* Light background for items */
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1 1 calc(50% - 20px); /* Two items per row, with gap */
+    max-width: calc(50% - 20px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+
+.summary-item:hover {
+    transform: translateY(-5px);
+}
+
+.summary-icon {
+    font-size: 3.5em;
+    width: 1em;
+    height: 1em;
+    color: #616161;
+    margin-bottom: 10px;
+}
+
+.summary-icon.check-icon {
+    color: #4CAF50; /* Green for correct */
+}
+
+.summary-icon.wrong-icon {
+    color: #F44336; /* Red for incorrect */
+}
+
+.summary-item p {
+    font-size: 1.2em;
+    color: #333;
+    margin: 0;
+    text-align: center;
+}
+
+.highlight-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #3F51B5; /* Primary color for values */
+    display: block; /* Ensure it takes its own line */
+    margin-top: 5px;
+}
+
+.highlight-value.correct {
+    color: #4CAF50; /* Green for correct answers count */
+}
+
+.highlight-value.wrong {
+    color: #F44336; /* Red for incorrect answers count */
+}
+
+mat-card-actions button {
+    padding: 12px 30px;
+    font-size: 1.1em;
+    border-radius: 25px; /* Pill-shaped buttons */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+mat-card-actions button:hover {
+    transform: translateY(-2px);
+}
+
+/* Question Breakdown Card */
+.question-breakdown-card {
+    margin: 20px auto;
+    max-width: 900px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+}
+
+.question-breakdown-card h2 {
+    color: #3F51B5;
+    font-family: 'Righteous', cursive;
+    margin-bottom: 15px;
+    font-size: 2em;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.table-responsive {
+    overflow-x: auto; /* Enable horizontal scrolling on small screens */
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    min-width: 600px; /* Ensure table is readable on smaller screens */
+    border-collapse: collapse;
+}
+
+th.mat-header-cell {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    color: #333;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+}
+
+td.mat-cell {
+    padding: 12px 16px;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+}
+
+tr.mat-row:last-child td {
+    border-bottom: none;
+}
+
+/* Hover effect for rows */
+tr.mat-row:hover {
+    background-color: #f0f0f0;
+}
+
+td.mat-cell .correct-icon {
+    color: #4CAF50; /* Green */
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+td.mat-cell .wrong-icon {
+    color: #F44336; /* Red */
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+/* Styles for HTML content within table cells (CKEditor content) */
+td.mat-cell div {
+    white-space: normal; /* Allow text to wrap */
+    word-wrap: break-word; /* Break long words */
+}
+
+/* Empty state message */
+.empty-state-card {
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    background-color: #ffffff;
+}
+
+/* Responsive adjustments for summary items */
+@media (max-width: 768px) {
+    .summary-item {
+        flex: 1 1 calc(100% - 20px); /* One item per row on smaller screens */
+        max-width: calc(100% - 20px);
+    }
+}

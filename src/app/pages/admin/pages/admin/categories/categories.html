@@ -1,0 +1,56 @@
+<!-- src/app/pages/admin/pages/admin/categories/categories.html -->
+
+<div class="categories-container">
+  <mat-card class="categories-card">
+    <mat-card-header class="text-center">
+      <mat-card-title class="card-title">All Categories</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-content">
+      <div class="add-button-container">
+        <a mat-raised-button color="accent" routerLink="/admin/add-category">Add New Category</a>
+      </div>
+
+      <div class="table-container">
+        <table mat-table [dataSource]="categories" class="mat-elevation-z8 full-width-table">
+          <!-- ID Column -->
+          <ng-container matColumnDef="cId">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let category">{{ category.cId }}</td>
+          </ng-container>
+
+          <!-- Title Column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let category">{{ category.title }}</td>
+          </ng-container>
+
+          <!-- Description Column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let category">{{ category.description }}</td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let category">
+              <button mat-icon-button color="primary" routerLink="/admin/update-category/{{category.cId}}">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteCategory(category.cId)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div *ngIf="categories.length === 0" class="no-categories-message">
+          No categories found. Please add some!
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

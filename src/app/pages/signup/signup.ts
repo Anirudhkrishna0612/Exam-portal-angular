@@ -3,88 +3,119 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-// Angular Material Modules
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
-// User model interface (src/app/user.ts)
-import { User } from '../../user';
-
-// UserService class (src/app/user.service.ts)
-import { UserService } from '../../user.service';
-
+import { UserService } from '../../user.service'; // Assuming this path and service name
+import { User } from '../../user'; // Path to your User model
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
-  templateUrl: './signup.html',
-  styleUrls: ['./signup.css'],
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     MatCardModule,
-    MatFormFieldModule,
     MatInputModule,
+    MatFormFieldModule,
     MatButtonModule,
     MatSnackBarModule,
-  ]
+    RouterLink
+  ],
+  templateUrl: './signup.html',
+  styleUrls: ['./signup.css']
 })
 export class Signup implements OnInit {
 
-  // Initialize public user property with default empty string values.
-  // This aligns with the User interface defining username, password, etc., as 'string'.
+  // Initialize user with string default values for properties that will be trimmed
   public user: User = {
-    username: '',
-    password: '', // Now correctly initialized as string
-    firstName: '',
+    id: null,
+    username: '', // Explicitly initialized as empty string
+    password: '', // Explicitly initialized as empty string
+    firstName: '', // Explicitly initialized as empty string
     lastName: '',
     email: '',
     phone: '',
-    profile: ''
-    // Authorities and other backend-specific properties are not initialized here
-    // as they are typically set by the backend after creation/login.
+    enabled: true,
+    profile: 'default.png',
+    authorities: []
   };
 
   constructor(
-    private snack: MatSnackBar,
-    private userService: UserService
+    private userService: UserService,
+    private snack: MatSnackBar
   ) { }
 
   ngOnInit(): void {
   }
 
-  public formSubmit() {
-    console.log("Signup form submitted!");
+  formSubmit(): void {
     console.log(this.user);
 
-    // Now 'username' and 'password' are guaranteed to be strings by the User interface.
-    // The .trim() will not cause 'Object is possibly undefined' error.
-    if (this.user.username.trim() === '') {
-      this.snack.open("Username is required !!", 'Ok', { duration: 3000 });
-      return;
-    }
-    if (this.user.password.trim() === '') { // No longer possibly undefined
-      this.snack.open("Password is required !!", 'Ok', { duration: 3000 });
-      return;
-    }
-    // Add more validation for other fields as needed
+    // Use non-null assertion or check for undefined if you expect it to be nullable
+    // However, with the current initialization, these properties will always be strings.
+    // The checks below are robust even if they were potentially undefined.
 
+    // Validate username
+    if (!this.user.username || this.user.username.trim() === '') {
+      this.snack.open('Username is required!', 'Dismiss', { duration: 3000 });
+      return;
+    }
+
+    // Validate password
+    if (!this.user.password || this.user.password.trim() === '') {
+      this.snack.open('Password is required!', 'Dismiss', { duration: 3000 });
+      return;
+    }
+
+    // Validate firstName
+    // Ensure firstName is a string before calling trim()
+    if (!this.user.firstName || this.user.firstName.trim() === '') {
+      this.snack.open('First Name is required!', 'Dismiss', { duration: 3000 });
+      return;
+    }
+
+    // Validate email
+    if (!this.user.email || this.user.email.trim() === '') {
+      this.snack.open('Email is required!', 'Dismiss', { duration: 3000 });
+      return;
+    }
+
+    // Validate phone
+    if (!this.user.phone || this.user.phone.trim() === '') {
+      this.snack.open('Phone number is required!', 'Dismiss', { duration: 3000 });
+      return;
+    }
+
+    // Call user service to add user
     this.userService.addUser(this.user).subscribe({
       next: (data: User) => {
-        console.log("User signed up successfully:", data);
-        this.snack.open("Registration successful!", 'Ok', { duration: 3000 });
+        console.log(data);
+        this.snack.open('Successfully Registered !!', 'OK', {
+          duration: 3000, verticalPosition: 'top', horizontalPosition: 'right', panelClass: ['success-snackbar']
+        });
+        // Reset form after successful submission
         this.user = {
-            username: '', password: '', firstName: '', lastName: '',
-            email: '', phone: '', profile: ''
+          id: null,
+          username: '',
+          password: '',
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          enabled: true,
+          profile: 'default.png',
+          authorities: []
         };
       },
-      error: (error) => {
-        console.error("Error during signup:", error);
-        this.snack.open("Something went wrong during registration !!", 'Ok', { duration: 3000 });
+      error: (error: any) => {
+        console.error('Error registering user:', error);
+        this.snack.open('Something went wrong! Server error.', 'Dismiss', {
+          duration: 3000, verticalPosition: 'top', horizontalPosition: 'right', panelClass: ['error-snackbar']
+        });
       }
     });
   }

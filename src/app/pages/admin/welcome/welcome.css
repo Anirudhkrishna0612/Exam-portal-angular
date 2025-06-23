@@ -1,0 +1,74 @@
+/* src/app/pages/admin/welcome/welcome.css */
+
+.welcome-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Take full height of content-wrapper */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.welcome-card {
+  width: 100%;
+  max-width: 700px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #FFFFFF; /* White background for card */
+  color: #333333; /* Dark text on light background */
+  text-align: center;
+}
+
+.welcome-header {
+  margin-bottom: 30px;
+}
+
+.welcome-title {
+  font-size: 2.8em;
+  font-weight: 800;
+  color: #DC143C; /* Primary Red for title */
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-subtitle {
+  font-size: 1.2em;
+  color: #555555;
+  line-height: 1.6;
+}
+
+.welcome-image-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.welcome-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid #FFD700; /* Accent Yellow border */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .welcome-card {
+    padding: 20px;
+  }
+
+  .welcome-title {
+    font-size: 2em;
+  }
+
+  .welcome-subtitle {
+    font-size: 1em;
+  }
+
+  .welcome-image {
+    width: 150px;
+    height: 150px;
+  }
+}

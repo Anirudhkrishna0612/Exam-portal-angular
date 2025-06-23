@@ -1,54 +1,155 @@
-/* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Croissant+One&display=swap');
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
+/* src/styles.css (or your main global stylesheet like index.css) */
+
+/* Import Google Fonts (Righteous and Roboto) */
+@import url('https://fonts.googleapis.com/css2?family=Righteous&family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap'); /* For timer display */
 
 
-
-html, body { height: 100%; }
-body { 
-    margin: 0; 
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-color: #FFFFFF;
+/* Global Box-Sizing */
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
 }
 
-.text-center{
+/* Body and Typography Defaults */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5; /* Light grey background */
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Headings - Consistent Font and Color */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Righteous', cursive;
+    color: #3F51B5; /* Angular Material Primary Color */
+    margin-top: 0.8em;
+    margin-bottom: 0.5em;
+    line-height: 1.2;
+}
+
+h1 { font-size: 2.5em; }
+h2 { font-size: 2em; }
+h3 { font-size: 1.75em; }
+h4 { font-size: 1.5em; }
+h5 { font-size: 1.25em; }
+h6 { font-size: 1em; }
+
+
+/* Utility Classes */
+.text-center {
     text-align: center;
 }
-.bootstrap-wrapper img.signup-img { /* Added .bootstrap-wrapper to increase specificity */
-    max-width: 100px; /* Or whatever smaller value you desire */
-    height: auto;
-}
-.ml20{
-    margin-left: 20px !important;
-}
-.mr20{
-    margin-right: 20px !important;
-}
-.mt20{
-    margin-top: 20px !important;
-}
-.mb20{
-    margin-bottom: 20px !important;
-}
-.ml10{
-    margin-left: 10px !important;
-}
-.mr10{
-    margin-right: 10px !important;
-}
-.mt10{
-    margin-top: 10px !important;
-}
-.mb10{
-    margin-bottom: 10px !important;
+
+.text-right {
+    text-align: right;
 }
 
-.crostext h3 { /* Target the h3 element specifically within .crostext */
-  font-family: 'Croissant One', cursive;
-  font-size: 20px;
-  color: rgb(0,0,0); /* Or 'black' for simplicity */
-  /* Remove any extra characters if present from previous attempts */
+.text-left {
+    text-align: left;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.mt10 { margin-top: 10px !important; }
+.mt20 { margin-top: 20px !important; }
+.mt30 { margin-top: 30px !important; }
+.mt40 { margin-top: 40px !important; }
+.mb10 { margin-bottom: 10px !important; }
+.mb20 { margin-bottom: 20px !important; }
+.mb30 { margin-bottom: 30px !important; }
+.mb40 { margin-bottom: 40px !important; }
+.ml10 { margin-left: 10px !important; }
+.ml20 { margin-left: 20px !important; }
+.mr10 { margin-right: 10px !important; }
+.mr20 { margin-right: 20px !important; }
+.p10 { padding: 10px !important; }
+.p20 { padding: 20px !important; }
+.py10 { padding-top: 10px !important; padding-bottom: 10px !important; }
+.py20 { padding-top: 20px !important; padding-bottom: 20px !important; }
+.px10 { padding-left: 10px !important; padding-right: 10px !important; }
+.px20 { padding-left: 20px !important; padding-right: 20px !important; }
+
+
+/* Responsive Grid System (Simplified) */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px; /* Adjust for column padding */
+    margin-right: -15px; /* Adjust for column padding */
+}
+
+.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+    position: relative;
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+    .col-md-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+    .col-md-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+    .col-md-3 { flex: 0 0 25%; max-width: 25%; }
+    .col-md-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+    .col-md-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
+    .col-md-6 { flex: 0 0 50%; max-width: 50%; }
+    .col-md-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
+    .col-md-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+    .col-md-9 { flex: 0 0 75%; max-width: 75%; }
+    .col-md-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+    .col-md-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+    .col-md-12 { flex: 0 0 100%; max-width: 100%; }
+}
+
+
+/* Angular Material Overrides / Custom SnackBar */
+.success-snackbar {
+    background-color: #4CAF50 !important; /* Green */
+    color: white !important;
+}
+
+.error-snackbar {
+    background-color: #F44336 !important; /* Red */
+    color: white !important;
+}
+
+.info-snackbar {
+    background-color: #2196F3 !important; /* Blue */
+    color: white !important;
+}
+
+/* General Link Styling */
+a {
+    color: #3F51B5;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+    color: #FF4081; /* Accent color on hover */
+    text-decoration: underline;
+}
+
+
+/* Form Field Styling (General) */
+mat-form-field {
+    margin-bottom: 10px; /* Space between form fields */
+}
+
+/* Table general styling */
+table.mat-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Card General Styling */
+mat-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }

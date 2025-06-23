@@ -1,1 +1,21 @@
-<h1>Welcome to user-dashboard</h1>
+<!-- src/app/pages/user/user-dashboard/user-dashboard.html -->
+
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>ZENITHPROVE</span>
+  <span class="spacer"></span>
+  <a [routerLink]="'/user-dashboard'">USER DASHBOARD</a>
+  <a [routerLink]="'/user/profile'">PROFILE</a>
+  <button mat-button (click)="logoutUserFromToolbar()">LOGOUT</button>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" opened class="sidebar-width">
+    <app-user-sidebar></app-user-sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content class="main-content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

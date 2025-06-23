@@ -1,0 +1,212 @@
+/* src/app/pages/user/load-quiz/load-quiz.css */
+
+.container {
+    padding: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px; /* Compensate for column padding */
+    margin-right: -15px; /* Compensate for column padding */
+}
+
+.col-md-3, .col-md-4, .col-md-9, .col-sm-6 {
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.col-md-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+.col-md-9 {
+    flex: 0 0 75%;
+    max-width: 75%;
+}
+
+.col-md-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+
+.col-sm-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 991px) { /* Medium devices (tablets, 768px and up) */
+    .col-md-3, .col-md-9 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .col-md-3 {
+        margin-bottom: 20px; /* Space between sidebar and main content on small screens */
+    }
+    .col-md-4 {
+        flex: 0 0 50%; /* Make quiz cards 2 per row on tablets */
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 767px) { /* Small devices (phones, 576px and up) */
+    .col-sm-6 {
+        flex: 0 0 100%; /* Make quiz cards 1 per row on phones */
+        max-width: 100%;
+    }
+}
+
+.mt20 {
+    margin-top: 20px !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Sidebar Styles */
+.sidebar-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 10px 0; /* Adjust padding for list items */
+}
+
+.sidebar-card mat-list-item {
+    cursor: pointer;
+    font-size: 16px;
+    height: 48px !important; /* Consistent height for list items */
+}
+
+.sidebar-card mat-list-item:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar-card mat-list-item.active-list-item {
+    background-color: #e0e0e0;
+    color: #3F51B5; /* Highlight text color */
+    font-weight: 500;
+}
+.sidebar-card mat-list-item.active-list-item .mat-icon {
+    color: #3F51B5 !important;
+}
+
+.sidebar-card mat-icon {
+    margin-right: 15px;
+    color: #616161;
+}
+
+.sidebar-card mat-divider {
+    border-top-color: #eeeeee;
+}
+
+
+/* Quiz List Styles */
+.quiz-list-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 20px;
+}
+
+.empty-state {
+    padding: 40px 20px;
+    color: #757575;
+    font-size: 1.1em;
+}
+
+.empty-icon {
+    font-size: 4em;
+    width: 1em;
+    height: 1em;
+    color: #9e9e9e;
+    margin-bottom: 10px;
+}
+
+.quiz-grid {
+    margin-top: 20px;
+}
+
+.quiz-card {
+    margin-bottom: 20px; /* Space between quiz cards */
+    border-radius: 8px;
+    overflow: hidden; /* Ensures borders/shadows are contained */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.quiz-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.quiz-card mat-card-header {
+    background-color: #3F51B5; /* Primary color header */
+    color: white;
+    padding: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.quiz-card mat-card-title {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.quiz-card mat-card-subtitle {
+    color: rgba(255,255,255,0.8);
+    margin-top: 5px;
+}
+
+.quiz-card mat-card-content {
+    padding: 15px;
+}
+
+.quiz-description {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.quiz-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #757575;
+    margin-bottom: 10px;
+}
+
+.quiz-details span {
+    display: flex;
+    align-items: center;
+}
+
+.quiz-details .icon-small {
+    font-size: 1em;
+    width: 1em;
+    height: 1em;
+    margin-right: 5px;
+    color: #616161;
+}
+
+.quiz-card mat-card-actions {
+    padding: 10px 15px 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.quiz-card mat-card-actions button {
+    border-radius: 20px; /* Pill-shaped buttons */
+}
+
+
+/* Custom snackbar styles for success and error messages */
+.success-snackbar {
+    background-color: #4CAF50 !important; /* Green */
+    color: white !important;
+}
+
+.error-snackbar {
+    background-color: #F44336 !important; /* Red */
+    color: white !important;
+}

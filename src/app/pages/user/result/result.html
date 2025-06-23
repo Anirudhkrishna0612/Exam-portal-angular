@@ -1,0 +1,84 @@
+<!-- src/app/pages/user/result/result.html -->
+
+<div class="bootstrap-wrapper">
+  <div class="container mt20" *ngIf="resultData && resultData.totalQuestions && resultData.totalQuestions > 0">
+    <mat-card class="text-center">
+      <h1 class="text-3xl font-bold">Quiz Result: {{ resultData.quizTitle }}</h1>
+      <mat-divider></mat-divider>
+
+      <mat-card-content class="mt20">
+        <p class="text-xl">
+          Marks Got: <span class="highlight-value">{{ resultData.marksGot | number:'1.2-2' }}</span> / {{ totalQuizMaxMarks | number:'1.0-0' }}
+        </p>
+        <p class="text-xl">
+          Attempted Questions: <span class="highlight-value">{{ resultData.attempted }}</span>
+        </p>
+        <p class="text-xl">
+          Correct Answers: <span class="highlight-value correct">{{ resultData.correctAnswers }}</span>
+        </p>
+        <p class="text-xl">
+          Incorrect Answers: <span class="highlight-value wrong">{{ resultData.totalQuestions - resultData.correctAnswers }}</span>
+        </p>
+
+        <div class="buttons mt20">
+          <button mat-raised-button color="primary" (click)="goToQuizzes()">Take More Quizzes</button>
+          <button mat-raised-button color="accent" class="ml10" (click)="printPage()">Print Result</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mt20" *ngIf="questions && questions.length > 0">
+      <h2 class="text-2xl font-bold text-center">Your Answers Review</h2>
+      <mat-divider></mat-divider>
+
+      <table mat-table [dataSource]="questions" class="full-width mat-elevation-z2 mt10">
+
+        <!-- Question Column -->
+        <ng-container matColumnDef="question">
+          <th mat-header-cell *matHeaderCellDef> Question </th>
+          <td mat-cell *matCellDef="let element">
+            <span [innerHTML]="sanitizeHtml(element.content)"></span>
+            <div *ngIf="element.image" class="mt-2">
+              <img [src]="element.image" alt="Question Image" style="max-width: 100px; height: auto;">
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Correct Answer Column -->
+        <ng-container matColumnDef="answer">
+          <th mat-header-cell *matHeaderCellDef> Correct Answer </th>
+          <td mat-cell *matCellDef="let element">
+            <div [innerHTML]="sanitizeHtml(element.answer)"></div>
+          </td>
+        </ng-container>
+
+        <!-- Given Answer Column -->
+        <ng-container matColumnDef="givenAnswer">
+          <th mat-header-cell *matHeaderCellDef> Your Answer </th>
+          <td mat-cell *matCellDef="let element">
+            <div [innerHTML]="sanitizeHtml(formatGivenAnswer(element.givenAnswer))"></div>
+          </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-icon *ngIf="isAnswerCorrect(element)" class="correct-icon">check_circle</mat-icon>
+            <mat-icon *ngIf="!isAnswerCorrect(element)" class="wrong-icon">cancel</mat-icon>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card>
+  </div>
+
+  <div class="container mt20 text-center" *ngIf="!resultData || resultData.totalQuestions === 0">
+    <mat-card-content>
+      <h1>No quiz results to display or quiz was not attempted.</h1>
+      <button mat-raised-button color="primary" (click)="goToQuizzes()">Take a Quiz</button>
+    </mat-card-content>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<!-- src/app/pages/user/pages/start-quiz/start-quiz.html -->
+
+<div class="bootstrap-wrapper">
+  <div class="container-fluid">
+    <mat-card class="mt-20">
+      <h1 class="text-center font-semibold text-3xl">Instructions for {{ quiz?.title }}</h1>
+      <mat-card-content>
+        <p class="text-center">{{ quiz?.description }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <mat-card class="text-center">
+            <mat-card-content>
+              <h1 class="text-2xl font-bold">Max Marks:</h1>
+              <p class="text-xl text-primary">{{ quiz?.maxMarks }}</p>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="text-center">
+            <mat-card-content>
+              <h1 class="text-2xl font-bold">Number of Questions:</h1>
+              <p class="text-xl text-primary">{{ quiz?.numberOfQuestions }}</p>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="text-center">
+            <mat-card-content>
+              <h1 class="text-2xl font-bold">Marks Per Question:</h1>
+              <!-- CRITICAL FIX: Safely convert to number before division -->
+              <p class="text-xl text-primary">
+                {{ (quiz?.maxMarks ?? 0) / (quiz?.numberOfQuestions ?? 1) | number:'1.0-2' }}
+              </p>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="text-center">
+            <mat-card-content>
+              <h1 class="text-2xl font-bold">Category:</h1>
+              <p class="text-xl text-primary">{{ quiz?.category?.title }}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="text-center mt-6">
+          <button mat-raised-button color="warn" (click)="startQuiz()">Start Quiz</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

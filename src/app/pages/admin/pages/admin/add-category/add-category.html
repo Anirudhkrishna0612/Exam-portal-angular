@@ -1,0 +1,42 @@
+<!-- src/app/pages/admin/pages/admin/add-category/add-category.html -->
+
+<div class="add-category-container">
+  <mat-card class="add-category-card">
+    <mat-card-header class="text-center">
+      <mat-card-title class="card-title">Add New Category</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-content">
+      <form class="category-form" (ngSubmit)="formSubmit()">
+        <!-- Category Title Field -->
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Category Title</mat-label>
+          <input
+            type="text"
+            name="title"
+            required
+            [(ngModel)]="category.title"
+            matInput
+            placeholder="Enter Category Title"
+          />
+        </mat-form-field>
+
+        <!-- Category Description Field -->
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Category Description</mat-label>
+          <textarea
+            name="description"
+            [(ngModel)]="category.description"
+            matInput
+            rows="5"
+            placeholder="Enter Category Description"
+          ></textarea>
+        </mat-form-field>
+
+        <!-- Add Category Button -->
+        <div class="button-container">
+          <button mat-raised-button color="accent" type="submit">Add Category</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

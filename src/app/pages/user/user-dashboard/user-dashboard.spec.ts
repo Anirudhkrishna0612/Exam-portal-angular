@@ -1,18 +1,20 @@
+// src/app/pages/user/user-dashboard/user-dashboard.spec.ts
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+// **CRITICAL FIX: Corrected import to './user-dashboard' because your component file is user-dashboard.ts**
+import { UserDashboardComponent } from './user-dashboard'; // Assuming user-dashboard.ts contains 'export class UserDashboardComponent'
 
-import { UserDashboard } from './user-dashboard';
-
-describe('UserDashboard', () => {
-  let component: UserDashboard;
-  let fixture: ComponentFixture<UserDashboard>;
+describe('UserDashboardComponent', () => {
+  let component: UserDashboardComponent;
+  let fixture: ComponentFixture<UserDashboardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserDashboard]
+      imports: [UserDashboardComponent] // Still assuming it's a standalone component
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(UserDashboard);
+    fixture = TestBed.createComponent(UserDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

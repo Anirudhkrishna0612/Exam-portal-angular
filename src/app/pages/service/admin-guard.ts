@@ -1,41 +1,45 @@
 // src/app/pages/service/admin-guard.ts
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, Router } from '@angular/router';
-// **CRITICAL: Check and correct this path**
-// If admin-guard.ts is in src/app/pages/service/
-// and auth.service.ts is in src/app/service/
-// then the path should be: '../../service/auth.service'
-import { AuthService } from './auth.service'; // Adjust this path if necessary
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+import { LoginService } from './login.service'; // Adjust path if login.service.ts is elsewhere
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RoleGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private snack: MatSnackBar
+  ) { }
 
+  /**
+   * Determines if the route can be activated.
+   * Checks if the user is logged in and has the 'ADMIN' role.
+   * @param route The activated route snapshot.
+   * @param state The router state snapshot.
+   * @returns An Observable, Promise, or boolean indicating if the route can be activated.
+   */
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    const requiredRole = route.data['requiredRole'] as string;
-
-    if (!this.authService.isLoggedIn()) { 
-      console.log('RoleGuard: User not logged in. Redirecting to login.');
-      this.router.navigate(['/login']);
-      return false;
+    if (this.loginService.isLoggedIn() && this.loginService.getUserRole() === 'ADMIN') {
+      return true; // User is logged in and is an admin
     }
 
-    const hasRole = this.authService.hasRole(requiredRole);
-    if (hasRole) {
-      console.log(`RoleGuard: User has '${requiredRole}' role. Access granted to ${state.url}.`);
-      return true;
-    } else {
-      console.warn(`RoleGuard: User does NOT have '${requiredRole}' role. Access denied to ${state.url}.`);
-      this.router.navigate(['/']);
-      return false;
-    }
+    // User is not logged in or not an admin, redirect to login page
+    this.snack.open('You do not have administrative access. Please log in as an Admin.', 'Denied', {
+      duration: 5000,
+      verticalPosition: 'top',
+      horizontalPosition: 'right',
+      panelClass: ['error-snackbar']
+    });
+    this.router.navigate(['login']);
+    return false;
   }
 }

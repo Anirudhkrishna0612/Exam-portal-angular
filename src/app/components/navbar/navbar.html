@@ -1,38 +1,32 @@
 <!-- src/app/components/navbar/navbar.html -->
 
-<mat-toolbar color="primary">
-  <!-- Left Side: Toggle Menu Button (Assuming `menu` icon is desired) -->
-  <a routerLink="/" mat-icon-button class="example-icon" aria-label="Toggle menu">
-    <mat-icon class="whiteicon">menu</mat-icon>
-  </a>
+<mat-toolbar color="primary" class="navbar-toolbar">
+  <!-- Application Title -->
+  <a routerLink="/" class="navbar-brand">ZenithProve</a>
 
-  <!-- Center: Logo/Brand Text "Zenith Prove" -->
-  <span class="navbar-logo-text">Zenith Prove</span>
+  <!-- Spacer to push navigation links to the right -->
+  <span class="spacer"></span>
 
-  <!-- Spacer to push elements to the right -->
-  <span class="example-spacer"></span>
+  <!-- Navigation Buttons -->
+  <div class="nav-links">
+    <!-- Not Logged In -->
+    <ng-container *ngIf="!loginService.isLoggedIn()">
+      <a mat-button routerLink="/signup">Register</a>
+      <a mat-button routerLink="/login">Login</a>
+    </ng-container>
 
-  <!-- Right Side: Login/Signup Icons (visible if NOT logged in) -->
-  <ng-container *ngIf="!(authService.loggedInStatus$ | async)">
-    <a routerLink="/login" mat-icon-button class="whiteicon-button" aria-label="Login">
-      <mat-icon class="whiteicon">login</mat-icon> <!-- Login Icon -->
-    </a>
-    <a routerLink="/signup" mat-icon-button class="whiteicon-button" aria-label="Signup">
-      <mat-icon class="whiteicon">person_add</mat-icon> <!-- Signup Icon -->
-    </a>
-  </ng-container>
+    <!-- Logged In as Admin -->
+    <ng-container *ngIf="loginService.isLoggedIn() && loginService.getUserRole() === 'ADMIN'">
+      <a mat-button routerLink="/admin">Admin Dashboard</a>
+      <a mat-button routerLink="/admin/profile">Profile</a>
+      <a mat-button (click)="logout()">Logout</a>
+    </ng-container>
 
-  <!-- Right Side: User Info & Logout Button (visible if logged in) -->
-  <ng-container *ngIf="authService.loggedInStatus$ | async">
-    <div class="username-display-wrapper">
-      <!-- Username as a link to Dashboard -->
-      <a [routerLink]="getDashboardLink()" class="user-display-name">
-          {{ getUsername() }} 
-      </a>
-      <!-- Logout Icon Button -->
-      <button mat-icon-button (click)="logout()" class="logout-button" aria-label="Logout">
-        <mat-icon class="whiteicon">logout</mat-icon> <!-- Logout Icon -->
-      </button>
-    </div>
-  </ng-container>
+    <!-- Logged In as Normal User -->
+    <ng-container *ngIf="loginService.isLoggedIn() && loginService.getUserRole() === 'NORMAL'">
+      <a mat-button routerLink="/user/0">User Dashboard</a>
+      <a mat-button routerLink="/user/profile">Profile</a>
+      <a mat-button (click)="logout()">Logout</a>
+    </ng-container>
+  </div>
 </mat-toolbar>

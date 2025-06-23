@@ -1,118 +1,55 @@
 /* src/app/components/navbar/navbar.css */
 
-/* Ensure mat-toolbar is a flex container for proper spacing */
-mat-toolbar {
-    display: flex;
-    align-items: center; /* Vertically align items in the center */
-    padding: 0 16px; /* Default horizontal padding, adjust as needed */
-    height: 64px; /* Standard toolbar height for consistency */
-    background-color: #f44336 !important; /* **CRITICAL FIX: Ensure red background** */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Added clean box-shadow for depth */
+.navbar-toolbar {
+  background-color: #DC143C; /* Primary Red for the toolbar */
+  color: #FFFFFF; /* White text on red background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0 20px;
+  height: 64px; /* Standard toolbar height */
 }
 
-/* Styles for the main logo text (e.g., "Zenith Prove") */
-.navbar-logo-text {
-    font-family: 'Pacifico', cursive !important; /* Force Pacifico font */
-    font-size: 28px !important; /* Force font size */
-    color: white; /* Keep color white */
-    margin-left: 8px; /* Space between logo icon and text */
-    white-space: nowrap; /* Prevent wrapping */
-    line-height: 1; /* Adjust line height if font appears cut off vertically */
+.navbar-brand {
+  color: #FFFFFF; /* White for brand text */
+  text-decoration: none;
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-right: 20px;
+  letter-spacing: 0.5px;
 }
 
-/* Common style for white icons (e.g., view_agenda, login, assignment, logout) */
-.whiteicon {
-    color: white !important; /* Ensure icons are white */
+.spacer {
+  flex: 1 1 auto;
 }
 
-/* Spacer to push elements to the right, common in toolbars */
-.example-spacer {
-    flex: 1 1 auto; /* Takes up all available space */
+.nav-links a {
+  color: #FFFFFF; /* White for navigation links */
+  text-decoration: none;
+  padding: 8px 15px;
+  margin: 0 5px;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Wrapper for the logged-in username and its associated logout icon */
-.username-display-wrapper {
-    display: flex; /* Makes its children (username and logout icon) align horizontally */
-    align-items: center; /* Vertically centers children within this wrapper */
-
-    /* Spacing for the entire wrapper relative to elements on its left */
-    margin-right: 0px; /* Adjust this value to add space after the entire username/logout section */
-    
-    /* Padding around the wrapper, if desired */
-    padding: 0 8px; 
-}
-
-/* Apply font styles directly to the <a> tag displaying the username */
-.username-display-wrapper .user-display-name {
-    color: white !important; /* Ensure username text color is white */
-    text-decoration: none; /* Remove underline from link */
-
-    font-family: 'Righteous', cursive !important; /* Force Righteous font */
-    font-size: 18px !important; /* Increased font size for readability */
-    font-weight: normal !important; /* Righteous is typically not bold, enforce normal weight */
-    line-height: 1; /* Ensure single line height */
-    white-space: nowrap; /* Prevent text from wrapping */
-
-    /* Add spacing to the right of the username text to separate it from the logout icon */
-    margin-right: 12px !important; /* Increased margin-right for more space */
-
-    /* Adjust vertical padding to give more clickable area if desired */
-    padding: 20px 0px; /* Adjusted padding slightly for better appearance */
-    border-radius: 4px; /* Optional: Rounded corners if it looks like a button */
-    transition: background-color 0.2s ease;
-    background-color: #f44336; /* Optional: Hover effect */
-}
-
-
-.username-display-wrapper .user-display-name:hover {
-    background-color: rgba(0, 0, 0, 0.1); /* Optional hover effect */
-}
-
-/* Style for the logout button itself. Targeting mat-icon within it for precise control. */
-.username-display-wrapper .logout-button {
-    /* No specific styles needed here typically if matIconButton handles it */
-}
-
-/* General style for mat-icon within mat-toolbar for consistent sizing */
-mat-toolbar mat-icon {
-    font-size: 24px; /* Standard icon size, adjust as needed */
-    width: 24px; /* Ensure width matches font-size */
-    height: 24px; /* Ensure height matches font-size */
-}
-
-/* Style for icon-only buttons (like Login/Signup) */
-.whiteicon-button {
-    color: white; /* Ensure the button itself is white */
-}
-.whiteicon-button mat-icon {
-    /* Inherits from mat-toolbar mat-icon, ensure it's white */
-    color: white !important;
-}
-
-/* Ensure material buttons have default styling if needed */
-.mat-button {
-    /* Add any common mat-button styles if needed */
+.nav-links a:hover,
+.nav-links a.active-link { /* Add active-link class if you apply it via routerLinkActive */
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle white overlay on hover */
+  color: #FFD700; /* Accent Yellow on hover */
 }
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
-    mat-toolbar {
-        padding: 0 8px;
-        height: 56px; /* Smaller height on mobile */
-    }
-    .navbar-logo-text {
-        font-size: 24px;
-        margin-left: 10px;
-    }
-    .right-nav-buttons {
-        gap: 2px; /* Reduce gap on small screens */
-    }
-    .nav-icon-button, .nav-button {
-        padding: 0 8px;
-        font-size: 0.9em;
-    }
-    .username-display {
-        font-size: 0.9em;
-        margin-right: 10px;
-    }
+  .navbar-toolbar {
+    height: 56px; /* Smaller height for mobile */
+    padding: 0 10px;
+  }
+
+  .navbar-brand {
+    font-size: 1.2em;
+  }
+
+  .nav-links a {
+    padding: 6px 10px;
+    font-size: 0.9em;
+  }
 }

@@ -1,0 +1,34 @@
+<!-- src/app/pages/admin/update-category/update-category.html -->
+
+<div class="bootstrap-wrapper">
+  <div class="container">
+    <mat-card>
+      <h1 class="text-center">Update Category</h1>
+      <mat-divider></mat-divider>
+      <div class="row">
+        <div class="col-md-12">
+          <form (ngSubmit)="formSubmit()">
+            <mat-form-field class="w100" appearance="outline">
+              <mat-label>Category ID</mat-label>
+              <input matInput [ngModel]="category.cid" name="cid" placeholder="Enter here" disabled>
+            </mat-form-field>
+
+            <mat-form-field class="w100" appearance="outline">
+              <mat-label>Category Title</mat-label>
+              <input [(ngModel)]="category.title" name="title" matInput placeholder="Enter title here" required>
+            </mat-form-field>
+
+            <mat-form-field class="w100" appearance="outline">
+              <mat-label>Category Description</mat-label>
+              <textarea [(ngModel)]="category.description" name="description" matInput placeholder="Enter description here" rows="5"></textarea>
+            </mat-form-field>
+
+            <div class="container text-center mt20">
+              <button mat-raised-button color="primary" type="submit">Update Category</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

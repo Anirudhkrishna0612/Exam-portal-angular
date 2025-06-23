@@ -1,38 +1,47 @@
-// src/app/user.service.ts
+// src/app/service/user.service.ts
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs'; // Import Observable
-import baseUrl from './helper'; // Assuming baseUrl is a string constant
-
-// Import your User model interface
-import { User } from './user'; // Confirmed path: src/app/user.ts
+import { Observable } from 'rxjs';
+// **CRITICAL FIX: Import User from the 'models' folder**
+import { User } from './user'; // Assuming User model is at src/app/models/user.ts
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
+  // Base URL for your backend API
+  private baseUrl = 'http://localhost:8080'; // Adjust if your backend is on a different port
+
   constructor(private http: HttpClient) { }
 
-  // Method to create a new user (signup)
-  public addUser(user: User): Observable<User> { // Explicitly define return type for clarity
-    console.log("UserService: Sending add user request for user:", user.username);
-    return this.http.post<User>(`${baseUrl}/user/`, user);
+  /**
+   * Adds a new user (registers them) to the backend.
+   * @param user The User object to add.
+   * @returns An Observable of the added User object.
+   */
+  public addUser(user: User): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/user/`, user);
   }
 
-  // **CRITICAL FIX: Add the getUserByUsername method**
+  /**
+   * Gets a user by username (for profile, etc.).
+   * @param username The username of the user to fetch.
+   * @returns An Observable of the User object.
+   */
   public getUserByUsername(username: string): Observable<User> {
-    console.log(`UserService: Fetching user by username: ${username}`);
-    return this.http.get<User>(`${baseUrl}/user/${username}`); // Adjust endpoint if different
+    return this.http.get<User>(`${this.baseUrl}/user/${username}`);
   }
 
-  // You might also want to add other common user service methods like:
-  // public deleteUser(userId: number): Observable<void> {
-  //   return this.http.delete<void>(`${baseUrl}/user/${userId}`);
-  // }
+  /**
+   * Updates an existing user on the backend.
+   * @param user The User object with updated data.
+   * @returns An Observable of the updated User object.
+   */
+  public updateUser(user: User): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/user/`, user);
+  }
 
-  // public getAllUsers(): Observable<User[]> {
-  //   return this.http.get<User[]>(`${baseUrl}/user/`);
-  // }
+  // You might add more methods here like deleteUser, getAllUsers (for admin), etc.
 }

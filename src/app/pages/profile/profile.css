@@ -1,155 +1,99 @@
 /* src/app/pages/profile/profile.css */
 
-.profile-main-card {
-    margin: 20px auto;
-    max-width: 900px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+.profile-card {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #FFFFFF; /* Light neutral background */
 }
 
-.profile-main-card h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 30px;
-    font-size: 2.5em;
-    font-weight: 700;
+.profile-avatar-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-.profile-header-section {
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #e0e0e0;
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #DC143C; /* Primary Red border */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* **Your pfpimg style** */
-.pfpimg {
-    max-width: 150px; /* Your specified size */
-    max-height: 150px; /* Your specified size */
-    border-radius: 50%; /* Keep it circular */
-    object-fit: cover;
-    margin: 0 auto 15px;
-    display: block;
-    border: 5px solid #F44336; /* Red border */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.mat-card-header {
+  text-align: center;
+  display: block;
+  padding-bottom: 20px;
 }
 
-.profile-header-section h2 {
-    margin-top: 15px;
-    margin-bottom: 5px;
-    font-size: 2em;
-    color: #212121;
+.mat-card-title {
+  font-size: 1.8em;
+  font-weight: 600;
+  color: #333333; /* Dark text on light background */
 }
 
-.profile-header-section p {
-    font-size: 1.2em;
-    color: #757575;
+.mat-card-subtitle {
+  color: #777777;
+  font-size: 1em;
 }
 
-.profile-details-row {
-    margin-top: 20px;
+.mat-list-item {
+  height: auto !important;
+  padding: 10px 0;
+  align-items: flex-start;
 }
 
-.table-title {
-    font-size: 1.8em;
-    color: #212121;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: 600;
+.mat-list-item .mat-icon {
+  margin-right: 15px;
+  color: #DC143C; /* Primary Red for icons */
 }
 
-/* **CRITICAL FIX: Your original table styling** */
-.table {
-    width: 100%;
-    background-color: #f44336; /* Your specified red background */
-    border: 5px solid rgb(255, 255, 255); /* Your specified white border */
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 500; /* Semi-bold */
-    border-collapse: collapse; /* Ensure borders are flush */
-    border-radius: 8px; /* Assuming you want rounded corners for the outer table */
-    overflow: hidden; /* Important for border-radius to apply */
+.mat-list-item .mat-list-item-title {
+  font-weight: 500;
+  color: #555555;
+  width: 80px;
+  flex-shrink: 0;
 }
 
-/* **CRITICAL FIX: Your original table cell styling** */
-.table tr td {
-    padding: 20px 50px; /* Your specified padding */
-    border: 1px solid rgb(255, 255, 255); /* Your specified white inner borders */
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 500; /* Semi-bold */
-    color: white; /* Ensure text is white on red background */
-    text-align: center; /* Center align text in cells, typical for a data table like this */
+.mat-list-item .mat-list-item-line {
+  color: #333333;
+  flex-grow: 1;
+  word-break: break-all;
 }
 
-/* Style for the first column (labels) */
-.table tr td:first-child {
-    font-weight: bold; /* Make the labels bolder */
-    /* text-align: left; /* Optional: Align labels to the left if preferred */
+.mat-divider {
+  margin: 10px 0;
+  border-top-color: #EEEEEE;
 }
 
-
-/* **CRITICAL FIX: Your original text-white styling** */
-.text-white {
-    color: white;
-    font-size: 20px;
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 500; /* Semi-bold */
+.profile-actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
 }
 
-.no-data-message {
-    text-align: center;
-    padding: 50px;
-    font-size: 1.2em;
-    color: #757575;
+.mat-raised-button {
+  padding: 10px 30px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  background-image: linear-gradient(45deg, #DC143C, #CC0000); /* Red gradient */
+  color: #FFFFFF; /* White text on red button */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
-/* **CRITICAL FIX: Your original card-buttons-center styling** */
-.card-buttons-center {
-    display: flex;
-    justify-content: center;
-    gap: 15px; /* Increased gap slightly for larger buttons */
-    padding: 20px; /* Slightly more padding for the container */
-    border-top: 1px solid #e0e0e0; /* Keep the separator from previous design */
+.mat-raised-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background-image: linear-gradient(45deg, #CC0000, #AA0000); /* Slightly darker red on hover */
 }
 
-/* **CRITICAL FIX: Your original button styling inside card-buttons-center** */
-.card-buttons-center button {
-    font-size: 1.4em; /* Make text slightly larger */
-    padding: 12px 28px; /* Increase vertical and horizontal padding */
-    min-width: 120px; /* Ensure a minimum width for the buttons */
-    height: auto; /* Allow height to adjust based on padding */
-    line-height: normal; /* Reset line-height if Material overrides it */
-    border-radius: 8px; /* Slightly more rounded corners for larger buttons */
-    font-weight: 500; /* Ensure semi-bold if you want it from your Roboto Mono */
-    letter-spacing: 0.5px; /* Add a little letter spacing for better appearance */
-}
-
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .profile-main-card {
-        padding: 15px;
-        margin: 15px;
-    }
-    .profile-details-row .col-md-10,
-    .profile-details-row .offset-md-1 {
-        flex: 0 0 100%;
-        max-width: 100%;
-        margin-left: 0;
-    }
-    /* Adjust table cells for smaller screens */
-    .table tr td {
-        padding: 10px 20px; /* Reduce padding on mobile */
-        font-size: 0.9em;
-    }
-    .table tr td:first-child {
-        width: 35%; /* Adjust label width for mobile */
-    }
-    .card-buttons-center {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .card-buttons-center button {
-        width: 80%;
-        margin: 0 auto;
-    }
+.no-user-card {
+  text-align: center;
+  color: #DC143C; /* Primary Red for error text */
+  font-size: 1.2em;
 }

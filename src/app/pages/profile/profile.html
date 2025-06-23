@@ -1,74 +1,72 @@
 <!-- src/app/pages/profile/profile.html -->
 
-<mat-card class="profile-main-card">
-  <h1>Your Profile</h1>
-  <mat-card-content>
-    <div class="bootstrap-wrapper">
-      <div class="container">
-        <!-- Profile picture and name section -->
-        <div class="text-center profile-header-section">
-          <img src="https://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png" alt="" class="pfpimg">
-          <h2>{{ user?.firstName }} {{ user?.lastName }}</h2>
-          <p>{{ user?.username }}</p>
-        </div>
-
-        <div class="row profile-details-row">
-          <div class="col-md-10 offset-md-1">
-            <h3 class="table-title">Account Details</h3>
-            <!-- **CRITICAL FIX: Use 'table' class here** -->
-            <table class="table details-table" *ngIf="user">
-              <tr>
-                <td><b>ID</b></td>
-                <td class="text-white">{{ user.id }}</td> <!-- Apply text-white if needed -->
-              </tr>
-              <tr>
-                <td><b>Username</b></td>
-                <td class="text-white">{{ user.username }}</td>
-              </tr>
-              <tr>
-                <td><b>First Name</b></td>
-                <td class="text-white">{{ user.firstName }}</td>
-              </tr>
-              <tr>
-                <td><b>Last Name</b></td>
-                <td class="text-white">{{ user.lastName }}</td>
-              </tr>
-              <tr>
-                <td><b>Email</b></td>
-                <td class="text-white">{{ user.email }}</td>
-              </tr>
-              <tr>
-                <td><b>Phone</b></td>
-                <td class="text-white">{{ user.phone }}</td>
-              </tr>
-              <tr>
-                <td><b>Status</b></td>
-                <td class="text-white">
-                  <span [style.color]="user.enabled ? '#4CAF50' : '#F44336'">
-                    {{ user.enabled ? 'Active' : 'Disabled' }}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td><b>Profile Image File</b></td>
-                <td class="text-white">{{ user.profile || 'N/A' }}</td>
-              </tr>
-              <tr>
-                <td><b>Role</b></td>
-                <td class="text-white">{{ getRoleString(user.authorities) }}</td>
-              </tr>
-            </table>
-            <div *ngIf="!user" class="no-data-message text-center">
-              User details could not be loaded.
+<div class="bootstrap-wrapper">
+    <div class="container mt20" *ngIf="user">
+        <mat-card>
+            <div class="text-center">
+                <img src="https://placehold.co/150x150/673AB7/white?text=User" alt="Profile Image" class="profile-img">
+                <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+                <p>Welcome to your profile!</p>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </mat-card-content>
 
-  <mat-card-actions class="card-buttons-center">
-    <button mat-stroked-button color="accent" (click)="editProfile()">Edit</button>
-    <button mat-stroked-button color="warn">Delete</button>
-  </mat-card-actions>
-</mat-card>
+            <!-- User Details List -->
+            <mat-list>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>account_circle</mat-icon>
+                    <span matListItemTitle>Username:</span>
+                    <span matListItemLine>{{ user.username }}</span>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+
+                <mat-list-item>
+                    <mat-icon matListItemIcon>badge</mat-icon>
+                    <span matListItemTitle>User ID:</span>
+                    <span matListItemLine>{{ user.id }}</span>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+
+                <mat-list-item>
+                    <mat-icon matListItemIcon>email</mat-icon>
+                    <span matListItemTitle>Email:</span>
+                    <span matListItemLine>{{ user.email }}</span>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+
+                <mat-list-item>
+                    <mat-icon matListItemIcon>call</mat-icon>
+                    <span matListItemTitle>Phone:</span>
+                    <span matListItemLine>{{ user.phone }}</span>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+
+                <mat-list-item>
+                    <mat-icon matListItemIcon>check_circle</mat-icon>
+                    <span matListItemTitle>Status:</span>
+                    <span matListItemLine>{{ user.enabled ? 'Active' : 'Inactive' }}</span>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+
+                <mat-list-item>
+                    <mat-icon matListItemIcon>verified_user</mat-icon>
+                    <span matListItemTitle>Roles:</span>
+                    <span matListItemLine *ngIf="user.authorities && user.authorities.length > 0">
+                        <span *ngFor="let auth of user.authorities; last as isLast">
+                            {{ auth.authority }}<span *ngIf="!isLast">, </span>
+                        </span>
+                    </span>
+                    <span matListItemLine *ngIf="!user.authorities || user.authorities.length === 0">No roles assigned</span>
+                </mat-list-item>
+            </mat-list>
+
+            <div class="text-center mt20">
+                <button mat-raised-button color="primary">Update Profile</button>
+                <button mat-raised-button color="warn" class="ml10">Change Password</button>
+            </div>
+        </mat-card>
+    </div>
+    <div class="container mt20" *ngIf="!user">
+        <mat-card>
+            <p class="text-center">Loading user data or user not found...</p>
+        </mat-card>
+    </div>
+</div>

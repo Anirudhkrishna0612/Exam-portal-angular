@@ -3,12 +3,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table'; 
-import { AuthService } from '../service/auth.service';
-import { UserService } from '../../user.service';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+// No longer need MatSnackBar, Router, DomSanitizer, SafeUrl if only displaying basic info
+// Re-add them if you have profile.html content that uses them.
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // Needed for profile image
+
 import { User } from '../../user';
+import { LoginService } from '../service/login.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,9 +22,10 @@ import { User } from '../../user';
   imports: [
     CommonModule,
     MatCardModule,
-    MatButtonModule,
+    MatListModule,
     MatIconModule,
-    MatTableModule,
+    MatDividerModule,
+    MatButtonModule
   ],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css']
@@ -26,54 +33,36 @@ import { User } from '../../user';
 export class ProfileComponent implements OnInit {
 
   user: User | null = null;
+  profileImageUrl: SafeUrl | undefined; // For the profile image
 
   constructor(
-    private authService: AuthService,
-    private userService: UserService
+    private loginService: LoginService,
+    private snack: MatSnackBar, // Re-added if your HTML uses it for alerts
+    private router: Router, // Re-added if your HTML has navigation
+    private sanitizer: DomSanitizer // Re-added for profile image URL
   ) { }
 
   ngOnInit(): void {
-    console.log('ProfileComponent has successfully initialized!');
-    this.fetchUserProfile();
-  }
+    // Get current user details from LoginService (synchronous call)
+    this.user = this.loginService.getCurrentUser(); // This now returns User | null directly
 
-  fetchUserProfile(): void {
-    const currentUserInfo = this.authService.getUser();
-    
-    console.log('DEBUG (ProfileComponent): currentUserInfo from AuthService.getUser():', currentUserInfo);
-
-    if (currentUserInfo && currentUserInfo.user && currentUserInfo.user.username) {
-      console.log('DEBUG (ProfileComponent): Attempting to fetch user profile for username:', currentUserInfo.user.username);
-      this.userService.getUserByUsername(currentUserInfo.user.username).subscribe(
-        (data: User) => {
-          this.user = data;
-          console.log('DEBUG (ProfileComponent): User profile data loaded successfully:', this.user);
-        },
-        (error) => {
-          console.error('ERROR (ProfileComponent): Failed to load user profile from UserService:', error);
-          this.user = null; 
-        }
-      );
+    // Logic to set profile image URL (from previous working code)
+    if (this.user?.profile) {
+      this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(this.user.profile);
     } else {
-      console.warn('WARNING (ProfileComponent): No complete user information (or nested username) found in AuthService. Is the user logged in correctly and user object structured as expected?');
-      this.user = null; 
+      const initial = (this.user?.username && this.user.username.trim() !== '')
+                      ? this.user.username.charAt(0).toUpperCase()
+                      : '?';
+      this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(
+        `https://placehold.co/100x100/424242/FFFFFF?text=${initial}`
+      );
     }
+
+    // Removed the 'if (!this.user) { this.loginService.getCurrentUser().subscribe(...)' block
+    // because LoginService.getCurrentUser() is now synchronous and handles its own fetching/storage.
+    // If user is null here, it means they are not logged in or data is corrupted, which your
+    // LoginService.getUser() should already handle by potentially logging them out.
   }
 
-  editProfile(): void {
-    console.log('Edit Profile button clicked!');
-  }
-
-  getRoleString(authorities: { authority: string | null }[] | undefined): string {
-    if (authorities && authorities.length > 0) {
-      return authorities
-        .filter(auth => auth.authority)
-        .map(auth => auth.authority)
-        .join(', ');
-    }
-    return 'N/A';
-  }
-
-  // **CRITICAL FIX: getProfileImageUrl method removed as requested.**
-  // No longer needed since HTML directly provides the URL.
+  // Add any other methods for profile editing, etc. here
 }

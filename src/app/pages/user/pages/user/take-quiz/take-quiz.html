@@ -1,0 +1,77 @@
+<!-- src/app/pages/user/pages/user/take-quiz/take-quiz.html -->
+
+<div class="bootstrap-wrapper">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10 offset-md-1">
+        <mat-card class="mt-20">
+          <h1 class="text-center font-semibold text-3xl">
+            Questions of {{ quiz?.title }}
+          </h1>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-md-8">
+                <!-- Questions -->
+                <ng-container *ngIf="questions && questions.length > 0">
+                  <mat-card *ngFor="let q of questions; let i = index" class="mb-4">
+                    <mat-card-content>
+                      <p><b>Q{{ i + 1 }}.</b> <span [innerHTML]="q.content"></span></p>
+
+                      <mat-divider></mat-divider>
+
+                      <div class="options mt-2">
+                        <mat-radio-group [(ngModel)]="q.givenAnswer">
+                          <mat-radio-button [value]="q.option1" class="block mb-2">
+                            {{ q.option1 }}
+                          </mat-radio-button>
+                          <mat-radio-button [value]="q.option2" class="block mb-2">
+                            {{ q.option2 }}
+                          </mat-radio-button>
+                          <mat-radio-button *ngIf="q.option3" [value]="q.option3" class="block mb-2">
+                            {{ q.option3 }}
+                          </mat-radio-button>
+                          <mat-radio-button *ngIf="q.option4" [value]="q.option4" class="block mb-2">
+                            {{ q.option4 }}
+                          </mat-radio-button>
+                        </mat-radio-group>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </ng-container>
+
+                <div class="text-center mt-6">
+                  <button mat-raised-button color="primary" (click)="submitQuiz()">Submit Quiz</button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <!-- Progress and Timer -->
+                <mat-card class="text-center">
+                  <mat-card-header>
+                    <mat-card-title>Progress</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <h1 class="text-4xl">
+                      {{ (currentQuestionIndex + 1) }} / {{ questions.length }}
+                    </h1>
+                    <mat-progress-bar mode="determinate" [value]="(currentQuestionIndex + 1) / questions.length * 100">
+                    </mat-progress-bar>
+                  </mat-card-content>
+                </mat-card>
+
+                <mat-card class="text-center mt-4">
+                  <mat-card-header>
+                    <mat-card-title>Time Remaining</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <h1 class="text-5xl font-bold">{{ formatTime() }}</h1>
+                    <button mat-raised-button color="warn" (click)="submitQuiz()" class="mt-4">End Quiz</button>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

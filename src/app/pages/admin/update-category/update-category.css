@@ -1,0 +1,47 @@
+/* src/app/pages/admin/update-category/update-category.css */
+
+mat-card {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+h1 {
+    color: #3F51B5; /* Primary color */
+    font-family: 'Righteous', cursive;
+    margin-bottom: 15px;
+    font-size: 2em;
+}
+
+mat-divider {
+    margin: 15px 0;
+    border-top-color: #e0e0e0;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt20 {
+    margin-top: 20px !important;
+}
+
+.ml10 {
+    margin-left: 10px !important;
+}
+
+/* Custom snackbar styles for success and error messages */
+.success-snackbar {
+    background-color: #4CAF50 !important; /* Green */
+    color: white !important;
+}
+
+.error-snackbar {
+    background-color: #F44336 !important; /* Red */
+    color: white !important;
+}

@@ -1,0 +1,21 @@
+/* src/app/pages/home/home.css */
+
+/* Add any specific styles for your home component here */
+.container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 {
+    font-family: 'Righteous', cursive; /* Example from your global styles */
+    color: #3F51B5; /* Primary color */
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 30px;
+}

@@ -1,0 +1,92 @@
+/* src/app/pages/admin/update-question/update-question.css */
+
+mat-card {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+h1 {
+    color: #3F51B5; /* Primary color */
+    font-family: 'Righteous', cursive;
+    margin-bottom: 15px;
+    font-size: 2em;
+}
+
+mat-divider {
+    margin: 15px 0;
+    border-top-color: #e0e0e0;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt20 {
+    margin-top: 20px !important;
+}
+
+.mb20 {
+    margin-bottom: 20px !important;
+}
+
+.ml10 {
+    margin-left: 10px !important;
+}
+
+/* Styles for the CKEditor container */
+.ck-editor__editable_inline {
+    min-height: 200px; /* Adjust height as needed */
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #fff;
+}
+
+/* Styles for the MatFormField containing CKEditor to integrate it better */
+mat-form-field.full-width .mat-form-field-wrapper {
+    padding-bottom: 0; /* Remove default padding that might misalign editor */
+}
+mat-form-field.full-width .mat-form-field-flex {
+    align-items: flex-start; /* Align label/content to top */
+}
+
+/* Row and column styles for responsive layout */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px; /* Compensate for column padding */
+    margin-right: -15px; /* Compensate for column padding */
+}
+
+.col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Responsive adjustment for smaller screens */
+@media (max-width: 768px) {
+    .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Custom snackbar styles for success and error messages */
+.success-snackbar {
+    background-color: #4CAF50 !important; /* Green */
+    color: white !important;
+}
+
+.error-snackbar {
+    background-color: #F44336 !important; /* Red */
+    color: white !important;
+}

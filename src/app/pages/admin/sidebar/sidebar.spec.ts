@@ -1,18 +1,20 @@
+// src/app/pages/admin/sidebar/sidebar.spec.ts
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+// **CRITICAL FIX: Corrected import to './sidebar' because your component file is sidebar.ts**
+import { SidebarComponent } from './sidebar'; // Assuming sidebar.ts contains 'export class SidebarComponent'
 
-import { Sidebar } from './sidebar'; 
-
-describe('Sidebar', () => {
-  let component: Sidebar;
-  let fixture: ComponentFixture<Sidebar>;
+describe('SidebarComponent', () => {
+  let component: SidebarComponent;
+  let fixture: ComponentFixture<SidebarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Sidebar]
+      imports: [SidebarComponent] // Still assuming it's a standalone component
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Sidebar);
+    fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

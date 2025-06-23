@@ -1,9 +1,20 @@
+<!-- src/app/pages/home/home.html -->
+
 <div class="bootstrap-wrapper">
-    <div class="container">
-        <div class="row" style="margin-top: 20px;">
-            <div class="col-md-6 offset-md-3 text-center">
-                <h2>Welcome to Zenith Prove</h2>
+    <div class="container text-center">
+        <mat-card class="homepage-card">
+            <h1 class="homepage-title">Welcome to ZenithProve: Your Exam Portal</h1>
+            <p class="homepage-subtitle">A comprehensive platform for online exams and quizzes.</p>
+            <div class="button-group">
+                <!-- **CRITICAL FIX: Ensure correct routerLink to /login** -->
+                <button mat-raised-button color="primary" routerLink="/login" class="action-button start-now-button">
+                    Start Now!
+                </button>
+                <!-- **CRITICAL FIX: Ensure correct routerLink to /signup** -->
+                <button mat-raised-button color="accent" routerLink="/signup" class="action-button register-button ml10">
+                    Register
+                </button>
             </div>
-        </div>        
+        </mat-card>
     </div>
 </div>

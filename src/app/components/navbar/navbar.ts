@@ -1,62 +1,50 @@
 // src/app/components/navbar/navbar.ts
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterLink, RouterModule } from '@angular/router';
-import { AuthService } from '../../pages/service/auth.service'; 
-import { CommonModule } from '@angular/common'; 
-import { Observable } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { Router, NavigationEnd, Event, RouterLink } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { LoginService } from '../../pages/service/login.service';
 
 @Component({
   selector: 'app-navbar',
-  templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css'],
   standalone: true,
   imports: [
     CommonModule,
     MatToolbarModule,
-    MatIconModule,
     MatButtonModule,
-    RouterLink,
-    RouterModule,
-  ]
+    MatIconModule,
+    RouterLink
+  ],
+  templateUrl: './navbar.html',
+  styleUrls: ['./navbar.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
-  // **CRITICAL: Remove these local declarations.** They are now public on authService.
-  // isLoggedIn$: Observable<boolean>; 
-  // currentUser$: Observable<any | null>; 
-
-  // Injected as authService, so properties are accessed via this.authService.propertyName
-  constructor(public authService: AuthService, private router: Router) { 
-    // No explicit assignments here, as you'll use authService.loggedInStatus$ and authService.currentUser$ directly in the template.
-  }
+  constructor(public loginService: LoginService, private router: Router) { }
 
   ngOnInit(): void {
+    this.router.events.pipe(
+      filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      // Logic for navbar to react to route changes if needed.
+    });
+
+    // Subscribe to loginStatusSubject for reactive updates to navbar buttons (login/logout)
+    this.loginService.loginStatusSubject.asObservable().subscribe(() => {
+      // This triggers Angular's change detection for *ngIf conditions in the template.
+    });
   }
 
-  public logout() {
-    this.authService.logout(); 
-    this.router.navigate(['/login']); 
+  ngOnDestroy(): void {
+    // If you add any subscriptions here later, remember to unsubscribe
   }
 
-  public getDashboardLink(): string {
-    const userRoles = this.authService.getUserRoles(); 
-    if (userRoles.includes("ADMIN")) {
-      return '/admin'; 
-    } else if (userRoles.includes("NORMAL")) {
-      return '/user-dashboard'; 
-    }
-    return '/'; 
-  }
-
-  // **CRITICAL FIX: This method must be called to get username**
-  // It fetches the current user from authService and returns the username.
-  public getUsername(): string {
-    const user = this.authService.getUser(); // Get the synchronous user object
-    // Access the username property, handling potential nulls
-    return user && user.user && user.user.username ? user.user.username : 'Guest'; 
+  public logout(): void {
+    this.loginService.logout();
+    this.router.navigate(['login']);
   }
 }

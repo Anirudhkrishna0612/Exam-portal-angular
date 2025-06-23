@@ -1,0 +1,44 @@
+/* src/app/pages/user/dashboard/user-dashboard.css */
+
+.user-dashboard-container {
+    height: calc(100vh - 64px); /* Full viewport height minus navbar height */
+    display: flex;
+    flex-direction: column;
+}
+
+.sidenav-container {
+    flex: 1; /* Take up remaining space */
+    width: 100%;
+}
+
+.sidebar-sidenav {
+    width: 250px; /* Fixed width for the sidebar */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.05); /* Subtle shadow for separation */
+    border-right: none; /* Remove default border from sidenav */
+    padding-top: 10px; /* Space from top of sidenav-container */
+}
+
+.sidenav-content {
+    padding: 20px; /* Padding for the main content area */
+    background-color: #f0f2f5; /* Light background for the content area */
+    overflow-y: auto; /* Enable scrolling for content if it overflows */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar-sidenav {
+        width: 200px; /* Slightly narrower sidebar on smaller screens */
+    }
+    .sidenav-container {
+        /* On smaller screens, the 'side' mode for mat-sidenav might behave like 'over'
+           depending on MatDrawerContainer configuration. No specific changes needed here
+           unless there's a problem with overlay behavior.
+        */
+    }
+}
+
+/* Ensure children elements of sidenav-content take up available space if needed */
+.sidenav-content > * {
+    width: 100%;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
