@@ -1,7 +1,7 @@
 /* src/app/components/navbar/navbar.css */
 
 .navbar-toolbar {
-  background-color: #DC143C; /* Primary Red for the toolbar */
+  background-color: #3F51B5; /* Primary Red for the toolbar */
   color: #FFFFFF; /* White text on red background */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 0 20px;

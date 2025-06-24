@@ -4,10 +4,104 @@
     width: 100%;
 }
 
-.signup-img {
-    /* Styles for the image, often shared globally or per component */
-    max-width: 100px;
-    height: auto;
-    border-radius: 50%; /* Make it round if desired */
-    margin-bottom: 20px; /* Spacing below the image */
+.text-center {
+    text-align: center;
+}
+
+.container {
+    /* min-height ensures content pushes the footer down if needed */
+    min-height: calc(100vh - 64px); /* Account for navbar height (approx 64px) */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    background-color: #ffffff; /* Consistent dark background */
+    margin-top: 64px; /* FIX: Push the entire container down by navbar height */
+    padding-top: 20px; /* Optional: Add some padding at the top inside the container */
+    padding-bottom: 20px; /* Optional: Add some padding at the bottom for spacing */
+    box-sizing: border-box; /* Include padding in height calculation */
+}
+
+.signup-card {
+    min-width: 380px; /* FIX: Set a width suitable for a single column of fields */
+    max-width: 500px; /* Optional: A maximum width to prevent it from becoming too wide on large screens */
+    width: 90%; /* Responsive width that shrinks on smaller screens */
+    padding: 40px 30px;
+    background-color: #212121; /* Darker, almost black, background for card */
+    color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+
+.signup-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #3F51B5;
+    margin-bottom: 25px;
+    font-family: 'Righteous', cursive;
+}
+
+.mat-form-field {
+    width: 100%; /* Each field should take full width within the card for stacking */
+    margin-bottom: 15px; /* Space between form fields */
+}
+
+/* Input field specific styles for the desired clean white look */
+.mat-form-field-appearance-outline .mat-form-field-flex {
+    background-color: white !important;
+    border-radius: 4px !important;
+    padding: 0.75em 0.75em 0 0.75em !important;
+    box-sizing: border-box;
+}
+
+.mat-input-element {
+    color: #333 !important;
+    caret-color: #3F51B5 !important;
+}
+
+.mat-form-field-label {
+    color: #666 !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #3F51B5 !important;
+}
+.mat-form-field.mat-focused .mat-form-field-label {
+    color: #3F51B5 !important;
+}
+
+.mat-form-field-label.mat-form-field-has-value {
+    color: #3F51B5 !important;
+}
+
+.mat-form-field-placeholder {
+    color: #999 !important;
+}
+
+.mat-form-field-suffix .mat-icon {
+    color: #666 !important;
+}
+
+/* Button styles */
+.signup-button {
+    background-color: #3F51B5;
+    color: white;
+    width: 48%; /* For two buttons side-by-side */
+    padding: 10px 0;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+.signup-button:hover {
+    background-color: #30419d;
+}
+
+.mr10 {
+    margin-right: 4%;
 }
