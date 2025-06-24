@@ -15,7 +15,7 @@
     justify-content: center; /* Center horizontally */
     align-items: center;     /* Center vertically */
     background-color: #ffffff; /* Consistent dark background */
-    margin-top: 64px; /* FIX: Push the entire container down by navbar height */
+    margin-top: 5px; /* FIX: Push the entire container down by navbar height */
     padding-top: 20px; /* Optional: Add some padding at the top inside the container */
     padding-bottom: 20px; /* Optional: Add some padding at the bottom for spacing */
     box-sizing: border-box; /* Include padding in height calculation */

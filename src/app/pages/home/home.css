@@ -1,21 +1,98 @@
 /* src/app/pages/home/home.css */
 
-/* Add any specific styles for your home component here */
 .container {
+    /* The container for the whole home page content */
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center; /* Center text within this container */
+    
+    /* Ensure this container pushes down from the navbar and fills vertical space */
+    min-height: calc(100vh - 64px); /* Account for navbar height (approx 64px) */
+    display: flex; /* Use flexbox to vertically center the hero-section within it */
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    box-sizing: border-box; /* Include padding in height calculation */
+    margin-top: 20px; /* Push the entire container down by navbar height */
+    background-color: #191c1c; /* Consistent with global body background */
 }
 
-h1 {
-    font-family: 'Righteous', cursive; /* Example from your global styles */
-    color: #3F51B5; /* Primary color */
-    margin-bottom: 15px;
+.hero-section {
+    /* This is the main card/panel for the welcome message */
+    background-color: #2a2a2a; /* Dark card background, matching your desired theme */
+    padding: 60px 20px; /* Ample padding inside the card */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Prominent shadow for dark card */
+    color: #f0f0f0; /* Light text for readability on dark background */
+
+    /* FIX: Increase min-height to extend the card downwards */
+    min-height: 550px; /* Adjusted to make it significantly taller, as requested (approx 40% more) */
+    
+    /* Ensure content is centered within this hero section */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center;     /* Center content horizontally */
+    
+    width: 100%; /* Take full width of its parent container */
+    max-width: 900px; /* Max width to keep it from stretching too wide on very large screens */
 }
 
-p {
-    font-size: 1.1em;
-    color: #555;
+.hero-title {
+    font-size: 48px;
+    color: #3F51B5; /* New Blue for title */
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-family: 'Righteous', cursive; /* Apply Righteous font */
+}
+
+.hero-subtitle {
+    font-size: 24px;
+    color: #bbb; /* Lighter grey for subtitle */
     margin-bottom: 30px;
+}
+
+.start-button {
+    background-color: #A7D900; /* Green accent button */
+    color: #000000; /* Black text on green button */
+    font-size: 20px;
+    padding: 12px 30px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+    background-color: #81c784; /* Lighter green on hover */
+}
+
+/* Any other general home component styles */
+.mat-card {
+    /* This might be redundant if hero-section covers the main card */
+    margin-top: 20px;
+}
+
+.welcome-text {
+    font-size: 22px;
+    margin-top: 20px;
+    color: #f0f0f0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    .hero-section {
+        padding: 30px 15px;
+        min-height: 400px; /* Adjust min-height for smaller screens */
+        max-width: 100%; /* Allow full width on small screens */
+    }
+    .hero-title {
+        font-size: 36px;
+    }
+    .hero-subtitle {
+        font-size: 18px;
+    }
+    .start-button {
+        font-size: 18px;
+        padding: 10px 25px;
+    }
 }

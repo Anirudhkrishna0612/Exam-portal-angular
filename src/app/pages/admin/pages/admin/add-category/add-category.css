@@ -7,6 +7,7 @@
   padding: 0; /* Padding handled by parent .main-content */
   box-sizing: border-box;
   width: 100%; /* Ensure it spans full width of its parent */
+  
 }
 
 /* The .add-category-card is also a .content-card. It will now naturally expand. */
@@ -30,6 +31,7 @@
   width: 100%; /* Ensure form itself takes full width of card */
   max-width: 700px; /* IMPORTANT: Add max-width to the form itself for readability, not the card */
   margin: 0 auto; /* Center the form within the card */
+  margin-top: 20px;
 }
 
 .full-width {

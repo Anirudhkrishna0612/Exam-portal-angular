@@ -1,20 +1,29 @@
 /* src/app/pages/admin/welcome/welcome.css */
 
 .welcome-container {
-  /* IMPORTANT: Removed display: flex and justify-content: center.
-     The card will now fill the 100% width of the main-content due to .content-card styles. */
-  height: 100%; /* Ensure it takes full height of main-content */
-  width: 100%; /* Ensure it spans full width of its parent */
-  padding: 0; /* Padding handled by parent .main-content */
+  height: 100%;
+  width: 100%;
+  padding: 0;
   box-sizing: border-box;
+  /* If this container needs to be pushed down by navbar, add margin-top here too */
+  /* margin-top: 64px; */
+  /* min-height: calc(100vh - 64px); */
 }
 
-/* The .welcome-card is also a .content-card. It will now naturally expand. */
 .welcome-card {
-  /* No specific max-width here; inherits width: 100% from .content-card in dashboard.css */
-  /* No specific margin or padding; inherits from .content-card */
-  background-color: #FFFFFF; /* Explicitly set background to white */
-  color: #333333; /* Dark text on white background for readability */
+  background-color: #2a2a2a; /* Consistent dark card background */
+  color: #f0f0f0; /* Light text on dark background */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  
+  /* Applying similar height logic as home.css if this is also a full-page card */
+  min-height: 550px; /* Adjust as needed for admin welcome content */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .welcome-header {
@@ -27,11 +36,12 @@
   color: #3f51b5;
   margin-bottom: 10px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  font-family: 'Righteous', cursive; /* Apply Righteous font */
 }
 
 .welcome-subtitle {
   font-size: 1.2em;
-  color: #555555;
+  color: #bbb; /* Lighter grey for subtitle */
   line-height: 1.6;
 }
 
@@ -54,6 +64,7 @@
 @media (max-width: 768px) {
   .welcome-card {
     padding: 15px;
+    min-height: 400px; /* Adjust min-height for smaller screens */
     max-width: 100%;
   }
 
